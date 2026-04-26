@@ -51,8 +51,7 @@ exports.handler = async function (event) {
   if (event.httpMethod !== "POST") return { statusCode: 405, body: "Method not allowed" };
 
   try {
-    const { date, slots, avgProfile, dayOfWeekProfiles, tags, memory, question, elecRate, conversationHistory } = JSON.parse(event.body);
-
+const { date, slots, avgProfile, dayOfWeekProfiles, tags, memoryNotes, householdProfile, summaryFocus, question, elecRate, conversationHistory } = JSON.parse(event.body);
     const dayName = new Date(date + "T12:00:00").toLocaleDateString("en-GB", { weekday: "long" });
     const totalKwh = Math.round(slots.reduce((s, r) => s + r.kwh, 0) * 100) / 100;
     const totalGbp = elecRate ? Math.round(totalKwh * elecRate / 100 * 100) / 100 : null;
@@ -77,29 +76,39 @@ exports.handler = async function (event) {
 
     const isQuestion = question && question.trim();
 
-    const systemPrompt = `You are an energy analyst for a UK household with a smart electricity meter. Your job is to provide sharp, specific analysis of their half-hourly electricity data.
+    const summaryPreference = `Give me a view on the most recent full day of data — total usage, cost, and anything notable versus my typical pattern for that day of the week. Then summarise the last 14 days, highlighting any days that stand out high or low and why.`;
+
+    const systemPrompt = `You are an energy analyst for a UK household with a smart electricity meter. Provide sharp, specific analysis with actual numbers.
 
 RULES:
 - Always include actual numbers (kWh, £, percentages, times)
-- Flag anomalies — anything more than 2x the average for that time slot is suspicious
-- Consider time of day — using a pressure washer at 23:30 is unusual, using a kettle at 07:00 is normal
+- Flag anomalies — anything more than 2x the average for that time slot
+- Consider time of day — using a pressure washer at 23:30 is unusual
 - Reference day-of-week patterns where you have data
-- Never suggest specific appliances unless the data clearly points to one (e.g. a 2kW spike at 08:00 on a weekday morning is probably a kettle/shower, not a games console)
+- Never suggest specific appliances unless the data clearly points to one
 - Be direct and conversational, no filler phrases
 - The household has two people
 
 ${isQuestion ? "" : `FORMAT YOUR RESPONSE EXACTLY LIKE THIS:
-HEADLINE: [one sentence headline, max 10 words]
+HEADLINE: [one sentence, max 10 words, include the date and day of week]
+SUBTITLE: [2-3 sentences of analysis, referencing specific numbers and patterns in the data]
 BULLETS:
 - [specific insight with numbers]
 - [specific insight with numbers]
 - [specific insight with numbers, only if genuinely useful]`}
 
-Household context:
-${memory || "No context provided."}
+HOUSEHOLD PROFILE (built from 30 days of data):
+${householdProfile || "Not yet generated — will improve over time."}
 
-Date: ${dayName}, ${date}
-Total: ${totalKwh} kWh${totalGbp ? ` (£${totalGbp})` : ""}
+USER PREFERENCES FOR SUMMARY:
+${summaryFocus || summaryPreference}
+
+Household context notes:
+${memoryNotes && memoryNotes.length ? memoryNotes.map(n => `[${n.date}] ${n.text}`).join("\n") : "None yet."}
+
+Date being analysed: ${dayName}, ${date}
+Period context: ${isQuestion ? "Follow-up question on the data below." : `Analysing most recent full day (${date}) plus last 14 days context.`}
+Total usage: ${totalKwh} kWh${totalGbp ? ` (£${totalGbp})` : ""}
 Rate: ${elecRate ? elecRate.toFixed(2) : "24.99"}p/kWh
 Tags: ${tags && tags.length ? tags.join(", ") : "None"}
 Typical ${dayName} total: ${dowTotal ? `${dowTotal} kWh` : "not enough data yet"}
@@ -114,6 +123,7 @@ ${slots.map(s => {
   const flag = avg && s.kwh > avg * 2 && s.kwh > 0.1 ? " ⚠" : "";
   return `${s.time}: ${s.kwh} kWh (avg ${avg} kWh)${flag}`;
 }).join("\n")}`;
+
 
     // Build messages array — for follow-up questions include conversation history
     const messages = [];

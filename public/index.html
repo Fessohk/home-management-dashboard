@@ -9,7 +9,7 @@
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #F2EDE4; color: #2C2C2C; padding-bottom: 80px; }
-
+ 
     @media (prefers-color-scheme: dark) {
       body { background: #1A1A14; color: #E8E4DC; }
       .header { background: #242418; }
@@ -42,8 +42,9 @@
       .ai-thread-question { color: #888; }
       .ai-thread-answer { color: #C8DDD0; }
       .context-toggle { color: #777; }
+      .memory-note-item { background: #1E2820; border-color: #2E3D30; }
     }
-
+ 
     body.dark { background: #1A1A14; color: #E8E4DC; }
     body.dark .header { background: #242418; }
     body.dark .card, body.dark .chart-card, body.dark .bench-card,
@@ -77,9 +78,10 @@
     body.dark .ai-thread-question { color: #888; }
     body.dark .ai-thread-answer { color: #C8DDD0; }
     body.dark .context-toggle { color: #777; }
+    body.dark .memory-note-item { background: #1E2820; border-color: #2E3D30; }
     body.light { background: #F2EDE4; color: #2C2C2C; }
     body.light .header, body.light .card, body.light .chart-card { background: white; }
-
+ 
     .header { background: white; padding: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); position: sticky; top: 0; z-index: 50; }
     .header-inner { max-width: 900px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; }
     .logo { font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 600; }
@@ -87,9 +89,9 @@
     .header-actions { display: flex; gap: 6px; align-items: center; }
     .header-icon-btn { background: transparent; border: 1.5px solid #c8c0b0; border-radius: 20px; padding: 5px 10px; font-size: 0.85rem; cursor: pointer; color: inherit; }
     .header-nav-btn { padding: 5px 14px; border-radius: 20px; border: none; background: #6B6B3A; color: white; font-size: 0.78rem; cursor: pointer; }
-
+ 
     .main { max-width: 900px; margin: 0 auto; padding: 16px; }
-
+ 
     /* Settings */
     .settings-panel { background: white; border-radius: 16px; padding: 16px; margin-bottom: 16px; display: none; box-shadow: 0 1px 4px rgba(0,0,0,0.07); }
     .settings-panel.open { display: block; }
@@ -100,28 +102,40 @@
     .settings-tab-content.active { display: block; }
     .settings-section-title { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em; color: #999; margin-bottom: 8px; margin-top: 14px; }
     .settings-field { width: 100%; border: 1.5px solid #c8c0b0; border-radius: 8px; padding: 10px 12px; font-size: 0.82rem; font-family: inherit; background: white; color: #2C2C2C; line-height: 1.5; }
-    .settings-memory-display { font-size: 0.82rem; color: #666; line-height: 1.6; background: #f8f5f0; border-radius: 8px; padding: 12px; white-space: pre-wrap; min-height: 40px; }
+    .settings-memory-display { font-size: 0.82rem; color: #666; line-height: 1.6; border-radius: 8px; min-height: 40px; }
     .settings-save-btn { margin-top: 14px; padding: 10px 20px; background: #6B6B3A; color: white; border: none; border-radius: 20px; font-size: 0.82rem; cursor: pointer; font-family: inherit; }
     .about-section { font-size: 0.82rem; color: #666; line-height: 1.7; }
     .about-section h3 { font-family: 'Playfair Display', serif; font-size: 0.9rem; margin-bottom: 6px; margin-top: 14px; color: #2C2C2C; }
-
+ 
+    /* Memory note items */
+    .memory-note-item { background: #f8f5f0; border-radius: 8px; padding: 8px 10px; margin-bottom: 6px; border-left: 2px solid #6B6B3A; }
+    .memory-note-item.ai-note { border-left-color: #7B9E87; }
+    .memory-note-meta { font-size: 0.68rem; color: #bbb; margin-bottom: 3px; }
+    .memory-note-text { font-size: 0.82rem; color: #555; line-height: 1.5; }
+ 
     /* AI Summary */
     .ai-summary-card { background: white; border-radius: 16px; padding: 16px; margin-bottom: 14px; box-shadow: 0 1px 4px rgba(0,0,0,0.07); border-left: 3px solid #6B6B3A; }
-    .ai-summary-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+    .ai-summary-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 10px; gap: 8px; }
     .ai-summary-title { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.08em; color: #6B6B3A; }
+    .ai-summary-period { font-size: 0.68rem; color: #bbb; margin-top: 2px; }
     .ai-summary-meta { font-size: 0.68rem; color: #bbb; }
-    .ai-headline { font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 600; margin-bottom: 8px; color: #2C2C2C; line-height: 1.4; }
+    .ai-headline { font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 600; margin-bottom: 6px; color: #2C2C2C; line-height: 1.4; }
+    .ai-subtitle { font-size: 0.82rem; line-height: 1.6; color: #555; margin-bottom: 8px; }
     .ai-bullets { list-style: none; padding: 0; margin: 0 0 10px; }
     .ai-bullets li { font-size: 0.82rem; line-height: 1.6; color: #444; padding-left: 14px; position: relative; margin-bottom: 3px; }
     .ai-bullets li::before { content: "•"; position: absolute; left: 0; color: #6B6B3A; }
     .ai-loading-text { font-size: 0.82rem; color: #888; font-style: italic; }
-    .ai-refresh-btn { padding: 5px 12px; background: transparent; border: 1.5px solid #6B6B3A; border-radius: 20px; font-size: 0.72rem; color: #6B6B3A; cursor: pointer; font-family: inherit; }
+    .ai-refresh-btn { padding: 5px 12px; background: transparent; border: 1.5px solid #6B6B3A; border-radius: 20px; font-size: 0.72rem; color: #6B6B3A; cursor: pointer; font-family: inherit; white-space: nowrap; }
     .ai-refresh-btn:disabled { opacity: 0.5; cursor: default; }
-
+ 
+    /* AI focus area */
+    .ai-focus-area { display: none; margin-bottom: 10px; background: #f8f5f0; border-radius: 10px; padding: 10px; }
+    .ai-focus-area.open { display: block; }
+ 
     /* AI Thread */
     .ai-thread-card { background: white; border-radius: 16px; padding: 16px; margin-bottom: 14px; box-shadow: 0 1px 4px rgba(0,0,0,0.07); }
     .ai-thread-title { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.08em; color: #999; margin-bottom: 12px; }
-    .ai-thread { display: flex; flex-direction: column; gap: 10px; margin-bottom: 12px; }
+    .ai-thread { display: flex; flex-direction: column; gap: 10px; margin-bottom: 12px; max-height: 400px; overflow-y: auto; }
     .ai-thread-item { padding: 10px 12px; border-radius: 10px; font-size: 0.82rem; line-height: 1.6; }
     .ai-thread-question { background: #f0ebe3; color: #555; }
     .ai-thread-answer { background: #f0f5f1; color: #2C2C2C; border-left: 2px solid #7B9E87; }
@@ -129,21 +143,21 @@
     .ai-ask-row { display: flex; gap: 8px; }
     .analyse-input { flex: 1; min-width: 0; border: 1.5px solid #c8c0b0; border-radius: 8px; padding: 8px 10px; font-size: 0.78rem; font-family: inherit; background: white; color: #2C2C2C; }
     .analyse-btn { padding: 8px 16px; background: #6B6B3A; color: white; border: none; border-radius: 8px; font-size: 0.78rem; cursor: pointer; font-family: inherit; white-space: nowrap; }
-
+ 
     /* Context / memory toggle */
     .context-toggle { font-size: 0.72rem; color: #999; cursor: pointer; display: inline-flex; align-items: center; gap: 4px; margin-top: 10px; background: none; border: none; font-family: inherit; padding: 0; }
     .context-area { display: none; margin-top: 8px; }
     .context-area.open { display: block; }
     .memory-field { width: 100%; border: 1.5px solid #c8c0b0; border-radius: 8px; padding: 8px 10px; font-size: 0.78rem; font-family: inherit; background: white; color: #2C2C2C; resize: vertical; }
     .memory-hint { font-size: 0.68rem; color: #bbb; margin-top: 4px; }
-
+ 
     /* Right now zone */
     .right-now-zone { background: #EDE8DF; border-radius: 16px; padding: 16px; margin-bottom: 14px; }
     .zone-heading { font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 600; margin-bottom: 12px; }
-
+ 
     .section-divider { height: 1px; background: #D4CDB8; margin: 20px 0; }
     .section-heading { font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 600; margin-bottom: 12px; }
-
+ 
     .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; margin-bottom: 14px; }
     .card { background: white; border-radius: 12px; padding: 14px; box-shadow: 0 1px 4px rgba(0,0,0,0.07); }
     .card.clickable { cursor: pointer; }
@@ -157,39 +171,39 @@
     .card-tariff { font-size: 0.68rem; color: #bbb; margin-top: 3px; }
     .up { color: #c0392b; }
     .down { color: #27ae60; }
-
+ 
     .chart-card { background: white; border-radius: 12px; padding: 16px; box-shadow: 0 1px 4px rgba(0,0,0,0.07); margin-bottom: 14px; }
     .chart-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 8px; gap: 8px; }
     .chart-title { font-size: 0.82rem; font-weight: 600; }
     .chart-hint { font-size: 0.7rem; color: #bbb; font-weight: 400; display: block; margin-top: 2px; }
     .legend { display: flex; gap: 10px; font-size: 0.7rem; color: #888; margin-bottom: 8px; flex-wrap: wrap; align-items: center; }
     .legend-dot { display: inline-block; width: 8px; height: 8px; border-radius: 2px; margin-right: 3px; }
-
+ 
     .icon-btn-group { display: flex; gap: 4px; flex-wrap: wrap; }
     .icon-btn { width: 32px; height: 32px; border-radius: 8px; border: 1.5px solid #c8c0b0; background: transparent; cursor: pointer; color: #888; font-size: 0.9rem; display: flex; align-items: center; justify-content: center; transition: all 0.15s; position: relative; }
     .icon-btn.on { background: #6B6B3A; border-color: #6B6B3A; color: white; }
     .icon-btn[title]:hover::after { content: attr(title); position: absolute; bottom: -24px; left: 50%; transform: translateX(-50%); background: #2C2C2C; color: white; padding: 2px 6px; border-radius: 4px; font-size: 0.65rem; white-space: nowrap; z-index: 10; pointer-events: none; }
-
+ 
     .hh-unit-toggle { display: flex; border: 1.5px solid #c8c0b0; border-radius: 20px; overflow: hidden; }
     .hh-unit-btn { padding: 3px 10px; font-size: 0.72rem; border: none; background: transparent; cursor: pointer; color: #555; }
     .hh-unit-btn.active { background: #6B6B3A; color: white; }
-
+ 
     .date-nav { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
     .date-nav-btn { width: 28px; height: 28px; border-radius: 50%; border: 1.5px solid #c8c0b0; background: transparent; cursor: pointer; font-size: 0.9rem; color: inherit; display: flex; align-items: center; justify-content: center; }
     .date-nav-btn:disabled { opacity: 0.3; cursor: default; }
     .date-nav-input { border: 1.5px solid #c8c0b0; border-radius: 8px; padding: 4px 8px; font-size: 0.78rem; color: inherit; background: white; font-family: inherit; }
     .date-nav-label { font-size: 0.78rem; color: #888; flex: 1; }
-
+ 
     .tabs { display: flex; gap: 6px; margin-bottom: 12px; flex-wrap: wrap; }
     .tab { padding: 6px 14px; border-radius: 20px; border: 1.5px solid #c8c0b0; background: transparent; font-size: 0.78rem; cursor: pointer; color: #555; }
     .tab.active { background: #6B6B3A; border-color: #6B6B3A; color: white; }
-
+ 
     .controls { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; flex-wrap: wrap; }
     .toggle-group { display: flex; border: 1.5px solid #c8c0b0; border-radius: 20px; overflow: hidden; }
     .toggle-btn { padding: 5px 14px; font-size: 0.78rem; border: none; background: transparent; cursor: pointer; color: #555; }
     .toggle-btn.active { background: #6B6B3A; color: white; }
     .rate-chip { background: #6B6B3A; color: white; border-radius: 20px; padding: 5px 12px; font-size: 0.75rem; margin-left: auto; }
-
+ 
     .bench-card { background: white; border-radius: 12px; padding: 14px 16px; box-shadow: 0 1px 4px rgba(0,0,0,0.07); margin-bottom: 16px; }
     .bench-title { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.08em; color: #999; margin-bottom: 10px; }
     .bench-row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
@@ -198,22 +212,22 @@
     .bench-bar.over { background: #C17D5A; }
     .bench-label { width: 60px; color: #555; font-size: 0.75rem; }
     .bench-val { width: 70px; text-align: right; color: #333; font-weight: 500; font-size: 0.75rem; }
-
+ 
     .about-card { background: white; border-radius: 12px; padding: 16px; box-shadow: 0 1px 4px rgba(0,0,0,0.07); margin-bottom: 14px; }
     .about-title { font-family: 'Playfair Display', serif; font-size: 0.95rem; font-weight: 600; margin-bottom: 8px; }
     .about-text { font-size: 0.82rem; color: #666; line-height: 1.6; }
-
+ 
     .error-card { background: white; border-radius: 12px; padding: 20px; box-shadow: 0 1px 4px rgba(0,0,0,0.07); text-align: center; }
     .error-title { font-family: 'Playfair Display', serif; font-size: 1rem; margin-bottom: 8px; }
     .error-sub { font-size: 0.82rem; color: #888; margin-bottom: 16px; }
     .retry-btn { padding: 8px 20px; background: #6B6B3A; color: white; border: none; border-radius: 20px; font-size: 0.82rem; cursor: pointer; }
-
+ 
     .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: white; border-top: 1px solid #e8e0d4; display: flex; z-index: 50; padding-bottom: env(safe-area-inset-bottom); }
     .bottom-nav-btn { flex: 1; padding: 10px 0 8px; border: none; background: transparent; font-size: 0.65rem; color: #aaa; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 3px; }
     .bottom-nav-btn.active { color: #6B6B3A; }
     .bottom-nav-icon { font-size: 1.1rem; }
     @media (min-width: 600px) { .bottom-nav { display: none; } }
-
+ 
     .backdrop { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 100; }
     .backdrop.open { display: block; }
     .bottom-sheet { position: fixed; bottom: -100%; left: 0; right: 0; background: white; border-radius: 20px 20px 0 0; padding: 20px 16px 40px; z-index: 101; transition: bottom 0.3s ease; max-height: 85vh; overflow-y: auto; }
@@ -227,12 +241,12 @@
     .tag-btn.selected { background: #6B6B3A; border-color: #6B6B3A; color: white; }
     .tag-btn.appliance.selected { background: #5C7A6B; border-color: #5C7A6B; color: white; }
     .sheet-save { width: 100%; margin-top: 20px; padding: 13px; background: #6B6B3A; color: white; border: none; border-radius: 12px; font-size: 0.9rem; cursor: pointer; font-family: inherit; }
-
+ 
     .loading-text { color: #888; font-style: italic; padding: 40px 0; text-align: center; }
   </style>
 </head>
 <body>
-
+ 
   <div class="header">
     <div class="header-inner">
       <div class="logo">gertie<span>HQ</span></div>
@@ -243,9 +257,9 @@
       </div>
     </div>
   </div>
-
+ 
   <div class="main">
-
+ 
     <!-- Settings -->
     <div class="settings-panel" id="settingsPanel">
       <div class="settings-tabs">
@@ -254,10 +268,13 @@
       </div>
       <div class="settings-tab-content active" id="tab-memory">
         <div class="settings-section-title">What the AI currently knows</div>
-        <div class="settings-memory-display" id="memoryDisplay">Loading...</div>
-        <div class="settings-section-title" style="margin-top:16px">Update memory</div>
-        <textarea class="settings-field" id="memoryInput" rows="4" placeholder="Tell the AI anything about your household. e.g. I WFH on Mondays and Fridays. Partner works office hours. Dishwasher runs overnight. No EV."></textarea>
-        <button class="settings-save-btn" id="saveSettings">Save memory</button>
+        <div class="settings-memory-display" id="memoryDisplay"><span style="color:#bbb;font-style:italic">Loading...</span></div>
+        <div class="settings-section-title" style="margin-top:16px">Add a note</div>
+        <textarea class="settings-field" id="memoryInput" rows="3" placeholder="Add anything about your household — schedule, habits, appliances, events..."></textarea>
+        <div style="display:flex;gap:8px;margin-top:14px;align-items:center">
+          <button class="settings-save-btn" id="saveSettings">Save note</button>
+          <button class="settings-save-btn" id="regenProfile" style="background:#5C7A6B">Regenerate profile</button>
+        </div>
       </div>
       <div class="settings-tab-content" id="tab-about">
         <div class="about-section">
@@ -274,19 +291,30 @@
         </div>
       </div>
     </div>
-
+ 
     <!-- AI Summary -->
     <div class="ai-summary-card">
       <div class="ai-summary-header">
-        <div class="ai-summary-title">AI summary</div>
-        <div style="display:flex;align-items:center;gap:8px">
+        <div>
+          <div class="ai-summary-title">AI summary</div>
+          <div class="ai-summary-period" id="aiSummaryPeriod"></div>
+        </div>
+        <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;justify-content:flex-end">
           <div class="ai-summary-meta" id="aiSummaryMeta"></div>
+          <button class="ai-refresh-btn" id="aiEditFocusBtn">✎ Focus</button>
           <button class="ai-refresh-btn" id="aiRefreshBtn">↺ Refresh</button>
+        </div>
+      </div>
+      <div class="ai-focus-area" id="aiFocusArea">
+        <input type="text" class="analyse-input" id="aiFocusInput" placeholder="What should this summary focus on?" style="margin-bottom:6px;width:100%">
+        <div style="display:flex;gap:6px">
+          <button class="analyse-btn" id="aiFocusSave" style="font-size:0.72rem;padding:5px 12px">Save and refresh</button>
+          <button class="ai-refresh-btn" id="aiFocusCancel">Cancel</button>
         </div>
       </div>
       <div id="aiSummaryContent"><div class="ai-loading-text">Loading analysis...</div></div>
     </div>
-
+ 
     <!-- AI Thread -->
     <div class="ai-thread-card">
       <div class="ai-thread-title">Ask a question</div>
@@ -297,14 +325,14 @@
       </div>
       <button class="context-toggle" id="contextToggle">+ Add context</button>
       <div class="context-area" id="contextArea">
-     <textarea class="memory-field" id="memoryInline" rows="2" placeholder="Add anything that might help — e.g. we had guests this weekend, tumble dryer ran twice today..."></textarea>
+        <textarea class="memory-field" id="memoryInline" rows="2" placeholder="Add anything that might help — e.g. we had guests this weekend, tumble dryer ran twice today..."></textarea>
         <div style="display:flex;align-items:center;justify-content:space-between;margin-top:6px">
-          <div class="memory-hint">Saved and used in every analysis.</div>
+          <div class="memory-hint">Saved as a memory note and used in every analysis.</div>
           <button class="analyse-btn" id="saveMemoryInline" style="padding:5px 12px;font-size:0.72rem">Save</button>
         </div>
       </div>
     </div>
-
+ 
     <!-- Live view -->
     <div class="right-now-zone">
       <div class="zone-heading">Live view</div>
@@ -343,7 +371,7 @@
         <canvas id="halfHourlyChart" height="140"></canvas>
       </div>
     </div>
-
+ 
     <!-- Weekly chart -->
     <div class="chart-card">
       <div class="chart-header">
@@ -361,17 +389,17 @@
       </div>
       <canvas id="weeklyChart" height="120"></canvas>
     </div>
-
+ 
     <div class="section-divider"></div>
     <div class="section-heading">Usage history</div>
-
+ 
     <div class="tabs">
       <button class="tab active" data-period="week">This week</button>
       <button class="tab" data-period="month">Last 30 days</button>
       <button class="tab" data-period="3months">Last 90 days</button>
       <button class="tab" data-period="year">This year</button>
     </div>
-
+ 
     <div class="controls">
       <div class="toggle-group">
         <button class="toggle-btn active" data-unit="gbp">£</button>
@@ -379,21 +407,21 @@
       </div>
       <div id="rateChip" class="rate-chip"></div>
     </div>
-
+ 
     <div id="content" class="loading-text">Loading...</div>
-
+ 
     <div class="section-divider"></div>
     <div class="about-card">
       <div class="about-title">About gertieHQ</div>
       <div class="about-text">gertieHQ is a home management dashboard tracking energy use, running costs, and everything in between. Live electricity data from Octopus Energy. Gas, water, and home costs coming soon.</div>
     </div>
-
+ 
   </div>
-
+ 
   <div class="bottom-nav">
     <button class="bottom-nav-btn active"><span class="bottom-nav-icon">⚡</span>Energy</button>
   </div>
-
+ 
   <div class="backdrop" id="backdrop"></div>
   <div class="bottom-sheet" id="bottomSheet">
     <div class="sheet-handle"></div>
@@ -411,7 +439,7 @@
     <div class="tag-grid" id="outdoorTags"></div>
     <button class="sheet-save" id="sheetSave">Save tags</button>
   </div>
-
+ 
   <script>
     const TAG_GROUPS = {
       lifestyle: ["WFH", "Office", "Both away", "Guests staying", "Cold snap", "Hot weather"],
@@ -420,10 +448,9 @@
       home: ["Games console", "Iron", "Vacuum", "Hair dryer", "Electric blanket", "Dehumidifier"],
       outdoor: ["Lawn mower", "Hedge trimmer", "Pressure washer", "Outdoor lighting", "Power tools", "Other"],
     };
-
+ 
     let currentData = null;
     let allTags = {};
-    let userMemory = "";
     let activeUnit = "gbp";
     let showComparison = true;
     let activePeriod = "week";
@@ -443,13 +470,19 @@
     let conversationHistory = [];
     let globalMaxKwh = 0;
     let globalMaxGbp = 0;
-
+ 
+    // Memory / settings state
+    let userSettings = {};
+    let userMemoryNotes = [];
+    let householdProfile = "";
+    let summaryFocus = "";
+ 
     const todayStr = new Date().toLocaleDateString("en-CA");
     let halfHourlyDate = todayStr;
-
+ 
     document.getElementById("dateInput").value = halfHourlyDate;
     document.getElementById("dateInput").max = todayStr;
-
+ 
     // Dark mode
     const darkToggle = document.getElementById("darkToggle");
     const prefersDark = window.matchMedia("(prefers-color-scheme: dark)");
@@ -463,8 +496,8 @@
     applyDark(savedDark !== null ? savedDark === "1" : prefersDark.matches);
     prefersDark.addEventListener("change", e => { if (!localStorage.getItem("darkMode")) applyDark(e.matches); });
     darkToggle.addEventListener("click", () => applyDark(!document.body.classList.contains("dark")));
-
-    // Settings
+ 
+    // Settings panel
     document.getElementById("settingsToggle").addEventListener("click", () => {
       document.getElementById("settingsPanel").classList.toggle("open");
     });
@@ -476,150 +509,168 @@
         document.getElementById(`tab-${btn.dataset.tab}`).classList.add("active");
       });
     });
-
-function renderMemoryDisplay(text) {
+ 
+    // Memory display — show notes as a structured list
+    function renderMemoryDisplay() {
       const el = document.getElementById("memoryDisplay");
-      if (!text) {
-        el.innerHTML = '<span style="color:#bbb;font-style:italic">No context saved yet. Add some below or near the AI analysis.</span>';
+      if (!userMemoryNotes.length) {
+        el.innerHTML = '<span style="color:#bbb;font-style:italic">No notes saved yet. Add context below or near the AI analysis.</span>';
         return;
       }
-
-      // Parse into rough categories by scanning for keywords
-      const lines = text.split(/[.\n]+/).map(s => s.trim()).filter(s => s.length > 3);
-      const categories = {
-        "Schedule and WFH": [],
-        "Household": [],
-        "Appliances and habits": [],
-        "Other": [],
-      };
-
-      lines.forEach(line => {
-        const l = line.toLowerCase();
-        if (l.includes("wfh") || l.includes("office") || l.includes("work") || l.includes("monday") || l.includes("friday") || l.includes("tuesday") || l.includes("wednesday") || l.includes("thursday") || l.includes("weekend")) {
-          categories["Schedule and WFH"].push(line);
-        } else if (l.includes("partner") || l.includes("household") || l.includes("people") || l.includes("person") || l.includes("cook") || l.includes("dinner") || l.includes("home at")) {
-          categories["Household"].push(line);
-        } else if (l.includes("dishwasher") || l.includes("washing") || l.includes("dryer") || l.includes("heater") || l.includes("radiator") || l.includes("overnight") || l.includes("appliance") || l.includes("boiler") || l.includes("ev") || l.includes("car")) {
-          categories["Appliances and habits"].push(line);
-        } else {
-          categories["Other"].push(line);
-        }
-      });
-
-      let html = "";
-      Object.entries(categories).forEach(([cat, items]) => {
-        if (items.length === 0) return;
-        html += `<div style="margin-bottom:10px">
-          <div style="font-size:0.68rem;text-transform:uppercase;letter-spacing:0.08em;color:#6B6B3A;margin-bottom:4px">${cat}</div>
-          ${items.map(i => `<div style="font-size:0.82rem;color:#555;line-height:1.6;padding-left:8px;border-left:2px solid #c8ddd0;margin-bottom:3px">${i}</div>`).join("")}
-        </div>`;
-      });
-
-      el.innerHTML = html || `<div style="font-size:0.82rem;color:#555">${text}</div>`;
+      el.innerHTML = userMemoryNotes.slice().reverse().map(n => `
+        <div class="memory-note-item ${n.type === 'ai' ? 'ai-note' : ''}">
+          <div class="memory-note-meta">${n.date} — ${n.type === 'ai' ? 'AI insight' : 'Manual note'}</div>
+          <div class="memory-note-text">${n.text}</div>
+        </div>
+      `).join("");
     }
-
+ 
     async function loadMemory() {
       try {
         const res = await fetch("/api/energy-settings");
-        const s = await res.json();
-        userMemory = s.memory || "";
-        document.getElementById("memoryInput").value = userMemory;
-        document.getElementById("memoryInline").value = userMemory;
-        renderMemoryDisplay(userMemory);
+        userSettings = await res.json();
+        userMemoryNotes = userSettings.memoryNotes || [];
+        householdProfile = userSettings.householdProfile || "";
+        summaryFocus = userSettings.summaryPreference || "";
+        renderMemoryDisplay();
       } catch {}
     }
-
-
-    async function saveMemory(text) {
-      userMemory = text;
+ 
+    async function saveMemoryNote(text, type = "manual") {
+      if (!text.trim()) return;
+      const res = await fetch("/api/energy-settings", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ appendMemory: text.trim(), memoryType: type }),
+      });
+      const data = await res.json();
+      userMemoryNotes = data.settings?.memoryNotes || userMemoryNotes;
+      renderMemoryDisplay();
+    }
+ 
+    async function saveSummaryFocus(text) {
+      summaryFocus = text;
       await fetch("/api/energy-settings", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ memory: text }),
+        body: JSON.stringify({ summaryPreference: text }),
       });
-      document.getElementById("memoryInput").value = text;
-      document.getElementById("memoryInline").value = text;
-renderMemoryDisplay(text);    }
-
-    document.getElementById("saveSettings").addEventListener("click", async () => {
-      await saveMemory(document.getElementById("memoryInput").value);
-      document.getElementById("saveSettings").textContent = "Saved";
-      setTimeout(() => document.getElementById("saveSettings").textContent = "Save memory", 2000);
+    }
+ 
+    document.getElementById("saveSettings").addEventListener("click", async function() {
+      const text = document.getElementById("memoryInput").value.trim();
+      if (!text) return;
+      await saveMemoryNote(text, "manual");
+      document.getElementById("memoryInput").value = "";
+      this.textContent = "Saved";
+      setTimeout(() => this.textContent = "Save note", 2000);
     });
-
-document.getElementById("memoryInline").addEventListener("blur", async function() {
-      if (this.value !== userMemory) await saveMemory(this.value);
-    });
-
+ 
     document.getElementById("saveMemoryInline").addEventListener("click", async function() {
-      const text = document.getElementById("memoryInline").value;
-      await saveMemory(text);
+      const text = document.getElementById("memoryInline").value.trim();
+      if (!text) return;
+      await saveMemoryNote(text, "manual");
+      document.getElementById("memoryInline").value = "";
       this.textContent = "Saved";
       setTimeout(() => this.textContent = "Save", 2000);
     });
-
+ 
+    document.getElementById("regenProfile").addEventListener("click", async function() {
+      this.textContent = "Regenerating...";
+      this.disabled = true;
+      try {
+        await fetch("/api/energy-profile", { method: "POST" });
+        const s = await (await fetch("/api/energy-settings")).json();
+        householdProfile = s.householdProfile || "";
+        this.textContent = "Done";
+      } catch {
+        this.textContent = "Failed";
+      }
+      setTimeout(() => { this.textContent = "Regenerate profile"; this.disabled = false; }, 2000);
+    });
+ 
     // Context toggle
     document.getElementById("contextToggle").addEventListener("click", function() {
       const area = document.getElementById("contextArea");
       area.classList.toggle("open");
       this.textContent = area.classList.contains("open") ? "− Hide context" : "+ Add context";
     });
-
-    // Parse AI response into headline + bullets
+ 
+    // AI Summary focus edit
+    document.getElementById("aiEditFocusBtn").addEventListener("click", () => {
+      const area = document.getElementById("aiFocusArea");
+      area.classList.toggle("open");
+      document.getElementById("aiFocusInput").value = summaryFocus;
+    });
+    document.getElementById("aiFocusSave").addEventListener("click", async () => {
+      const text = document.getElementById("aiFocusInput").value.trim();
+      if (text) await saveSummaryFocus(text);
+      document.getElementById("aiFocusArea").classList.remove("open");
+      runSummary();
+    });
+    document.getElementById("aiFocusCancel").addEventListener("click", () => {
+      document.getElementById("aiFocusArea").classList.remove("open");
+    });
+ 
+    // Parse AI response
     function parseAIResponse(text) {
       const headlineMatch = text.match(/HEADLINE:\s*(.+)/);
+      const subtitleMatch = text.match(/SUBTITLE:\s*([\s\S]+?)(?=BULLETS:|$)/);
       const bulletsMatch = text.match(/BULLETS:\s*([\s\S]+)/);
-
-      if (headlineMatch && bulletsMatch) {
+ 
+      if (headlineMatch) {
         const headline = headlineMatch[1].trim();
-        const bullets = bulletsMatch[1].trim()
+        const subtitle = subtitleMatch ? subtitleMatch[1].trim() : null;
+        const bullets = bulletsMatch ? bulletsMatch[1].trim()
           .split("\n")
-          .map(b => b.replace(/^[•\-\*]\s*/, "").trim())
-          .filter(b => b.length > 0);
-        return { headline, bullets };
+          .map(b => b.replace(/^[•\-\*\d\.]\s*/, "").trim())
+          .filter(b => b.length > 0) : [];
+        return { headline, subtitle, bullets };
       }
-      // Fallback: treat as plain text
-      return { headline: null, bullets: null, plain: text };
+      return { headline: null, subtitle: null, bullets: null, plain: text };
     }
-
+ 
     function renderAISummary(text, cost) {
       const parsed = parseAIResponse(text);
       const content = document.getElementById("aiSummaryContent");
       const meta = document.getElementById("aiSummaryMeta");
       if (cost) meta.textContent = cost;
-
+ 
       if (parsed.headline) {
         content.innerHTML = `
           <div class="ai-headline">${parsed.headline}</div>
-          <ul class="ai-bullets">
-            ${parsed.bullets.map(b => `<li>${b}</li>`).join("")}
-          </ul>
+          ${parsed.subtitle ? `<div class="ai-subtitle">${parsed.subtitle}</div>` : ""}
+          ${parsed.bullets.length ? `<ul class="ai-bullets">${parsed.bullets.map(b => `<li>${b}</li>`).join("")}</ul>` : ""}
         `;
       } else {
         content.innerHTML = `<div style="font-size:0.84rem;line-height:1.6">${parsed.plain}</div>`;
       }
     }
-
-    // AI Summary
-    async function runSummary() {
-      if (!lastHalfHourlyData) return;
-
+ 
+    function getSlotsAndDate() {
+      if (!lastHalfHourlyData) return { slots: null, analysisDate: null };
       const slots = lastHalfHourlyData.target.slots.length >= 20
         ? lastHalfHourlyData.target.slots
         : lastHalfHourlyData.prev.slots;
-
       const analysisDate = lastHalfHourlyData.target.slots.length >= 20
         ? lastHalfHourlyData.date
         : new Date(Date.now() - 86400000).toLocaleDateString("en-CA");
-
+      return { slots, analysisDate };
+    }
+ 
+    // AI Summary — runs once on load, manual refresh only
+    async function runSummary() {
+      if (!lastHalfHourlyData) return;
+      const { slots, analysisDate } = getSlotsAndDate();
       if (!slots || slots.length === 0) {
         document.getElementById("aiSummaryContent").innerHTML = '<div class="ai-loading-text">Not enough data to analyse yet.</div>';
         return;
       }
-
+ 
       document.getElementById("aiSummaryContent").innerHTML = '<div class="ai-loading-text">Analysing...</div>';
       document.getElementById("aiRefreshBtn").disabled = true;
-
+      document.getElementById("aiSummaryPeriod").textContent = `${fmtFull(analysisDate)} · last 14 days`;
+ 
       try {
         const res = await fetch("/api/energy-ai", {
           method: "POST",
@@ -630,7 +681,9 @@ document.getElementById("memoryInline").addEventListener("blur", async function(
             avgProfile: lastHalfHourlyData.avgProfile,
             dayOfWeekProfiles: lastHalfHourlyData.dayOfWeekProfiles,
             tags: allTags[analysisDate] || [],
-            memory: userMemory,
+            memoryNotes: userMemoryNotes,
+            householdProfile,
+            summaryFocus,
             question: null,
             elecRate: lastHalfHourlyData.elecRate,
             conversationHistory: [],
@@ -644,42 +697,31 @@ document.getElementById("memoryInline").addEventListener("blur", async function(
         document.getElementById("aiRefreshBtn").disabled = false;
       }
     }
-
+ 
     document.getElementById("aiRefreshBtn").addEventListener("click", runSummary);
-
-    // AI Thread (questions)
+ 
+    // AI Thread
     async function askQuestion() {
       const input = document.getElementById("analyseInput");
       const question = input.value.trim();
       if (!question || !lastHalfHourlyData) return;
-
-      const slots = lastHalfHourlyData.target.slots.length >= 20
-        ? lastHalfHourlyData.target.slots
-        : lastHalfHourlyData.prev.slots;
-
-      const analysisDate = lastHalfHourlyData.target.slots.length >= 20
-        ? lastHalfHourlyData.date
-        : new Date(Date.now() - 86400000).toLocaleDateString("en-CA");
-
+ 
+      const { slots, analysisDate } = getSlotsAndDate();
       const thread = document.getElementById("aiThread");
-
-      // Add question to thread
+ 
       const qEl = document.createElement("div");
       qEl.className = "ai-thread-item ai-thread-question";
       qEl.textContent = question;
       thread.appendChild(qEl);
-
-      // Add loading answer
+ 
       const aEl = document.createElement("div");
       aEl.className = "ai-thread-item ai-thread-answer";
       aEl.textContent = "Thinking...";
       thread.appendChild(aEl);
-
+ 
       input.value = "";
-
-      // Add to conversation history
       conversationHistory.push({ role: "user", content: question });
-
+ 
       try {
         const res = await fetch("/api/energy-ai", {
           method: "POST",
@@ -690,36 +732,86 @@ document.getElementById("memoryInline").addEventListener("blur", async function(
             avgProfile: lastHalfHourlyData.avgProfile,
             dayOfWeekProfiles: lastHalfHourlyData.dayOfWeekProfiles,
             tags: allTags[analysisDate] || [],
-            memory: userMemory,
+            memoryNotes: userMemoryNotes,
+            householdProfile,
+            summaryFocus,
             question,
             elecRate: lastHalfHourlyData.elecRate,
-            conversationHistory: conversationHistory.slice(-6), // last 3 exchanges
+            conversationHistory: conversationHistory.slice(-6),
           }),
         });
         const data = await res.json();
         const answer = data.analysis || "No answer returned.";
         aEl.textContent = answer;
-
+ 
         if (data.cost) {
           const costEl = document.createElement("div");
           costEl.className = "ai-thread-cost";
           costEl.textContent = data.cost;
           aEl.appendChild(costEl);
         }
-
+ 
         conversationHistory.push({ role: "assistant", content: answer });
+ 
+        // Save insights button — add once
+        if (!document.getElementById("saveInsightsBtn")) {
+          const saveBtn = document.createElement("button");
+          saveBtn.id = "saveInsightsBtn";
+          saveBtn.className = "ai-refresh-btn";
+          saveBtn.style.marginTop = "10px";
+          saveBtn.textContent = "💾 Save insights to memory";
+          saveBtn.addEventListener("click", async () => {
+            saveBtn.disabled = true;
+            saveBtn.textContent = "Extracting insights...";
+            try {
+              const extractRes = await fetch("/api/energy-ai", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                  date: analysisDate,
+                  slots,
+                  avgProfile: lastHalfHourlyData.avgProfile,
+                  dayOfWeekProfiles: lastHalfHourlyData.dayOfWeekProfiles,
+                  tags: allTags[analysisDate] || [],
+                  memoryNotes: userMemoryNotes,
+                  householdProfile,
+                  summaryFocus,
+                  question: "Extract 2-3 specific factual insights from this conversation that would be useful to remember for future analysis. Format each as a single concise sentence. Focus on patterns, usage anomalies, or appliance behaviour that was identified. Return only the insights, one per line, no preamble.",
+                  elecRate: lastHalfHourlyData.elecRate,
+                  conversationHistory: conversationHistory.slice(-8),
+                }),
+              });
+              const extractData = await extractRes.json();
+              const lines = (extractData.analysis || "").split("\n")
+                .map(l => l.replace(/^[\d\.\-\•\*]\s*/, "").trim())
+                .filter(l => l.length > 10);
+              for (const line of lines) {
+                await saveMemoryNote(line, "ai");
+              }
+              // Regenerate profile after saving insights
+              await fetch("/api/energy-profile", { method: "POST" });
+              const s = await (await fetch("/api/energy-settings")).json();
+              householdProfile = s.householdProfile || "";
+              saveBtn.textContent = `✓ Saved ${lines.length} insight${lines.length !== 1 ? "s" : ""}`;
+            } catch {
+              saveBtn.textContent = "Failed — try again";
+              saveBtn.disabled = false;
+            }
+          });
+          thread.appendChild(saveBtn);
+        }
       } catch {
         aEl.textContent = "Failed to get answer. Try again.";
       }
-
+ 
       thread.scrollTop = thread.scrollHeight;
     }
-
+ 
     document.getElementById("analyseBtn").addEventListener("click", askQuestion);
     document.getElementById("analyseInput").addEventListener("keydown", e => {
       if (e.key === "Enter") askQuestion();
     });
-
+ 
     // HH unit toggle
     document.querySelectorAll(".hh-unit-btn").forEach(btn => {
       btn.addEventListener("click", () => {
@@ -729,7 +821,7 @@ document.getElementById("memoryInline").addEventListener("blur", async function(
         if (lastHalfHourlyData) renderHalfHourly(lastHalfHourlyData);
       });
     });
-
+ 
     // HH toggles
     document.getElementById("hh-prev").addEventListener("click", function() {
       hhShowPrev = !hhShowPrev;
@@ -746,14 +838,14 @@ document.getElementById("memoryInline").addEventListener("blur", async function(
       this.classList.toggle("on", hhShowCumulative);
       if (lastHalfHourlyData) renderHalfHourly(lastHalfHourlyData);
     });
-
+ 
     // Weekly toggle
     document.getElementById("weekly-lastweek").addEventListener("click", function() {
       weeklyShowLastWeek = !weeklyShowLastWeek;
       this.classList.toggle("on", weeklyShowLastWeek);
       renderWeeklyChart();
     });
-
+ 
     // Date nav
     document.getElementById("prevDayBtn").addEventListener("click", () => {
       const d = new Date(halfHourlyDate + "T12:00:00");
@@ -781,7 +873,7 @@ document.getElementById("memoryInline").addEventListener("blur", async function(
       document.getElementById("nextDayBtn").disabled = halfHourlyDate >= todayStr;
     }
     updateNextBtn();
-
+ 
     // Helpers
     function fmtFull(d) { return new Date(d + "T12:00:00").toLocaleDateString("en-GB", { weekday: "long", day: "numeric", month: "long" }); }
     function fmtShort(d) { return new Date(d + "T12:00:00").toLocaleDateString("en-GB", { weekday: "short", day: "numeric", month: "short" }); }
@@ -792,7 +884,7 @@ document.getElementById("memoryInline").addEventListener("blur", async function(
     }
     function periodLabel(p) { return { week: "prev week", month: "prev 30 days", "3months": "prev 90 days", year: "prev year" }[p]; }
     function currentPeriodLabel(p) { return { week: "This week", month: "Last 30 days", "3months": "Last 90 days", year: "This year" }[p]; }
-
+ 
     // Sheet
     function openSheet(date, kwhValue, gbpValue) {
       selectedDate = date;
@@ -837,34 +929,31 @@ document.getElementById("memoryInline").addEventListener("blur", async function(
       closeSheet();
       if (currentData) { renderCharts(); renderWeeklyChart(); }
     });
-
+ 
     // Half-hourly
     async function loadHalfHourly() {
       const isToday = halfHourlyDate === todayStr;
       document.getElementById("dateNavLabel").textContent = isToday ? "Today" : fmtShort(halfHourlyDate);
       document.getElementById("nextDayBtn").disabled = halfHourlyDate >= todayStr;
-
+ 
       try {
         const res = await fetch(`/api/energy-today?date=${halfHourlyDate}`);
         const data = await res.json();
         if (data.error) throw new Error(data.error);
         lastHalfHourlyData = data;
         if (data.elecRate) currentElecRate = data.elecRate;
-
-        // If today has <20 slots, show yesterday's data with a note
-        const useDate = data.target.slots.length >= 20 ? halfHourlyDate : null;
-   const isManualNavigation = halfHourlyDate !== todayStr;
+ 
+        const isManualNavigation = halfHourlyDate !== todayStr;
         let displayData;
-
+ 
         if (data.target.slots.length >= 20) {
-          // Enough data — show normally
           displayData = data;
-  } else if (!isManualNavigation) {
-          // Auto-load with incomplete data — step back until we find a day with 20+ slots
+        } else if (!isManualNavigation) {
+          // Auto-load — step back until we find a day with 20+ slots (up to 7 days)
           let attempts = 0;
           let foundData = null;
           let checkDate = new Date(Date.now() - 86400000);
-
+ 
           while (attempts < 7) {
             const checkStr = checkDate.toLocaleDateString("en-CA");
             const res2 = await fetch(`/api/energy-today?date=${checkStr}`);
@@ -881,39 +970,37 @@ document.getElementById("memoryInline").addEventListener("blur", async function(
             checkDate.setDate(checkDate.getDate() - 1);
             attempts++;
           }
-
           displayData = foundData || { ...data, target: data.prev, isHistorical: true };
-        }
-        else {
-          // Manual navigation to an incomplete day — show what we have with a note
+        } else {
+          // Manual navigation to incomplete day — show what exists with note
           displayData = { ...data, isHistorical: true };
           document.getElementById("dateNavLabel").textContent = fmtShort(halfHourlyDate) + " (incomplete)";
         }
-
+ 
         renderHalfHourly(displayData);
         if (isToday) renderTodayCards(data);
       } catch (err) {
         console.error("Half-hourly error:", err);
       }
     }
-
+ 
     function renderTodayCards(data) {
       const rate = data.elecRate || currentElecRate;
       if (data.elecRate) currentElecRate = data.elecRate;
       const { target, prev, avgDayTotal } = data;
       const hasToday = target.slots.length >= 20;
       const ydayStr = new Date(Date.now() - 86400000).toLocaleDateString("en-CA");
-
+ 
       const mostRecentGbp = hasToday ? target.totalGbp : prev.totalGbp;
       const mostRecentKwh = hasToday ? target.totalKwh : prev.totalKwh;
       const mostRecentLabel = hasToday ? `as of ${target.latestTime}` : `as of yesterday`;
       const mostRecentDate = hasToday ? todayStr : ydayStr;
-
+ 
       const todayD = hasToday ? delta(target.totalKwh, target.avgToNow) : null;
       const ydayD = delta(prev.totalKwh, prev.avgDayTotal);
       const avgGbp = data.avgGbp;
       const tagDot = date => allTags[date] && allTags[date].length ? ' <span style="font-size:0.6rem;color:#6B6B3A">●</span>' : "";
-
+ 
       document.getElementById("todayCards").innerHTML = `
         <div class="card clickable" onclick="openSheet('${mostRecentDate}', ${mostRecentKwh}, ${mostRecentGbp})">
           <div class="card-label">Most recent${tagDot(todayStr)}</div>
@@ -939,47 +1026,46 @@ document.getElementById("memoryInline").addEventListener("blur", async function(
         </div>
       `;
     }
-
+ 
     function renderHalfHourly(data) {
       const { target, prev, avgProfile } = data;
       const isHistorical = data.isHistorical || !data.isToday;
       const showingYesterday = data._showingYesterday;
       const rate = data.elecRate || currentElecRate;
-
+ 
       const toVal = kwh => hhUnit === "gbp" && rate ? Math.round(kwh * rate / 100 * 1000) / 1000 : kwh;
       const yLabel = hhUnit === "gbp" ? "£" : "kWh";
-
+ 
       const validTimes = Array.from(new Set([
         ...Object.keys(avgProfile),
         ...prev.slots.map(s => s.time),
         ...target.slots.map(s => s.time),
       ])).sort().filter((t, i) => !(t === "00:00" && i > 0));
-
+ 
       const targetMap = Object.fromEntries(target.slots.map(s => [s.time, s.kwh]));
       const prevMap = Object.fromEntries(prev.slots.filter((s, i) => i === 0 || s.time !== "00:00").map(s => [s.time, s.kwh]));
-
+ 
       const latestSlotTime = target.slots.length ? target.slots[target.slots.length - 1].time : null;
       const latestIdx = latestSlotTime ? validTimes.indexOf(latestSlotTime) : -1;
-
-      // For days with data, show full day. For today (in progress), cut off at latest slot.
+ 
       const targetValues = validTimes.map((t, i) => {
         const v = targetMap[t];
         if (v === undefined) return null;
         if (isHistorical) return toVal(v);
         return i <= latestIdx ? toVal(v) : null;
       });
-
+ 
       const prevValues = validTimes.map(t => {
         const v = prevMap[t];
         return v !== undefined ? toVal(v) : null;
       });
-
+ 
       const avgValues = validTimes.map(t => {
         const v = avgProfile[t];
         return v !== undefined ? toVal(v) : null;
       });
-
-      // Cumulative — fixed: build running total properly
+ 
+      // Cumulative for selected day
       const cumulativeValues = (() => {
         let sum = 0;
         return validTimes.map((t, i) => {
@@ -990,36 +1076,7 @@ document.getElementById("memoryInline").addEventListener("blur", async function(
           return Math.round(toVal(sum) * 1000) / 1000;
         });
       })();
-
-      // Estimate extension from last known cumulative point
-      const lastKnownIdx = isHistorical ? validTimes.length - 1 : latestIdx;
-      const lastKnownCum = cumulativeValues[lastKnownIdx] ?? 0;
-
-      // Build avg cumulative up to last known point
-      let avgSumAtLastKnown = 0;
-      validTimes.slice(0, lastKnownIdx + 1).forEach(t => { avgSumAtLastKnown += avgProfile[t] || 0; });
-      const scale = avgSumAtLastKnown > 0 ? ((lastKnownCum / toVal(1) || lastKnownCum) / avgSumAtLastKnown) : 1;
-
-      let avgRunning = avgSumAtLastKnown;
-      const estimateExt = validTimes.map((t, i) => {
-        if (i < lastKnownIdx) return null;
-        if (i === lastKnownIdx) return lastKnownCum;
-        if (isHistorical) return null;
-        avgRunning += avgProfile[t] || 0;
-        return Math.round(toVal(avgRunning * scale) * 1000) / 1000;
-      });
-
-      const timeLabels = validTimes.map((t, i) => i % 4 === 0 ? t : "");
-
-      if (halfHourlyChart) halfHourlyChart.destroy();
-
-      const datasets = [{
-        label: showingYesterday ? "Yesterday (today incomplete)" : "Selected day",
-        data: hhShowCumulative ? cumulativeValues : targetValues,
-        borderColor: "#7B9E87", borderWidth: 2,
-        pointRadius: 0, tension: 0.3, fill: false, spanGaps: false,
-      }];
-
+ 
       // Cumulative prev day
       const cumulativePrev = (() => {
         let sum = 0;
@@ -1030,7 +1087,7 @@ document.getElementById("memoryInline").addEventListener("blur", async function(
           return Math.round(toVal(sum) * 1000) / 1000;
         });
       })();
-
+ 
       // Cumulative avg
       const cumulativeAvg = (() => {
         let sum = 0;
@@ -1041,34 +1098,59 @@ document.getElementById("memoryInline").addEventListener("blur", async function(
           return Math.round(toVal(sum) * 1000) / 1000;
         });
       })();
-
+ 
+      // Estimate extension
+      const lastKnownIdx = isHistorical ? validTimes.length - 1 : latestIdx;
+      const lastKnownCum = cumulativeValues[lastKnownIdx] ?? 0;
+      let avgSumAtLastKnown = 0;
+      validTimes.slice(0, lastKnownIdx + 1).forEach(t => { avgSumAtLastKnown += avgProfile[t] || 0; });
+      const scale = avgSumAtLastKnown > 0 ? (lastKnownCum / toVal(avgSumAtLastKnown)) : 1;
+      let avgRunning = avgSumAtLastKnown;
+      const estimateExt = validTimes.map((t, i) => {
+        if (i < lastKnownIdx) return null;
+        if (i === lastKnownIdx) return lastKnownCum;
+        if (isHistorical) return null;
+        avgRunning += avgProfile[t] || 0;
+        return Math.round(toVal(avgRunning * scale) * 1000) / 1000;
+      });
+ 
+      const timeLabels = validTimes.map((t, i) => i % 4 === 0 ? t : "");
+ 
+      if (halfHourlyChart) halfHourlyChart.destroy();
+ 
+      const datasets = [{
+        label: showingYesterday ? "Yesterday (today incomplete)" : "Selected day",
+        data: hhShowCumulative ? cumulativeValues : targetValues,
+        borderColor: "#7B9E87", borderWidth: 2,
+        pointRadius: 0, tension: 0.3, fill: false, spanGaps: false,
+      }];
+ 
       if (hhShowPrev) datasets.push({
         label: "Prev day",
         data: hhShowCumulative ? cumulativePrev : prevValues,
         borderColor: "#a8c4b0", borderDash: [5,5], borderWidth: 1.5,
         pointRadius: 0, tension: 0.3, fill: false,
       });
-
+ 
       if (hhShowAvg) datasets.push({
         label: "30-day avg",
         data: hhShowCumulative ? cumulativeAvg : avgValues,
         borderColor: "#C17D5A", borderDash: [2,4], borderWidth: 1.5,
         pointRadius: 0, tension: 0.3, fill: false,
       });
-
+ 
       if (hhShowCumulative && !isHistorical) datasets.push({
         label: "Estimated",
         data: estimateExt,
         borderColor: "#7B9E87", borderDash: [4,4], borderWidth: 1.5,
         pointRadius: 0, tension: 0.3, fill: false,
       });
-
-      // Y axis max — use global daily max scaled to half-hourly slot
-      // Global max is per day, divide by ~10 to get a sensible per-slot ceiling
+ 
+      // Y axis — consistent using global max
       const globalSlotMax = hhUnit === "gbp"
         ? Math.ceil((globalMaxGbp / 10) * 1.2 * 100) / 100
         : Math.ceil((globalMaxKwh / 10) * 1.2 * 10) / 10;
-
+ 
       const localValues = hhShowCumulative
         ? [...cumulativeValues, ...cumulativePrev, ...cumulativeAvg].filter(v => v !== null)
         : [...targetValues, ...prevValues, ...avgValues].filter(v => v !== null);
@@ -1076,7 +1158,7 @@ document.getElementById("memoryInline").addEventListener("blur", async function(
       const yMax = hhShowCumulative
         ? Math.ceil(localMax * 1.1 * 10) / 10
         : Math.max(localMax, globalSlotMax);
-
+ 
       halfHourlyChart = new Chart(document.getElementById("halfHourlyChart"), {
         type: "line",
         data: { labels: timeLabels, datasets },
@@ -1098,15 +1180,15 @@ document.getElementById("memoryInline").addEventListener("blur", async function(
         }
       });
     }
-
+ 
     function renderWeeklyChart() {
       if (!currentData) return;
       const today = new Date();
       today.setHours(0,0,0,0);
       const dow = today.getDay() === 0 ? 6 : today.getDay() - 1;
       const weekLabels = ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"];
-
-   const thisWeekDates = weekLabels.map((_, i) => {
+ 
+      const thisWeekDates = weekLabels.map((_, i) => {
         const d = new Date(today);
         d.setDate(today.getDate() - dow + i);
         return d.toLocaleDateString("en-CA", { timeZone: "Europe/London" });
@@ -1116,23 +1198,23 @@ document.getElementById("memoryInline").addEventListener("blur", async function(
         ld.setDate(ld.getDate() - 7);
         return ld.toLocaleDateString("en-CA", { timeZone: "Europe/London" });
       });
-
+ 
       const dayMap = {};
       [...currentData.current, ...currentData.previous].forEach(d => { dayMap[d.date] = d; });
-
-const thisWeekValues = thisWeekDates.map(d => {
-  const entry = dayMap[d];
-  if (!entry) return null;
-  // Hide today if no confirmed data yet
-  if (d === todayStr && lastHalfHourlyData && lastHalfHourlyData.target.slots.length < 20) return null;
-  return activeUnit === "kwh" ? entry.kwh : entry.gbp;
-});      const lastWeekValues = lastWeekDates.map(d => dayMap[d] ? (activeUnit === "kwh" ? dayMap[d].kwh : dayMap[d].gbp) : null);
-
+ 
+      const thisWeekValues = thisWeekDates.map(d => {
+        const entry = dayMap[d];
+        if (!entry) return null;
+        if (d === todayStr && lastHalfHourlyData && lastHalfHourlyData.target.slots.length < 20) return null;
+        return activeUnit === "kwh" ? entry.kwh : entry.gbp;
+      });
+      const lastWeekValues = lastWeekDates.map(d => dayMap[d] ? (activeUnit === "kwh" ? dayMap[d].kwh : dayMap[d].gbp) : null);
+ 
       if (weeklyChart) weeklyChart.destroy();
-
+ 
       const datasets = [{ label: "This week", data: thisWeekValues, backgroundColor: "#7B9E87", borderRadius: 4 }];
       if (weeklyShowLastWeek) datasets.push({ label: "Last week", data: lastWeekValues, backgroundColor: "#c8ddd0", borderRadius: 4 });
-
+ 
       weeklyChart = new Chart(document.getElementById("weeklyChart"), {
         type: "bar",
         data: { labels: weekLabels, datasets },
@@ -1170,30 +1252,30 @@ const thisWeekValues = thisWeekDates.map(d => {
         }
       });
     }
-
+ 
     function renderCharts() {
       const data = currentData;
       const unit = activeUnit;
-
+ 
       const currentValues = data.current.map(d => unit === "kwh" ? d.kwh : d.gbp);
       const previousValues = data.previous.map(d => unit === "kwh" ? d.kwh : d.gbp);
       const currentDates = data.current.map(d => d.date);
-
+ 
       const days = data.current.length || 1;
       const ofgemPeriodKwh = Math.round((2700/365*days)*10)/10;
       const ofgemDaily = unit === "kwh" ? Math.round((2700/365)*100)/100 : Math.round((2700/365*data.elecRate/100)*100)/100;
       const ofgemTotal = unit === "kwh" ? ofgemPeriodKwh : Math.round(ofgemPeriodKwh*data.elecRate/100*100)/100;
       const currentTotal = unit === "kwh" ? data.currentTotalKwh : data.currentTotalGbp;
       const previousTotal = unit === "kwh" ? data.previousTotalKwh : data.previousTotalGbp;
-
+ 
       const rollingAvg = currentValues.map((_, i) => {
         const w = currentValues.slice(Math.max(0, i-13), i+1);
         return Math.round((w.reduce((s,v) => s+v, 0) / w.length) * 100) / 100;
       });
-
+ 
       const yAxisMax = unit === "kwh" ? Math.ceil(globalMaxKwh * 1.1) : Math.ceil(globalMaxGbp * 1.1 * 100) / 100;
       const yLabel = unit === "kwh" ? "kWh" : "£";
-
+ 
       const dayLabels = currentDates.map((d, i) => {
         const date = new Date(d + "T12:00:00");
         const prev = i > 0 ? new Date(currentDates[i-1] + "T12:00:00") : null;
@@ -1202,7 +1284,7 @@ const thisWeekValues = thisWeekDates.map(d => {
         if (isNewMonth) return `${date.toLocaleDateString("en-GB", { month: "short" })} ${date.getDate()}`;
         return `${date.getDate()}`;
       });
-
+ 
       document.getElementById("chartContainer").innerHTML = `
         <div class="chart-card">
           <div class="chart-header">
@@ -1232,14 +1314,14 @@ const thisWeekValues = thisWeekDates.map(d => {
           <canvas id="lineChart"></canvas>
         </div>
       `;
-
+ 
       if (barChart) barChart.destroy();
       if (lineChart) lineChart.destroy();
-
+ 
       let sumShowOfgem = true;
       let dailyShowOfgem = true;
       let dailyShowTrend = true;
-
+ 
       function buildSummaryChart() {
         if (barChart) barChart.destroy();
         const labels = [currentPeriodLabel(data.period)];
@@ -1263,10 +1345,10 @@ const thisWeekValues = thisWeekDates.map(d => {
           }
         });
       }
-
+ 
       function buildLineChart() {
         if (lineChart) lineChart.destroy();
-
+ 
         const weekBandsPlugin = {
           id: "weekBands",
           beforeDraw(chart) {
@@ -1288,31 +1370,31 @@ const thisWeekValues = thisWeekDates.map(d => {
             });
           }
         };
-
+ 
         const lineDatasets = [{
           label: "Current", data: currentValues,
           borderColor: "#7B9E87", backgroundColor: "rgba(123,158,135,0.07)",
           borderWidth: 2, pointRadius: 0, tension: 0.3, fill: true,
         }];
-
+ 
         if (showComparison && previousValues.length) lineDatasets.push({
           label: "Previous", data: previousValues,
           borderColor: "#a8c4b0", borderDash: [5,5],
           borderWidth: 1.5, pointRadius: 0, tension: 0.3, fill: false,
         });
-
+ 
         if (dailyShowOfgem) lineDatasets.push({
           label: "Ofgem avg", data: currentDates.map(() => ofgemDaily),
           borderColor: "#C17D5A", borderDash: [2,4],
           borderWidth: 1.5, pointRadius: 0, fill: false,
         });
-
+ 
         if (dailyShowTrend) lineDatasets.push({
           label: "14-day trend", data: rollingAvg,
           borderColor: "#9B7D6A", borderWidth: 1.5,
           pointRadius: 0, tension: 0.5, fill: false,
         });
-
+ 
         lineChart = new Chart(document.getElementById("lineChart"), {
           type: "line",
           data: { labels: dayLabels, datasets: lineDatasets },
@@ -1350,7 +1432,7 @@ const thisWeekValues = thisWeekDates.map(d => {
           }
         });
       }
-
+ 
       document.getElementById("sum-compare").addEventListener("click", function() {
         showComparison = !showComparison;
         this.classList.toggle("on", showComparison);
@@ -1376,11 +1458,11 @@ const thisWeekValues = thisWeekDates.map(d => {
         this.classList.toggle("on", dailyShowTrend);
         buildLineChart();
       });
-
+ 
       buildSummaryChart();
       buildLineChart();
     }
-
+ 
     function renderCards(data) {
       const days = data.current.length || 1;
       const dGbp = delta(data.currentTotalGbp, data.previousTotalGbp);
@@ -1400,7 +1482,7 @@ const thisWeekValues = thisWeekDates.map(d => {
         </div>
       `;
     }
-
+ 
     function renderBenchmark(data) {
       const yourKwh = data.currentTotalKwh;
       const days = data.current.length || 1;
@@ -1427,7 +1509,7 @@ const thisWeekValues = thisWeekDates.map(d => {
         </div>
       `;
     }
-
+ 
     function showError(msg) {
       document.getElementById("content").innerHTML = `
         <div class="error-card">
@@ -1437,7 +1519,7 @@ const thisWeekValues = thisWeekDates.map(d => {
         </div>
       `;
     }
-
+ 
     document.querySelectorAll(".tab").forEach(tab => {
       tab.addEventListener("click", () => {
         document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
@@ -1446,7 +1528,7 @@ const thisWeekValues = thisWeekDates.map(d => {
         loadDashboard();
       });
     });
-
+ 
     document.querySelectorAll(".toggle-btn").forEach(btn => {
       btn.addEventListener("click", () => {
         document.querySelectorAll(".toggle-btn").forEach(b => b.classList.remove("active"));
@@ -1455,7 +1537,7 @@ const thisWeekValues = thisWeekDates.map(d => {
         if (currentData) { renderCharts(); renderWeeklyChart(); }
       });
     });
-
+ 
     async function loadDashboard() {
       document.getElementById("content").innerHTML = '<div class="loading-text">Loading...</div>';
       try {
@@ -1466,20 +1548,20 @@ const thisWeekValues = thisWeekDates.map(d => {
         if (!energyRes.ok) throw new Error(`API error ${energyRes.status}`);
         const [energy, tags] = await Promise.all([energyRes.json(), tagsRes.json()]);
         if (energy.error) throw new Error(energy.error);
-
+ 
         currentData = energy;
         allTags = tags;
         currentElecRate = energy.elecRate;
-
+ 
         // Update global max for consistent Y axis
         const allKwh = [...energy.current, ...energy.previous].map(d => d.kwh);
         const allGbp = [...energy.current, ...energy.previous].map(d => d.gbp);
         globalMaxKwh = Math.max(globalMaxKwh, ...allKwh);
         globalMaxGbp = Math.max(globalMaxGbp, ...allGbp);
-
+ 
         document.getElementById("rateChip").textContent = `${energy.elecRate.toFixed(2)}p/kWh`;
         renderWeeklyChart();
-
+ 
         document.getElementById("content").innerHTML = `
           ${renderCards(energy)}
           ${renderBenchmark(energy)}
@@ -1490,15 +1572,14 @@ const thisWeekValues = thisWeekDates.map(d => {
         showError(err.message);
       }
     }
-
+ 
     async function init() {
       await Promise.all([loadMemory(), loadDashboard(), loadHalfHourly()]);
-      // Run AI summary once after data is loaded
       runSummary();
     }
-
+ 
     init();
   </script>
-
+ 
 </body>
 </html>
