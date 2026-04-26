@@ -11,7 +11,7 @@ function octopusGet(path) {
     };
     https.get(options, (res) => {
       let data = "";
-      res.on("data", (chunk) => (data += chunk));
+      res.on("data", chunk => data += chunk);
       res.on("end", () => {
         try { resolve(JSON.parse(data)); }
         catch (e) { reject(new Error(`Failed to parse: ${data}`)); }
@@ -20,32 +20,23 @@ function octopusGet(path) {
   });
 }
 
-// Get UK local date string (handles GMT/BST automatically)
 function getUKDateString(date) {
   return date.toLocaleDateString("en-GB", {
     timeZone: "Europe/London",
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit",
+    year: "numeric", month: "2-digit", day: "2-digit",
   }).split("/").reverse().join("-");
 }
 
-// Get midnight UK time as UTC ISO string for a given UK date string
 function ukMidnightToUTC(ukDateStr) {
-  // Parse as UK midnight
   const [y, m, d] = ukDateStr.split("-").map(Number);
-  // Use Intl to find the UTC offset for that date in London
   const testDate = new Date(Date.UTC(y, m - 1, d, 0, 0, 0));
   const ukOffset = new Intl.DateTimeFormat("en-GB", {
     timeZone: "Europe/London",
     timeZoneName: "shortOffset",
   }).formatToParts(testDate).find(p => p.type === "timeZoneName")?.value || "GMT+0";
-
   const offsetMatch = ukOffset.match(/GMT([+-])(\d+)/);
   const offsetHours = offsetMatch ? parseInt(offsetMatch[2]) * (offsetMatch[1] === "+" ? -1 : 1) : 0;
-
-  const utc = new Date(Date.UTC(y, m - 1, d, offsetHours, 0, 0));
-  return utc.toISOString().slice(0, 19) + "Z";
+  return new Date(Date.UTC(y, m - 1, d, offsetHours, 0, 0)).toISOString().slice(0, 19) + "Z";
 }
 
 exports.handler = async function (event) {
@@ -56,25 +47,14 @@ exports.handler = async function (event) {
 
     const now = new Date();
     const todayUK = getUKDateString(now);
-
-    // Accept optional date param
     const requestedDate = event.queryStringParameters?.date || null;
     const targetDateStr = requestedDate || todayUK;
     const isToday = targetDateStr === todayUK;
 
-    // Get prev and 30-days-ago date strings
     const targetDateObj = new Date(targetDateStr + "T12:00:00Z");
-    const prevDateObj = new Date(targetDateObj);
-    prevDateObj.setDate(prevDateObj.getDate() - 1);
-    const prevDateStr = prevDateObj.toISOString().slice(0, 10);
-
-    const thirtyDaysAgoObj = new Date(targetDateObj);
-    thirtyDaysAgoObj.setDate(thirtyDaysAgoObj.getDate() - 30);
-    const thirtyDaysAgoStr = thirtyDaysAgoObj.toISOString().slice(0, 10);
-
-    const nextDateObj = new Date(targetDateObj);
-    nextDateObj.setDate(nextDateObj.getDate() + 1);
-    const nextDateStr = nextDateObj.toISOString().slice(0, 10);
+    const prevDateStr = new Date(targetDateObj.getTime() - 86400000).toISOString().slice(0, 10);
+    const nextDateStr = new Date(targetDateObj.getTime() + 86400000).toISOString().slice(0, 10);
+    const thirtyDaysAgoStr = new Date(targetDateObj.getTime() - 30 * 86400000).toISOString().slice(0, 10);
 
     const targetFrom = ukMidnightToUTC(targetDateStr);
     const targetTo = ukMidnightToUTC(nextDateStr);
@@ -82,6 +62,10 @@ exports.handler = async function (event) {
     const prevTo = ukMidnightToUTC(targetDateStr);
     const historyFrom = ukMidnightToUTC(thirtyDaysAgoStr);
     const historyTo = ukMidnightToUTC(prevDateStr);
+
+    const toUKTime = (isoStr) => new Date(isoStr).toLocaleTimeString("en-GB", {
+      timeZone: "Europe/London", hour: "2-digit", minute: "2-digit", hour12: false,
+    });
 
     const [targetRaw, prevRaw, historyRaw, rateRaw] = await Promise.all([
       octopusGet(`/v1/electricity-meter-points/${MPAN}/meters/${ELEC_SERIAL}/consumption/?period_from=${targetFrom}&period_to=${targetTo}&page_size=100&order_by=period`),
@@ -92,70 +76,73 @@ exports.handler = async function (event) {
 
     const elecRate = rateRaw.results?.[0]?.value_inc_vat || null;
 
-    // Convert interval_start to UK local time for slot keys
-    const toUKTime = (isoStr) => {
-      return new Date(isoStr).toLocaleTimeString("en-GB", {
-        timeZone: "Europe/London",
-        hour: "2-digit",
-        minute: "2-digit",
-        hour12: false,
-      });
-    };
-
-    const targetSlots = (targetRaw.results || []).map(r => ({
+    const rawTargetSlots = (targetRaw.results || []).map(r => ({
       time: toUKTime(r.interval_start),
       kwh: Math.round(r.consumption * 1000) / 1000,
     }));
+
+    // Remove duplicate midnight (BST rollover)
+    const cleanedSlots = rawTargetSlots.filter((slot, i) => {
+      if (slot.time === "00:00" && i > 0) return false;
+      return true;
+    });
+
+    // Only show if we have data up to at least 10:00
+    const hasMinimumData = cleanedSlots.some(s => s.time >= "10:00");
+    const validSlots = hasMinimumData ? cleanedSlots : [];
 
     const prevSlots = (prevRaw.results || []).map(r => ({
       time: toUKTime(r.interval_start),
       kwh: Math.round(r.consumption * 1000) / 1000,
-    }));
+    })).filter((slot, i, arr) => {
+      if (slot.time === "00:00" && i > 0) return false;
+      return true;
+    });
 
-    // Build 30-day average profile by UK local time slot
+    // Build 30-day average profile by half-hour slot
     const slotTotals = {};
     const slotCounts = {};
+    const dowSlotTotals = {}; // day-of-week profiles
+    const dowSlotCounts = {};
+
     (historyRaw.results || []).forEach(r => {
       const time = toUKTime(r.interval_start);
+      const dow = new Date(r.interval_start).toLocaleDateString("en-GB", { timeZone: "Europe/London", weekday: "long" });
+
       if (!slotTotals[time]) { slotTotals[time] = 0; slotCounts[time] = 0; }
       slotTotals[time] += r.consumption;
       slotCounts[time]++;
+
+      if (!dowSlotTotals[dow]) { dowSlotTotals[dow] = {}; dowSlotCounts[dow] = {}; }
+      if (!dowSlotTotals[dow][time]) { dowSlotTotals[dow][time] = 0; dowSlotCounts[dow][time] = 0; }
+      dowSlotTotals[dow][time] += r.consumption;
+      dowSlotCounts[dow][time]++;
     });
+
     const avgProfile = {};
     Object.keys(slotTotals).forEach(t => {
       avgProfile[t] = Math.round((slotTotals[t] / slotCounts[t]) * 1000) / 1000;
     });
 
-    const targetTotalKwh = Math.round(targetSlots.reduce((s, r) => s + r.kwh, 0) * 100) / 100;
+    const dayOfWeekProfiles = {};
+    Object.keys(dowSlotTotals).forEach(dow => {
+      dayOfWeekProfiles[dow] = {};
+      Object.keys(dowSlotTotals[dow]).forEach(t => {
+        dayOfWeekProfiles[dow][t] = Math.round((dowSlotTotals[dow][t] / dowSlotCounts[dow][t]) * 1000) / 1000;
+      });
+    });
+
+    const targetTotalKwh = Math.round(validSlots.reduce((s, r) => s + r.kwh, 0) * 100) / 100;
     const prevTotalKwh = Math.round(prevSlots.reduce((s, r) => s + r.kwh, 0) * 100) / 100;
     const avgDayTotal = Math.round(Object.values(avgProfile).reduce((s, v) => s + v, 0) * 100) / 100;
+    const latestTime = validSlots.length ? validSlots[validSlots.length - 1].time : null;
 
-    const latestTime = targetSlots.length ? targetSlots[targetSlots.length - 1].time : null;
-
-    const avgToNow = Math.round(
-      targetSlots.reduce((s, slot) => s + (avgProfile[slot.time] || 0), 0) * 100
-    ) / 100;
-
-    // Run-rate estimate
+    const avgToNow = Math.round(validSlots.reduce((s, slot) => s + (avgProfile[slot.time] || 0), 0) * 100) / 100;
     const estimate = avgToNow > 0 && targetTotalKwh > 0
       ? Math.round((targetTotalKwh * (avgDayTotal / avgToNow)) * 100) / 100
       : null;
 
-    const estimateGbp = estimate && elecRate
-      ? Math.round(estimate * elecRate / 100 * 100) / 100
-      : null;
-
-    const targetGbp = elecRate
-      ? Math.round(targetTotalKwh * elecRate / 100 * 100) / 100
-      : null;
-
-    const prevGbp = elecRate
-      ? Math.round(prevTotalKwh * elecRate / 100 * 100) / 100
-      : null;
-
-    const avgGbp = elecRate
-      ? Math.round(avgDayTotal * elecRate / 100 * 100) / 100
-      : null;
+    const toGbp = (kwh) => elecRate ? Math.round(kwh * elecRate / 100 * 100) / 100 : null;
 
     return {
       statusCode: 200,
@@ -165,24 +152,25 @@ exports.handler = async function (event) {
         isToday,
         elecRate,
         target: {
-          slots: targetSlots,
+          slots: validSlots,
           totalKwh: targetTotalKwh,
-          totalGbp: targetGbp,
+          totalGbp: toGbp(targetTotalKwh),
           latestTime,
           avgToNow,
           estimate,
-          estimateGbp,
+          estimateGbp: toGbp(estimate),
         },
         prev: {
           slots: prevSlots,
           totalKwh: prevTotalKwh,
-          totalGbp: prevGbp,
+          totalGbp: toGbp(prevTotalKwh),
           avgDayTotal,
-          avgGbp,
+          avgGbp: toGbp(avgDayTotal),
         },
         avgProfile,
+        dayOfWeekProfiles,
         avgDayTotal,
-        avgGbp,
+        avgGbp: toGbp(avgDayTotal),
       }),
     };
   } catch (err) {

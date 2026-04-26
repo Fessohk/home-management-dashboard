@@ -16,173 +16,145 @@
       padding-bottom: 80px;
     }
 
-    /* Dark mode — system preference */
     @media (prefers-color-scheme: dark) {
       body { background: #1A1A14; color: #E8E4DC; }
-      .header { background: #242418; box-shadow: 0 1px 3px rgba(0,0,0,0.3); }
-      .card { background: #242418; box-shadow: 0 1px 4px rgba(0,0,0,0.3); }
-      .chart-card { background: #242418; box-shadow: 0 1px 4px rgba(0,0,0,0.3); }
-      .bench-card { background: #242418; }
-      .about-card { background: #242418; }
-      .error-card { background: #242418; }
+      .header { background: #242418; }
+      .card, .chart-card, .bench-card, .about-card, .error-card, .settings-panel, .bottom-sheet { background: #242418; }
       .right-now-zone { background: #1E1E18; }
       .section-divider { background: #3A3A2E; }
       .card-label { color: #888; }
       .card-value { color: #E8E4DC; }
-      .card-value-sub { color: #777; }
-      .card-sub { color: #666; }
-      .card-tariff { color: #666; }
-      .card-estimate { color: #888; }
+      .card-value-sub, .card-sub, .card-tariff, .card-estimate, .about-text { color: #777; }
       .tab { border-color: #3A3A2E; color: #888; }
       .toggle-group { border-color: #3A3A2E; }
       .toggle-btn { color: #888; }
-      .compare-toggle { color: #888; }
       .date-nav-btn { border-color: #3A3A2E; color: #888; }
-      .date-nav-input { border-color: #3A3A2E; background: #242418; color: #888; }
+      .date-nav-input { border-color: #3A3A2E; background: #1A1A14; color: #E8E4DC; }
       .bench-bar-wrap { background: #2E2E22; }
       .bench-label { color: #888; }
       .bench-val { color: #E8E4DC; }
-      .about-text { color: #777; }
       .bottom-nav { background: #242418; border-color: #3A3A2E; }
       .bottom-nav-btn { color: #666; }
       .bottom-sheet { background: #242418; }
       .sheet-handle { background: #3A3A2E; }
-      .sheet-date { color: #E8E4DC; }
-      .sheet-kwh { color: #777; }
       .sheet-section { color: #666; }
       .tag-btn { border-color: #3A3A2E; color: #888; }
       .legend { color: #777; }
       .chart-title { color: #E8E4DC; }
-      .zone-heading { color: #E8E4DC; }
-      .section-heading { color: #E8E4DC; }
-      .loading-text { color: #666; }
+      .zone-heading, .section-heading { color: #E8E4DC; }
+      .ai-card { background: #1E2820; border-color: #2E3D30; }
+      .ai-text { color: #C8DDD0; }
+      .memory-field, .analyse-input { background: #1A1A14; border-color: #3A3A2E; color: #E8E4DC; }
+      .icon-btn { border-color: #3A3A2E; color: #888; }
+      .icon-btn.on { background: #6B6B3A; border-color: #6B6B3A; color: white; }
+      .settings-field { background: #1A1A14; border-color: #3A3A2E; color: #E8E4DC; }
+      .settings-tab-btn { border-color: #3A3A2E; color: #888; }
+      .hh-unit-toggle { border-color: #3A3A2E; }
+      .hh-unit-btn { color: #888; }
     }
 
-    /* Dark mode — manual override */
     body.dark { background: #1A1A14; color: #E8E4DC; }
-    body.dark .header { background: #242418; box-shadow: 0 1px 3px rgba(0,0,0,0.3); }
-    body.dark .card { background: #242418; box-shadow: 0 1px 4px rgba(0,0,0,0.3); }
-    body.dark .chart-card { background: #242418; }
-    body.dark .bench-card { background: #242418; }
-    body.dark .about-card { background: #242418; }
-    body.dark .error-card { background: #242418; }
+    body.dark .header { background: #242418; }
+    body.dark .card, body.dark .chart-card, body.dark .bench-card,
+    body.dark .about-card, body.dark .error-card, body.dark .settings-panel,
+    body.dark .bottom-sheet { background: #242418; }
     body.dark .right-now-zone { background: #1E1E18; }
     body.dark .section-divider { background: #3A3A2E; }
     body.dark .card-label { color: #888; }
     body.dark .card-value { color: #E8E4DC; }
-    body.dark .card-value-sub { color: #777; }
-    body.dark .card-sub { color: #666; }
-    body.dark .card-tariff { color: #666; }
-    body.dark .card-estimate { color: #888; }
+    body.dark .card-value-sub, body.dark .card-sub, body.dark .card-tariff,
+    body.dark .card-estimate, body.dark .about-text { color: #777; }
     body.dark .tab { border-color: #3A3A2E; color: #888; }
     body.dark .toggle-group { border-color: #3A3A2E; }
     body.dark .toggle-btn { color: #888; }
-    body.dark .compare-toggle { color: #888; }
     body.dark .date-nav-btn { border-color: #3A3A2E; color: #888; }
-    body.dark .date-nav-input { border-color: #3A3A2E; background: #242418; color: #888; }
+    body.dark .date-nav-input { border-color: #3A3A2E; background: #1A1A14; color: #E8E4DC; }
     body.dark .bench-bar-wrap { background: #2E2E22; }
-    body.dark .bench-label { color: #888; }
-    body.dark .bench-val { color: #E8E4DC; }
-    body.dark .about-text { color: #777; }
     body.dark .bottom-nav { background: #242418; border-color: #3A3A2E; }
-    body.dark .bottom-nav-btn { color: #666; }
     body.dark .bottom-sheet { background: #242418; }
     body.dark .sheet-handle { background: #3A3A2E; }
-    body.dark .sheet-date { color: #E8E4DC; }
-    body.dark .sheet-kwh { color: #777; }
-    body.dark .sheet-section { color: #666; }
     body.dark .tag-btn { border-color: #3A3A2E; color: #888; }
     body.dark .legend { color: #777; }
-    body.dark .chart-title { color: #E8E4DC; }
-    body.dark .zone-heading { color: #E8E4DC; }
-    body.dark .section-heading { color: #E8E4DC; }
-    body.dark .loading-text { color: #666; }
+    body.dark .chart-title, body.dark .zone-heading, body.dark .section-heading { color: #E8E4DC; }
+    body.dark .ai-card { background: #1E2820; border-color: #2E3D30; }
+    body.dark .ai-text { color: #C8DDD0; }
+    body.dark .memory-field, body.dark .analyse-input { background: #1A1A14; border-color: #3A3A2E; color: #E8E4DC; }
+    body.dark .icon-btn { border-color: #3A3A2E; color: #888; }
+    body.dark .icon-btn.on { background: #6B6B3A; border-color: #6B6B3A; color: white; }
+    body.dark .settings-field { background: #1A1A14; border-color: #3A3A2E; color: #E8E4DC; }
+    body.dark .settings-tab-btn { border-color: #3A3A2E; color: #888; }
+    body.dark .hh-unit-toggle { border-color: #3A3A2E; }
+    body.dark .hh-unit-btn { color: #888; }
 
-    /* Light mode override (when user manually set light but system is dark) */
     body.light { background: #F2EDE4; color: #2C2C2C; }
-    body.light .header { background: white; }
-    body.light .card { background: white; }
-    body.light .chart-card { background: white; }
-    body.light .bench-card { background: white; }
-    body.light .about-card { background: white; }
-    body.light .error-card { background: white; }
-    body.light .right-now-zone { background: #EDE8DF; }
-    body.light .section-divider { background: #D4CDB8; }
-    body.light .card-label { color: #999; }
-    body.light .card-value { color: #2C2C2C; }
-    body.light .tab { border-color: #c8c0b0; color: #555; }
-    body.light .bottom-nav { background: white; border-color: #e8e0d4; }
-    body.light .bottom-sheet { background: white; }
+    body.light .header, body.light .card, body.light .chart-card { background: white; }
 
     /* Header */
     .header {
-      background: white;
-      padding: 16px;
+      background: white; padding: 16px;
       box-shadow: 0 1px 3px rgba(0,0,0,0.08);
-      position: sticky;
-      top: 0;
-      z-index: 50;
+      position: sticky; top: 0; z-index: 50;
     }
     .header-inner {
-      max-width: 900px;
-      margin: 0 auto;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+      max-width: 900px; margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between;
     }
-    .logo {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.3rem;
-      font-weight: 600;
-    }
+    .logo { font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 600; }
     .logo span { color: #6B6B3A; }
-    .header-nav-btn {
-      padding: 5px 14px;
-      border-radius: 20px;
-      border: none;
-      background: #6B6B3A;
-      color: white;
-      font-size: 0.78rem;
-      cursor: pointer;
+    .header-actions { display: flex; gap: 6px; align-items: center; }
+    .header-icon-btn {
+      background: transparent; border: 1.5px solid #c8c0b0;
+      border-radius: 20px; padding: 5px 10px; font-size: 0.85rem;
+      cursor: pointer; color: inherit; line-height: 1;
     }
-    .dark-toggle {
-      background: transparent;
-      border: 1.5px solid #c8c0b0;
-      border-radius: 20px;
-      padding: 5px 12px;
-      font-size: 0.75rem;
-      cursor: pointer;
-      color: inherit;
+    .header-nav-btn {
+      padding: 5px 14px; border-radius: 20px; border: none;
+      background: #6B6B3A; color: white; font-size: 0.78rem; cursor: pointer;
     }
 
-    .main {
-      max-width: 900px;
-      margin: 0 auto;
-      padding: 16px;
+    .main { max-width: 900px; margin: 0 auto; padding: 16px; }
+
+    /* Settings panel */
+    .settings-panel {
+      background: white; border-radius: 16px; padding: 16px;
+      margin-bottom: 16px; display: none;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.07);
     }
+    .settings-panel.open { display: block; }
+    .settings-tabs { display: flex; gap: 6px; margin-bottom: 16px; }
+    .settings-tab-btn {
+      padding: 5px 14px; border-radius: 20px;
+      border: 1.5px solid #c8c0b0; background: transparent;
+      font-size: 0.78rem; cursor: pointer; color: #555;
+    }
+    .settings-tab-btn.active { background: #6B6B3A; border-color: #6B6B3A; color: white; }
+    .settings-tab-content { display: none; }
+    .settings-tab-content.active { display: block; }
+    .settings-section-title { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em; color: #999; margin-bottom: 8px; margin-top: 14px; }
+    .settings-field {
+      width: 100%; border: 1.5px solid #c8c0b0; border-radius: 8px;
+      padding: 10px 12px; font-size: 0.82rem; font-family: inherit;
+      background: white; color: #2C2C2C; line-height: 1.5;
+    }
+    .settings-memory-display {
+      font-size: 0.82rem; color: #666; line-height: 1.6;
+      background: #f8f5f0; border-radius: 8px; padding: 12px;
+      white-space: pre-wrap;
+    }
+    .settings-save-btn {
+      margin-top: 14px; padding: 10px 20px; background: #6B6B3A;
+      color: white; border: none; border-radius: 20px; font-size: 0.82rem;
+      cursor: pointer; font-family: inherit;
+    }
+    .about-section { font-size: 0.82rem; color: #666; line-height: 1.7; }
+    .about-section h3 { font-family: 'Playfair Display', serif; font-size: 0.9rem; margin-bottom: 6px; margin-top: 14px; color: #2C2C2C; }
 
     /* Right now zone */
-    .right-now-zone {
-      background: #EDE8DF;
-      border-radius: 16px;
-      padding: 16px;
-      margin-bottom: 14px;
-    }
-    .zone-heading {
-      font-family: 'Playfair Display', serif;
-      font-size: 1rem;
-      font-weight: 600;
-      margin-bottom: 12px;
-    }
+    .right-now-zone { background: #EDE8DF; border-radius: 16px; padding: 16px; margin-bottom: 14px; }
+    .zone-heading { font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 600; margin-bottom: 12px; }
 
-    /* Divider */
     .section-divider { height: 1px; background: #D4CDB8; margin: 20px 0; }
-    .section-heading {
-      font-family: 'Playfair Display', serif;
-      font-size: 1rem;
-      font-weight: 600;
-      margin-bottom: 12px;
-    }
+    .section-heading { font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 600; margin-bottom: 12px; }
 
     /* Cards */
     .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; margin-bottom: 14px; }
@@ -201,32 +173,55 @@
 
     /* Chart cards */
     .chart-card { background: white; border-radius: 12px; padding: 16px; box-shadow: 0 1px 4px rgba(0,0,0,0.07); margin-bottom: 14px; }
-    .chart-title { font-size: 0.82rem; font-weight: 600; margin-bottom: 4px; }
-    .chart-hint { font-size: 0.7rem; color: #bbb; font-weight: 400; margin-left: 4px; }
-    .legend { display: flex; gap: 12px; font-size: 0.7rem; color: #888; margin-bottom: 10px; flex-wrap: wrap; align-items: center; }
+    .chart-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 8px; gap: 8px; }
+    .chart-title { font-size: 0.82rem; font-weight: 600; }
+    .chart-hint { font-size: 0.7rem; color: #bbb; font-weight: 400; display: block; margin-top: 2px; }
+
+    /* Icon buttons for chart toggles */
+    .icon-btn-group { display: flex; gap: 4px; flex-wrap: wrap; }
+    .icon-btn {
+      width: 32px; height: 32px;
+      border-radius: 8px; border: 1.5px solid #c8c0b0;
+      background: transparent; cursor: pointer; color: #888;
+      font-size: 0.9rem; display: flex; align-items: center; justify-content: center;
+      transition: all 0.15s;
+      position: relative;
+    }
+    .icon-btn.on { background: #6B6B3A; border-color: #6B6B3A; color: white; }
+    .icon-btn[title]:hover::after {
+      content: attr(title);
+      position: absolute; bottom: -24px; left: 50%; transform: translateX(-50%);
+      background: #2C2C2C; color: white; padding: 2px 6px; border-radius: 4px;
+      font-size: 0.65rem; white-space: nowrap; z-index: 10; pointer-events: none;
+    }
+
+    /* Half-hourly unit toggle */
+    .hh-unit-toggle {
+      display: flex; border: 1.5px solid #c8c0b0;
+      border-radius: 20px; overflow: hidden;
+    }
+    .hh-unit-btn {
+      padding: 3px 10px; font-size: 0.72rem; border: none;
+      background: transparent; cursor: pointer; color: #555;
+    }
+    .hh-unit-btn.active { background: #6B6B3A; color: white; }
+
+    .legend { display: flex; gap: 10px; font-size: 0.7rem; color: #888; margin-bottom: 8px; flex-wrap: wrap; align-items: center; }
     .legend-dot { display: inline-block; width: 8px; height: 8px; border-radius: 2px; margin-right: 3px; }
 
     /* Date nav */
     .date-nav { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
     .date-nav-btn {
-      width: 28px; height: 28px;
-      border-radius: 50%;
-      border: 1.5px solid #c8c0b0;
-      background: transparent;
-      cursor: pointer;
-      font-size: 0.9rem;
-      color: inherit;
+      width: 28px; height: 28px; border-radius: 50%;
+      border: 1.5px solid #c8c0b0; background: transparent;
+      cursor: pointer; font-size: 0.9rem; color: inherit;
       display: flex; align-items: center; justify-content: center;
     }
     .date-nav-btn:disabled { opacity: 0.3; cursor: default; }
     .date-nav-input {
-      border: 1.5px solid #c8c0b0;
-      border-radius: 8px;
-      padding: 4px 8px;
-      font-size: 0.78rem;
-      color: inherit;
-      background: white;
-      font-family: inherit;
+      border: 1.5px solid #c8c0b0; border-radius: 8px;
+      padding: 4px 8px; font-size: 0.78rem; color: inherit;
+      background: white; font-family: inherit;
     }
     .date-nav-label { font-size: 0.78rem; color: #888; flex: 1; }
 
@@ -240,8 +235,36 @@
     .toggle-group { display: flex; border: 1.5px solid #c8c0b0; border-radius: 20px; overflow: hidden; }
     .toggle-btn { padding: 5px 14px; font-size: 0.78rem; border: none; background: transparent; cursor: pointer; color: #555; }
     .toggle-btn.active { background: #6B6B3A; color: white; }
-    .compare-toggle { font-size: 0.78rem; color: #555; display: flex; align-items: center; gap: 6px; cursor: pointer; }
     .rate-chip { background: #6B6B3A; color: white; border-radius: 20px; padding: 5px 12px; font-size: 0.75rem; margin-left: auto; }
+
+    /* AI card */
+    .ai-card {
+      background: #F0F5F1; border: 1px solid #C8DDD0;
+      border-radius: 12px; padding: 14px; margin-bottom: 0;
+    }
+    .ai-card-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+    .ai-card-title { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em; color: #5C7A6B; }
+    .ai-cost { font-size: 0.68rem; color: #888; }
+    .ai-text { font-size: 0.84rem; line-height: 1.6; color: #2C2C2C; min-height: 40px; }
+    .ai-loading { font-size: 0.82rem; color: #888; font-style: italic; }
+    .analyse-row { display: flex; gap: 8px; margin-top: 12px; }
+    .analyse-input {
+      flex: 1; min-width: 0; border: 1.5px solid #c8c0b0; border-radius: 8px;
+      padding: 7px 10px; font-size: 0.78rem; font-family: inherit;
+      background: white; color: #2C2C2C;
+    }
+    .analyse-btn {
+      padding: 7px 16px; background: #6B6B3A; color: white;
+      border: none; border-radius: 8px; font-size: 0.78rem;
+      cursor: pointer; font-family: inherit; white-space: nowrap;
+    }
+    .memory-field {
+      width: 100%; margin-top: 10px;
+      border: 1.5px solid #c8c0b0; border-radius: 8px;
+      padding: 8px 10px; font-size: 0.78rem; font-family: inherit;
+      background: white; color: #2C2C2C; resize: vertical;
+    }
+    .memory-hint { font-size: 0.68rem; color: #999; margin-top: 4px; }
 
     /* Benchmarking */
     .bench-card { background: white; border-radius: 12px; padding: 14px 16px; box-shadow: 0 1px 4px rgba(0,0,0,0.07); margin-bottom: 16px; }
@@ -272,8 +295,7 @@
       padding-bottom: env(safe-area-inset-bottom);
     }
     .bottom-nav-btn {
-      flex: 1; padding: 10px 0 8px;
-      border: none; background: transparent;
+      flex: 1; padding: 10px 0 8px; border: none; background: transparent;
       font-size: 0.65rem; color: #aaa; cursor: pointer;
       display: flex; flex-direction: column; align-items: center; gap: 3px;
     }
@@ -309,8 +331,9 @@
   <div class="header">
     <div class="header-inner">
       <div class="logo">gertie<span>HQ</span></div>
-      <div style="display:flex;gap:8px;align-items:center">
-        <button class="dark-toggle" id="darkToggle">☾</button>
+      <div class="header-actions">
+        <button class="header-icon-btn" id="darkToggle" title="Toggle dark mode">☾</button>
+        <button class="header-icon-btn" id="settingsToggle" title="Settings">⚙</button>
         <button class="header-nav-btn">Energy</button>
       </div>
     </div>
@@ -318,30 +341,105 @@
 
   <div class="main">
 
+    <!-- Settings panel -->
+    <div class="settings-panel" id="settingsPanel">
+      <div class="settings-tabs">
+        <button class="settings-tab-btn active" data-tab="memory">Memory</button>
+        <button class="settings-tab-btn" data-tab="about">About</button>
+      </div>
+
+      <div class="settings-tab-content active" id="tab-memory">
+        <div class="settings-section-title">What the AI currently knows</div>
+        <div class="settings-memory-display" id="memoryDisplay">Loading...</div>
+        <div class="settings-section-title" style="margin-top:16px">Update memory</div>
+        <textarea class="settings-field" id="memoryInput" rows="4" placeholder="Tell the AI anything about your household. e.g. I WFH on Mondays and Fridays. Partner works office hours Tuesday to Thursday. Dishwasher runs overnight. Electric radiator in home office. No EV. Boiler is gas."></textarea>
+        <button class="settings-save-btn" id="saveSettings">Save memory</button>
+      </div>
+
+      <div class="settings-tab-content" id="tab-about">
+        <div class="about-section">
+          <h3>What is gertieHQ?</h3>
+          A home management dashboard tracking energy use, running costs, and everything in between. Built for an Edwardian house in West Bridgford, Nottingham.
+          <h3>Data sources</h3>
+          Electricity pulled live from the Octopus Energy API using your MPAN and smart meter serial. Half-hourly data throughout. Gas paused due to a smart meter communication issue. Weather integration planned.
+          <h3>How it works</h3>
+          A Netlify serverless function calls Octopus on each page load. Your API key never touches the browser. Tags and memory stored in Netlify Blob storage. AI analysis via Anthropic API.
+          <h3>Data lag</h3>
+          Octopus uploads half-hourly data with a 1-2 hour delay. Days with data only before 10:00 are treated as incomplete and the previous day is shown instead.
+          <h3>Tariff</h3>
+          Octopus Flexible (VAR-22-11-01). Rate: 24.99p/kWh electricity.
+        </div>
+      </div>
+    </div>
+
+    <!-- Live view -->
     <div class="right-now-zone">
-      <div class="zone-heading">Right now</div>
+      <div class="zone-heading">Live view</div>
+
       <div id="todayCards" class="cards">
         <div class="card"><div class="card-label">Loading...</div></div>
       </div>
-      <div class="chart-card" style="margin-bottom:0">
-        <div class="chart-title">Half-hourly <span class="chart-hint">vs previous day and 30-day average</span></div>
+
+      <!-- Half-hourly chart -->
+      <div class="chart-card" style="margin-bottom:12px">
+        <div class="chart-header">
+          <div>
+            <div class="chart-title">Half-hourly</div>
+            <span class="chart-hint">vs previous day and 30-day average</span>
+          </div>
+          <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;justify-content:flex-end">
+            <div class="hh-unit-toggle">
+              <button class="hh-unit-btn active" data-unit="kwh">kWh</button>
+              <button class="hh-unit-btn" data-unit="gbp">£</button>
+            </div>
+            <div class="icon-btn-group">
+              <button class="icon-btn on" id="hh-prev" title="Prev day">⏮</button>
+              <button class="icon-btn on" id="hh-avg" title="30-day avg">≈</button>
+              <button class="icon-btn" id="hh-cumulative" title="Cumulative">∑</button>
+            </div>
+          </div>
+        </div>
         <div class="date-nav">
           <button class="date-nav-btn" id="prevDayBtn">&#8249;</button>
           <input type="date" class="date-nav-input" id="dateInput">
           <button class="date-nav-btn" id="nextDayBtn">&#8250;</button>
           <span class="date-nav-label" id="dateNavLabel"></span>
         </div>
-        <div class="legend">
-          <span><span style="display:inline-block;width:16px;height:2px;background:#7B9E87;vertical-align:middle;margin-right:3px"></span>Selected day</span>
-          <span><span style="display:inline-block;width:16px;border-top:2px dashed #a8c4b0;vertical-align:middle;margin-right:3px"></span>Day before</span>
+        <div class="legend" id="hhLegend">
+          <span><span style="display:inline-block;width:16px;height:2px;background:#7B9E87;vertical-align:middle;margin-right:3px"></span>Selected</span>
+          <span><span style="display:inline-block;width:16px;border-top:2px dashed #a8c4b0;vertical-align:middle;margin-right:3px"></span>Prev day</span>
           <span><span style="display:inline-block;width:16px;border-top:2px dotted #C17D5A;vertical-align:middle;margin-right:3px"></span>30-day avg</span>
         </div>
         <canvas id="halfHourlyChart" height="140"></canvas>
       </div>
+
+      <!-- AI card -->
+      <div class="ai-card">
+        <div class="ai-card-header">
+          <div class="ai-card-title">AI analysis</div>
+          <div class="ai-cost" id="aiCost"></div>
+        </div>
+        <div class="ai-text" id="aiText"><span class="ai-loading">Analysing...</span></div>
+        <div class="analyse-row">
+          <input type="text" class="analyse-input" id="analyseInput" placeholder="Ask a specific question, or leave blank to re-analyse">
+          <button class="analyse-btn" id="analyseBtn">Analyse</button>
+        </div>
+        <textarea class="memory-field" id="memoryInline" rows="2" placeholder="Add context for the AI (e.g. I WFH on Mondays, dishwasher runs overnight)..."></textarea>
+        <div class="memory-hint">This is saved automatically and used in every analysis. Full memory in Settings.</div>
+      </div>
     </div>
 
+    <!-- Weekly chart -->
     <div class="chart-card">
-      <div class="chart-title">This week vs last week <span class="chart-hint">tap a bar to tag the day</span></div>
+      <div class="chart-header">
+        <div>
+          <div class="chart-title">This week vs last week</div>
+          <span class="chart-hint">tap a bar to tag the day</span>
+        </div>
+        <div class="icon-btn-group">
+          <button class="icon-btn on" id="weekly-lastweek" title="Last week">⏮</button>
+        </div>
+      </div>
       <div class="legend">
         <span><span class="legend-dot" style="background:#7B9E87"></span>This week</span>
         <span><span class="legend-dot" style="background:#c8ddd0"></span>Last week</span>
@@ -364,10 +462,6 @@
         <button class="toggle-btn active" data-unit="gbp">£</button>
         <button class="toggle-btn" data-unit="kwh">kWh</button>
       </div>
-      <label class="compare-toggle">
-        <input type="checkbox" id="compareToggle" checked>
-        Show previous period
-      </label>
       <div id="rateChip" class="rate-chip"></div>
     </div>
 
@@ -418,6 +512,7 @@
 
     let currentData = null;
     let allTags = {};
+    let userMemory = "";
     let activeUnit = "gbp";
     let showComparison = true;
     let activePeriod = "week";
@@ -428,6 +523,13 @@
     let selectedDate = null;
     let selectedTags = [];
     let currentElecRate = null;
+    let lastHalfHourlyData = null;
+    let hhUnit = "kwh";
+
+    let hhShowPrev = true;
+    let hhShowAvg = true;
+    let hhShowCumulative = false;
+    let weeklyShowLastWeek = true;
 
     const todayStr = new Date().toLocaleDateString("en-CA");
     let halfHourlyDate = todayStr;
@@ -435,6 +537,142 @@
     document.getElementById("dateInput").value = halfHourlyDate;
     document.getElementById("dateInput").max = todayStr;
 
+    // Dark mode
+    const darkToggle = document.getElementById("darkToggle");
+    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)");
+    function applyDark(on) {
+      document.body.classList.toggle("dark", on);
+      document.body.classList.toggle("light", !on);
+      darkToggle.textContent = on ? "☀︎" : "☾";
+      localStorage.setItem("darkMode", on ? "1" : "0");
+    }
+    const savedDark = localStorage.getItem("darkMode");
+    applyDark(savedDark !== null ? savedDark === "1" : prefersDark.matches);
+    prefersDark.addEventListener("change", e => { if (!localStorage.getItem("darkMode")) applyDark(e.matches); });
+    darkToggle.addEventListener("click", () => applyDark(!document.body.classList.contains("dark")));
+
+    // Settings
+    const settingsPanel = document.getElementById("settingsPanel");
+    document.getElementById("settingsToggle").addEventListener("click", () => settingsPanel.classList.toggle("open"));
+    document.querySelectorAll(".settings-tab-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll(".settings-tab-btn").forEach(b => b.classList.remove("active"));
+        document.querySelectorAll(".settings-tab-content").forEach(c => c.classList.remove("active"));
+        btn.classList.add("active");
+        document.getElementById(`tab-${btn.dataset.tab}`).classList.add("active");
+      });
+    });
+
+    async function loadMemory() {
+      try {
+        const res = await fetch("/api/energy-settings");
+        const settings = await res.json();
+        userMemory = settings.memory || "";
+        document.getElementById("memoryInput").value = userMemory;
+        document.getElementById("memoryInline").value = userMemory;
+        document.getElementById("memoryDisplay").textContent = userMemory || "No context saved yet. Add some below or in the inline memory box near the AI analysis.";
+      } catch {}
+    }
+
+    async function saveMemory(text) {
+      userMemory = text;
+      await fetch("/api/energy-settings", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ memory: text }),
+      });
+      document.getElementById("memoryInput").value = text;
+      document.getElementById("memoryInline").value = text;
+      document.getElementById("memoryDisplay").textContent = text || "No context saved yet.";
+    }
+
+    document.getElementById("saveSettings").addEventListener("click", async () => {
+      await saveMemory(document.getElementById("memoryInput").value);
+      document.getElementById("saveSettings").textContent = "Saved";
+      setTimeout(() => document.getElementById("saveSettings").textContent = "Save memory", 2000);
+    });
+
+    // Auto-save inline memory on blur
+    document.getElementById("memoryInline").addEventListener("blur", async function() {
+      if (this.value !== userMemory) {
+        await saveMemory(this.value);
+      }
+    });
+
+    // AI analysis
+    async function runAnalysis(question = null) {
+      if (!lastHalfHourlyData || !lastHalfHourlyData.target.slots.length) return;
+
+      const aiText = document.getElementById("aiText");
+      const aiCost = document.getElementById("aiCost");
+      aiText.innerHTML = '<span class="ai-loading">Analysing...</span>';
+      aiCost.textContent = "";
+
+      try {
+        const res = await fetch("/api/energy-ai", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            date: lastHalfHourlyData.date,
+            slots: lastHalfHourlyData.target.slots,
+            avgProfile: lastHalfHourlyData.avgProfile,
+            dayOfWeekProfiles: lastHalfHourlyData.dayOfWeekProfiles,
+            tags: allTags[lastHalfHourlyData.date] || [],
+            memory: userMemory,
+            question: question || null,
+            elecRate: lastHalfHourlyData.elecRate,
+          }),
+        });
+        const data = await res.json();
+        aiText.className = "ai-text";
+        aiText.textContent = data.analysis || "No analysis returned.";
+        if (data.cost) aiCost.textContent = data.cost;
+      } catch {
+        aiText.className = "ai-text";
+        aiText.textContent = "Analysis failed. Try again.";
+      }
+    }
+
+    document.getElementById("analyseBtn").addEventListener("click", () => {
+      const q = document.getElementById("analyseInput").value.trim();
+      runAnalysis(q || null);
+    });
+
+    // HH unit toggle
+    document.querySelectorAll(".hh-unit-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll(".hh-unit-btn").forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        hhUnit = btn.dataset.unit;
+        if (lastHalfHourlyData) renderHalfHourly(lastHalfHourlyData);
+      });
+    });
+
+    // HH icon toggles
+    document.getElementById("hh-prev").addEventListener("click", function() {
+      hhShowPrev = !hhShowPrev;
+      this.classList.toggle("on", hhShowPrev);
+      if (lastHalfHourlyData) renderHalfHourly(lastHalfHourlyData);
+    });
+    document.getElementById("hh-avg").addEventListener("click", function() {
+      hhShowAvg = !hhShowAvg;
+      this.classList.toggle("on", hhShowAvg);
+      if (lastHalfHourlyData) renderHalfHourly(lastHalfHourlyData);
+    });
+    document.getElementById("hh-cumulative").addEventListener("click", function() {
+      hhShowCumulative = !hhShowCumulative;
+      this.classList.toggle("on", hhShowCumulative);
+      if (lastHalfHourlyData) renderHalfHourly(lastHalfHourlyData);
+    });
+
+    // Weekly toggle
+    document.getElementById("weekly-lastweek").addEventListener("click", function() {
+      weeklyShowLastWeek = !weeklyShowLastWeek;
+      this.classList.toggle("on", weeklyShowLastWeek);
+      renderWeeklyChart();
+    });
+
+    // Date nav
     document.getElementById("prevDayBtn").addEventListener("click", () => {
       const d = new Date(halfHourlyDate + "T12:00:00");
       d.setDate(d.getDate() - 1);
@@ -443,7 +681,6 @@
       updateNextBtn();
       loadHalfHourly();
     });
-
     document.getElementById("nextDayBtn").addEventListener("click", () => {
       if (halfHourlyDate >= todayStr) return;
       const d = new Date(halfHourlyDate + "T12:00:00");
@@ -453,41 +690,15 @@
       updateNextBtn();
       loadHalfHourly();
     });
-
     document.getElementById("dateInput").addEventListener("change", e => {
       halfHourlyDate = e.target.value;
       updateNextBtn();
       loadHalfHourly();
     });
-
     function updateNextBtn() {
       document.getElementById("nextDayBtn").disabled = halfHourlyDate >= todayStr;
     }
     updateNextBtn();
-
-    // Dark mode
-    const darkToggle = document.getElementById("darkToggle");
-    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)");
-
-    function applyDark(on) {
-      document.body.classList.toggle("dark", on);
-      document.body.classList.toggle("light", !on);
-      darkToggle.textContent = on ? "☀︎" : "☾";
-      localStorage.setItem("darkMode", on ? "1" : "0");
-    }
-
-    const saved = localStorage.getItem("darkMode");
-    if (saved !== null) {
-      applyDark(saved === "1");
-    } else {
-      applyDark(prefersDark.matches);
-    }
-    prefersDark.addEventListener("change", e => {
-      if (localStorage.getItem("darkMode") === null) applyDark(e.matches);
-    });
-    darkToggle.addEventListener("click", () => {
-      applyDark(!document.body.classList.contains("dark"));
-    });
 
     // Helpers
     function fmtFull(d) {
@@ -517,7 +728,7 @@
       if (kwhValue !== null && kwhValue !== undefined) parts.push(`${kwhValue} kWh`);
       if (gbpValue !== null && gbpValue !== undefined) parts.push(`£${gbpValue}`);
       document.getElementById("sheetKwh").textContent = parts.join(" / ");
-      ["lifestyle", "kitchen", "heating", "home", "outdoor"].forEach(group => {
+      ["lifestyle","kitchen","heating","home","outdoor"].forEach(group => {
         document.getElementById(`${group}Tags`).innerHTML = TAG_GROUPS[group].map(tag =>
           `<button class="tag-btn ${group !== "lifestyle" ? "appliance" : ""} ${selectedTags.includes(tag) ? "selected" : ""}" data-tag="${tag}">${tag}</button>`
         ).join("");
@@ -561,22 +772,32 @@
       const isToday = halfHourlyDate === todayStr;
       document.getElementById("dateNavLabel").textContent = isToday ? "Today" : fmtShort(halfHourlyDate);
       document.getElementById("nextDayBtn").disabled = halfHourlyDate >= todayStr;
+
+      // Reset AI
+      const aiText = document.getElementById("aiText");
+      aiText.innerHTML = '<span class="ai-loading">Analysing...</span>';
+      document.getElementById("aiCost").textContent = "";
+      document.getElementById("analyseInput").value = "";
+
       try {
         const res = await fetch(`/api/energy-today?date=${halfHourlyDate}`);
         const data = await res.json();
         if (data.error) throw new Error(data.error);
+        lastHalfHourlyData = data;
+        if (data.elecRate) currentElecRate = data.elecRate;
         renderHalfHourly(data);
         if (isToday) renderTodayCards(data);
+        // Auto-run AI
+        runAnalysis();
       } catch (err) {
         console.error("Half-hourly error:", err);
+        document.getElementById("aiText").textContent = "Could not load data for analysis.";
       }
     }
 
     function renderTodayCards(data) {
       const rate = data.elecRate || currentElecRate;
-      if (data.elecRate) currentElecRate = data.elecRate;
       const { target, prev, avgDayTotal } = data;
-
       const hasToday = target.slots.length > 0;
       const ydayStr = new Date(Date.now() - 86400000).toLocaleDateString("en-CA");
 
@@ -587,12 +808,8 @@
 
       const todayD = hasToday ? delta(target.totalKwh, target.avgToNow) : null;
       const ydayD = delta(prev.totalKwh, prev.avgDayTotal);
-
-      const avgGbp = data.avgGbp || (rate ? Math.round(avgDayTotal * rate / 100 * 100) / 100 : null);
-      const ydayGbp = prev.totalGbp;
-
-      const tagDot = (date) => allTags[date] && allTags[date].length
-        ? ' <span style="font-size:0.6rem;color:#6B6B3A">●</span>' : "";
+      const avgGbp = data.avgGbp;
+      const tagDot = date => allTags[date] && allTags[date].length ? ' <span style="font-size:0.6rem;color:#6B6B3A">●</span>' : "";
 
       document.getElementById("todayCards").innerHTML = `
         <div class="card clickable" onclick="openSheet('${mostRecentDate}', ${mostRecentKwh}, ${mostRecentGbp})">
@@ -604,9 +821,9 @@
           ${hasToday && target.estimateGbp ? `<div class="card-estimate">Est. full day: £${target.estimateGbp} / ${target.estimate} kWh</div>` : ""}
           ${rate ? `<div class="card-tariff">${rate.toFixed(2)}p/kWh</div>` : ""}
         </div>
-        <div class="card clickable" onclick="openSheet('${ydayStr}', ${prev.totalKwh}, ${ydayGbp})">
+        <div class="card clickable" onclick="openSheet('${ydayStr}', ${prev.totalKwh}, ${prev.totalGbp})">
           <div class="card-label">Yesterday${tagDot(ydayStr)}</div>
-          <div class="card-value">${ydayGbp !== null ? `£${ydayGbp}` : `${prev.totalKwh} kWh`}</div>
+          <div class="card-value">${prev.totalGbp !== null ? `£${prev.totalGbp}` : `${prev.totalKwh} kWh`}</div>
           <div class="card-value-sub">${prev.totalKwh} kWh</div>
           ${ydayD ? `<div class="card-delta ${ydayD.cls}">${ydayD.sign}${ydayD.pct}% vs 30-day avg</div>` : ""}
           ${rate ? `<div class="card-tariff">${rate.toFixed(2)}p/kWh</div>` : ""}
@@ -623,56 +840,119 @@
     function renderHalfHourly(data) {
       const { target, prev, avgProfile } = data;
       const isHistorical = !data.isToday;
+      const rate = data.elecRate || currentElecRate;
 
-      const allTimes = Array.from(new Set([
+      const toVal = kwh => hhUnit === "gbp" && rate ? Math.round(kwh * rate / 100 * 1000) / 1000 : kwh;
+      const yLabel = hhUnit === "gbp" ? "£" : "kWh";
+
+      const validTimes = Array.from(new Set([
         ...Object.keys(avgProfile),
         ...prev.slots.map(s => s.time),
         ...target.slots.map(s => s.time),
-      ])).filter(t => t !== "00:00" || t === "00:00").sort();
+      ])).sort().filter((t, i, arr) => !(t === "00:00" && i > 0));
 
-      // Use only 00:00-23:30
-      const validTimes = allTimes.filter((t, i) => {
-        if (t === "00:00" && i > 0) return false;
-        return true;
-      });
+      const targetMap = Object.fromEntries(target.slots.map(s => [s.time, s.kwh]));
+      const prevMap = Object.fromEntries(prev.slots.filter((s, i) => i === 0 || s.time !== "00:00").map(s => [s.time, s.kwh]));
 
-      const targetMap = Object.fromEntries(target.slots.filter(s => s.time !== "00:00" || target.slots.indexOf(s) === 0).map(s => [s.time, s.kwh]));
-      const prevMap = Object.fromEntries(prev.slots.filter(s => s.time !== "00:00" || prev.slots.indexOf(s) === 0).map(s => [s.time, s.kwh]));
-
-      const latestIdx = target.slots.length
-        ? validTimes.indexOf(target.slots[Math.max(0, target.slots.length - 2)].time)
-        : -1;
+      const latestSlotTime = target.slots.length ? target.slots[target.slots.length - 1].time : null;
+      const latestIdx = latestSlotTime ? validTimes.indexOf(latestSlotTime) : -1;
 
       const targetValues = validTimes.map((t, i) => {
-        if (isHistorical) return targetMap[t] ?? null;
-        return i <= latestIdx ? (targetMap[t] ?? null) : null;
+        const v = targetMap[t];
+        if (v === undefined) return null;
+        if (isHistorical) return toVal(v);
+        return i <= latestIdx ? toVal(v) : null;
       });
-      const prevValues = validTimes.map(t => prevMap[t] ?? null);
-      const avgValues = validTimes.map(t => avgProfile[t] ? Math.round(avgProfile[t] * 1000) / 1000 : null);
+
+      const prevValues = validTimes.map(t => {
+        const v = prevMap[t];
+        return v !== undefined ? toVal(v) : null;
+      });
+
+      const avgValues = validTimes.map(t => {
+        const v = avgProfile[t];
+        return v !== undefined ? toVal(v) : null;
+      });
+
+      // Cumulative
+      let cumSum = 0;
+      const cumulativeValues = validTimes.map((t, i) => {
+        const v = targetMap[t] || 0;
+        if (isHistorical || i <= latestIdx) {
+          cumSum += v;
+          return Math.round(toVal(cumSum) * 1000) / 1000;
+        }
+        return null;
+      });
+
+      // Estimate extension
+      const lastCum = cumulativeValues[latestIdx] ?? 0;
+      let avgCumAtLatest = 0;
+      validTimes.slice(0, latestIdx + 1).forEach(t => { avgCumAtLatest += avgProfile[t] || 0; });
+      const scale = avgCumAtLatest > 0 ? (cumSum / avgCumAtLatest) : 1;
+
+      let avgCumRunning = avgCumAtLatest;
+      const estimateExt = validTimes.map((t, i) => {
+        if (i <= latestIdx || isHistorical) return null;
+        avgCumRunning += avgProfile[t] || 0;
+        return Math.round(toVal(avgCumRunning * scale) * 1000) / 1000;
+      });
+      if (latestIdx >= 0 && !isHistorical) estimateExt[latestIdx] = lastCum;
+
       const timeLabels = validTimes.map((t, i) => i % 4 === 0 ? t : "");
 
       if (halfHourlyChart) halfHourlyChart.destroy();
 
+      const datasets = [{
+        label: "Selected day",
+        data: hhShowCumulative ? cumulativeValues : targetValues,
+        borderColor: "#7B9E87", borderWidth: 2,
+        pointRadius: 0, tension: 0.3, fill: false, spanGaps: false,
+      }];
+
+      if (hhShowPrev) datasets.push({
+        label: "Prev day",
+        data: prevValues,
+        borderColor: "#a8c4b0", borderDash: [5,5], borderWidth: 1.5,
+        pointRadius: 0, tension: 0.3, fill: false,
+      });
+
+      if (hhShowAvg) datasets.push({
+        label: "30-day avg",
+        data: avgValues,
+        borderColor: "#C17D5A", borderDash: [2,4], borderWidth: 1.5,
+        pointRadius: 0, tension: 0.3, fill: false,
+      });
+
+      if (hhShowCumulative && !isHistorical) datasets.push({
+        label: "Estimated",
+        data: estimateExt,
+        borderColor: "#7B9E87", borderDash: [4,4], borderWidth: 1.5,
+        pointRadius: 0, tension: 0.3, fill: false,
+      });
+
       halfHourlyChart = new Chart(document.getElementById("halfHourlyChart"), {
         type: "line",
-        data: {
-          labels: timeLabels,
-          datasets: [
-            { label: "Selected day", data: targetValues, borderColor: "#7B9E87", borderWidth: 2, pointRadius: 0, tension: 0.3, fill: false, spanGaps: false },
-            { label: "Day before", data: prevValues, borderColor: "#a8c4b0", borderDash: [5,5], borderWidth: 1.5, pointRadius: 0, tension: 0.3, fill: false },
-            { label: "30-day avg", data: avgValues, borderColor: "#C17D5A", borderDash: [2,4], borderWidth: 1.5, pointRadius: 0, tension: 0.3, fill: false },
-          ]
-        },
+        data: { labels: timeLabels, datasets },
         options: {
           responsive: true,
           interaction: { mode: "index" },
           plugins: {
             legend: { display: false },
-            tooltip: { callbacks: { label: ctx => ctx.parsed.y === null ? null : `${ctx.dataset.label}: ${ctx.parsed.y} kWh` } }
+            tooltip: {
+              callbacks: {
+                label: ctx => ctx.parsed.y === null ? null : `${ctx.dataset.label}: ${ctx.parsed.y} ${yLabel}`
+              }
+            }
           },
           scales: {
             x: { ticks: { font: { size: 9 }, maxRotation: 0 } },
-            y: { ticks: { font: { size: 9 } } }
+            y: {
+              ticks: {
+                font: { size: 9 },
+                callback: v => hhUnit === "gbp" ? `£${v}` : `${v}`
+              }
+            }
           }
         }
       });
@@ -704,15 +984,12 @@
 
       if (weeklyChart) weeklyChart.destroy();
 
+      const datasets = [{ label: "This week", data: thisWeekValues, backgroundColor: "#7B9E87", borderRadius: 4 }];
+      if (weeklyShowLastWeek) datasets.push({ label: "Last week", data: lastWeekValues, backgroundColor: "#c8ddd0", borderRadius: 4 });
+
       weeklyChart = new Chart(document.getElementById("weeklyChart"), {
         type: "bar",
-        data: {
-          labels: weekLabels,
-          datasets: [
-            { label: "This week", data: thisWeekValues, backgroundColor: "#7B9E87", borderRadius: 4 },
-            { label: "Last week", data: lastWeekValues, backgroundColor: "#c8ddd0", borderRadius: 4 },
-          ]
-        },
+        data: { labels: weekLabels, datasets },
         options: {
           responsive: true,
           onClick: (e, elements) => {
@@ -756,13 +1033,24 @@
       const previousValues = data.previous.map(d => unit === "kwh" ? d.kwh : d.gbp);
       const currentDates = data.current.map(d => d.date);
 
+      // Pro-rated Ofgem: 2700 kWh/year
+      const days = data.current.length || 1;
+      const ofgemPeriodKwh = Math.round((2700 / 365 * days) * 10) / 10;
       const ofgemDaily = unit === "kwh"
         ? Math.round((2700/365)*100)/100
         : Math.round((2700/365*data.elecRate/100)*100)/100;
+      const ofgemTotal = unit === "kwh"
+        ? ofgemPeriodKwh
+        : Math.round(ofgemPeriodKwh * data.elecRate / 100 * 100) / 100;
 
       const currentTotal = unit === "kwh" ? data.currentTotalKwh : data.currentTotalGbp;
       const previousTotal = unit === "kwh" ? data.previousTotalKwh : data.previousTotalGbp;
-      const ofgemTotal = unit === "kwh" ? data.ofgemPeriodKwh : data.ofgemPeriodGbp;
+
+      // 14-day rolling average
+      const rollingAvg = currentValues.map((_, i) => {
+        const window = currentValues.slice(Math.max(0, i - 13), i + 1);
+        return Math.round((window.reduce((s, v) => s + v, 0) / window.length) * 100) / 100;
+      });
 
       const dayLabels = currentDates.map((d, i) => {
         const date = new Date(d + "T12:00:00");
@@ -775,7 +1063,13 @@
 
       document.getElementById("chartContainer").innerHTML = `
         <div class="chart-card">
-          <div class="chart-title">Period comparison</div>
+          <div class="chart-header">
+            <div><div class="chart-title">Period comparison</div></div>
+            <div class="icon-btn-group">
+              <button class="icon-btn ${showComparison ? "on" : ""}" id="sum-compare" title="Previous period">⏮</button>
+              <button class="icon-btn on" id="sum-ofgem" title="Ofgem typical">⚖</button>
+            </div>
+          </div>
           <div class="legend">
             <span><span class="legend-dot" style="background:#7B9E87"></span>${currentPeriodLabel(data.period)}</span>
             ${showComparison ? `<span><span class="legend-dot" style="background:#c8ddd0"></span>${periodLabel(data.period)}</span>` : ""}
@@ -784,11 +1078,19 @@
           <canvas id="summaryChart" height="80"></canvas>
         </div>
         <div class="chart-card">
-          <div class="chart-title">Daily usage <span class="chart-hint">tap a point to tag</span></div>
+          <div class="chart-header">
+            <div><div class="chart-title">Daily usage</div><span class="chart-hint">tap a point to tag</span></div>
+            <div class="icon-btn-group">
+              <button class="icon-btn ${showComparison ? "on" : ""}" id="daily-compare" title="Previous period">⏮</button>
+              <button class="icon-btn on" id="daily-ofgem" title="Ofgem reference">⚖</button>
+              <button class="icon-btn on" id="daily-trend" title="14-day trend">〰</button>
+            </div>
+          </div>
           <div class="legend">
             <span><span style="display:inline-block;width:16px;height:2px;background:#7B9E87;vertical-align:middle;margin-right:3px"></span>Current</span>
             ${showComparison && previousValues.length ? `<span><span style="display:inline-block;width:16px;border-top:2px dashed #a8c4b0;vertical-align:middle;margin-right:3px"></span>Previous</span>` : ""}
-            <span><span style="display:inline-block;width:16px;border-top:2px dotted #C17D5A;vertical-align:middle;margin-right:3px"></span>Ofgem avg</span>
+            <span><span style="display:inline-block;width:16px;border-top:2px dotted #C17D5A;vertical-align:middle;margin-right:3px"></span>Ofgem</span>
+            <span><span style="display:inline-block;width:16px;height:2px;background:#9B7D6A;vertical-align:middle;margin-right:3px"></span>14-day trend</span>
           </div>
           <canvas id="lineChart"></canvas>
         </div>
@@ -797,121 +1099,151 @@
       if (barChart) barChart.destroy();
       if (lineChart) lineChart.destroy();
 
-      barChart = new Chart(document.getElementById("summaryChart"), {
-        type: "bar",
-        data: {
-          labels: showComparison
-            ? [currentPeriodLabel(data.period), periodLabel(data.period), "Ofgem typical"]
-            : [currentPeriodLabel(data.period), "Ofgem typical"],
-          datasets: [{
-            data: showComparison ? [currentTotal, previousTotal, ofgemTotal] : [currentTotal, ofgemTotal],
-            backgroundColor: showComparison ? ["#7B9E87","#c8ddd0","#e8c4a8"] : ["#7B9E87","#e8c4a8"],
-            borderRadius: 4,
-          }]
-        },
-        options: {
-          responsive: true,
-          plugins: { legend: { display: false } },
-          scales: {
-            x: { ticks: { font: { size: 11 } } },
-            y: { ticks: { font: { size: 10 }, callback: v => unit === "kwh" ? `${v} kWh` : `£${v}` } }
-          }
-        }
-      });
+      let sumShowOfgem = true;
+      let dailyShowOfgem = true;
+      let dailyShowTrend = true;
 
-      const weekBandsPlugin = {
-        id: "weekBands",
-        beforeDraw(chart) {
-          const { ctx, chartArea, scales } = chart;
-          if (!chartArea) return;
-          let weekNum = 0;
-          currentDates.forEach((d, i) => {
-            const date = new Date(d + "T12:00:00");
-            if (date.getDay() === 1 && i > 0) weekNum++;
-            if (i === 0) weekNum = 0;
-            if (weekNum % 2 === 1) {
-              const x1 = scales.x.getPixelForValue(i - 0.5);
-              const x2 = scales.x.getPixelForValue(i + 0.5);
-              ctx.save();
-              ctx.fillStyle = "rgba(0,0,0,0.025)";
-              ctx.fillRect(x1, chartArea.top, x2 - x1, chartArea.height);
-              ctx.restore();
+      function buildSummaryChart() {
+        if (barChart) barChart.destroy();
+        const labels = [currentPeriodLabel(data.period)];
+        const values = [currentTotal];
+        const colors = ["#7B9E87"];
+        if (showComparison) { labels.push(periodLabel(data.period)); values.push(previousTotal); colors.push("#c8ddd0"); }
+        if (sumShowOfgem) { labels.push("Ofgem typical"); values.push(ofgemTotal); colors.push("#e8c4a8"); }
+
+        barChart = new Chart(document.getElementById("summaryChart"), {
+          type: "bar",
+          data: { labels, datasets: [{ data: values, backgroundColor: colors, borderRadius: 4 }] },
+          options: {
+            responsive: true,
+            plugins: { legend: { display: false } },
+            scales: {
+              x: { ticks: { font: { size: 11 } } },
+              y: { ticks: { font: { size: 10 }, callback: v => unit === "kwh" ? `${v} kWh` : `£${v}` } }
             }
-          });
-        }
-      };
-
-      const pointRadii = currentDates.map(d => allTags[d] && allTags[d].length ? 5 : 3);
-      const pointStyles = currentDates.map(d => allTags[d] && allTags[d].length ? "rectRot" : "circle");
-
-      const lineDatasets = [{
-        label: "Current",
-        data: currentValues,
-        borderColor: "#7B9E87",
-        backgroundColor: "rgba(123,158,135,0.07)",
-        borderWidth: 2,
-        pointRadius: pointRadii,
-        pointStyle: pointStyles,
-        pointBackgroundColor: "#7B9E87",
-        tension: 0.3,
-        fill: true,
-      }];
-
-      if (showComparison && previousValues.length) {
-        lineDatasets.push({
-          label: "Previous",
-          data: previousValues,
-          borderColor: "#a8c4b0",
-          borderDash: [5,5],
-          borderWidth: 1.5,
-          pointRadius: 0,
-          tension: 0.3,
-          fill: false,
+          }
         });
       }
 
-      lineDatasets.push({
-        label: "Ofgem avg",
-        data: currentDates.map(() => ofgemDaily),
-        borderColor: "#C17D5A",
-        borderDash: [2,4],
-        borderWidth: 1.5,
-        pointRadius: 0,
-        fill: false,
+      function buildLineChart() {
+        if (lineChart) lineChart.destroy();
+
+        const weekBandsPlugin = {
+          id: "weekBands",
+          beforeDraw(chart) {
+            const { ctx, chartArea, scales } = chart;
+            if (!chartArea) return;
+            let weekNum = 0;
+            currentDates.forEach((d, i) => {
+              const date = new Date(d + "T12:00:00");
+              if (date.getDay() === 1 && i > 0) weekNum++;
+              if (i === 0) weekNum = 0;
+              if (weekNum % 2 === 1) {
+                const x1 = scales.x.getPixelForValue(i - 0.5);
+                const x2 = scales.x.getPixelForValue(i + 0.5);
+                ctx.save();
+                ctx.fillStyle = "rgba(0,0,0,0.025)";
+                ctx.fillRect(x1, chartArea.top, x2 - x1, chartArea.height);
+                ctx.restore();
+              }
+            });
+          }
+        };
+
+        const lineDatasets = [{
+          label: "Current",
+          data: currentValues,
+          borderColor: "#7B9E87",
+          backgroundColor: "rgba(123,158,135,0.07)",
+          borderWidth: 2, pointRadius: 0, tension: 0.3, fill: true,
+        }];
+
+        if (showComparison && previousValues.length) lineDatasets.push({
+          label: "Previous", data: previousValues,
+          borderColor: "#a8c4b0", borderDash: [5,5],
+          borderWidth: 1.5, pointRadius: 0, tension: 0.3, fill: false,
+        });
+
+        if (dailyShowOfgem) lineDatasets.push({
+          label: "Ofgem avg",
+          data: currentDates.map(() => ofgemDaily),
+          borderColor: "#C17D5A", borderDash: [2,4],
+          borderWidth: 1.5, pointRadius: 0, fill: false,
+        });
+
+        if (dailyShowTrend) lineDatasets.push({
+          label: "14-day trend", data: rollingAvg,
+          borderColor: "#9B7D6A", borderWidth: 1.5,
+          pointRadius: 0, tension: 0.5, fill: false,
+        });
+
+        lineChart = new Chart(document.getElementById("lineChart"), {
+          type: "line",
+          data: { labels: dayLabels, datasets: lineDatasets },
+          plugins: [weekBandsPlugin],
+          options: {
+            responsive: true,
+            interaction: { mode: "index" },
+            onClick: (e, elements) => {
+              if (!elements.length) return;
+              const i = elements[0].dataIndex;
+              const d = currentData.current[i];
+              openSheet(currentDates[i], d.kwh, d.gbp);
+            },
+            plugins: {
+              legend: { display: false },
+              tooltip: {
+                callbacks: {
+                  title: items => fmtFull(currentDates[items[0].dataIndex]),
+                  afterBody: items => {
+                    const tags = allTags[currentDates[items[0].dataIndex]];
+                    return tags && tags.length ? `Tags: ${tags.join(", ")}` : "";
+                  },
+                  label: ctx => `${ctx.dataset.label}: ${unit === "kwh" ? `${ctx.parsed.y} kWh` : `£${ctx.parsed.y}`}`
+                }
+              }
+            },
+            scales: {
+              x: { ticks: { font: { size: 9 }, maxRotation: 45, maxTicksLimit: 31 } },
+              y: { ticks: { font: { size: 10 }, callback: v => unit === "kwh" ? `${v} kWh` : `£${v}` } }
+            }
+          }
+        });
+      }
+
+      // Summary toggles
+      document.getElementById("sum-compare").addEventListener("click", function() {
+        showComparison = !showComparison;
+        this.classList.toggle("on", showComparison);
+        buildSummaryChart();
+        buildLineChart();
+      });
+      document.getElementById("sum-ofgem").addEventListener("click", function() {
+        sumShowOfgem = !sumShowOfgem;
+        this.classList.toggle("on", sumShowOfgem);
+        buildSummaryChart();
       });
 
-      lineChart = new Chart(document.getElementById("lineChart"), {
-        type: "line",
-        data: { labels: dayLabels, datasets: lineDatasets },
-        plugins: [weekBandsPlugin],
-        options: {
-          responsive: true,
-          interaction: { mode: "index" },
-          onClick: (e, elements) => {
-            if (!elements.length) return;
-            const i = elements[0].dataIndex;
-            const d = currentData.current[i];
-            openSheet(currentDates[i], d.kwh, d.gbp);
-          },
-          plugins: {
-            legend: { display: false },
-            tooltip: {
-              callbacks: {
-                title: items => fmtFull(currentDates[items[0].dataIndex]),
-                afterBody: items => {
-                  const tags = allTags[currentDates[items[0].dataIndex]];
-                  return tags && tags.length ? `Tags: ${tags.join(", ")}` : "";
-                },
-                label: ctx => `${ctx.dataset.label}: ${unit === "kwh" ? `${ctx.parsed.y} kWh` : `£${ctx.parsed.y}`}`
-              }
-            }
-          },
-          scales: {
-            x: { ticks: { font: { size: 9 }, maxRotation: 45, maxTicksLimit: 31 } },
-            y: { ticks: { font: { size: 10 }, callback: v => unit === "kwh" ? `${v} kWh` : `£${v}` } }
-          }
-        }
+      // Daily toggles
+      document.getElementById("daily-compare").addEventListener("click", function() {
+        showComparison = !showComparison;
+        this.classList.toggle("on", showComparison);
+        buildLineChart();
+        buildSummaryChart();
       });
+      document.getElementById("daily-ofgem").addEventListener("click", function() {
+        dailyShowOfgem = !dailyShowOfgem;
+        this.classList.toggle("on", dailyShowOfgem);
+        buildLineChart();
+      });
+      document.getElementById("daily-trend").addEventListener("click", function() {
+        dailyShowTrend = !dailyShowTrend;
+        this.classList.toggle("on", dailyShowTrend);
+        buildLineChart();
+      });
+
+      buildSummaryChart();
+      buildLineChart();
     }
 
     function renderCards(data) {
@@ -936,13 +1268,14 @@
 
     function renderBenchmark(data) {
       const yourKwh = data.currentTotalKwh;
-      const ofgemKwh = data.ofgemPeriodKwh;
+      const days = data.current.length || 1;
+      const ofgemKwh = Math.round((2700/365*days)*10)/10;
       const max = Math.max(yourKwh, ofgemKwh) * 1.1;
       const over = yourKwh > ofgemKwh;
       const diffPct = (Math.abs(yourKwh - ofgemKwh) / ofgemKwh * 100).toFixed(0);
       return `
         <div class="bench-card">
-          <div class="bench-title">vs Ofgem typical household</div>
+          <div class="bench-title">vs Ofgem typical household (pro-rated)</div>
           <div class="bench-row">
             <div class="bench-label">You</div>
             <div class="bench-bar-wrap"><div class="bench-bar ${over ? "over" : ""}" style="width:${Math.min((yourKwh/max)*100,100)}%"></div></div>
@@ -954,10 +1287,10 @@
             <div class="bench-val">${ofgemKwh} kWh</div>
           </div>
           <div style="font-size:0.72rem;color:#999;margin-top:8px;line-height:1.5;">
-            Ofgem typical: 2,700 kWh per year.
+            Ofgem typical: 2,700 kWh/year scaled to ${days} days (${ofgemKwh} kWh).
             ${over
-              ? `<strong style="color:#C17D5A">You are using ${diffPct}% more than average for this period.</strong>`
-              : `<strong style="color:#27ae60">You are using ${diffPct}% less than average for this period.</strong>`}
+              ? `<strong style="color:#C17D5A">You are using ${diffPct}% more than average.</strong>`
+              : `<strong style="color:#27ae60">You are using ${diffPct}% less than average.</strong>`}
           </div>
         </div>
       `;
@@ -991,11 +1324,6 @@
       });
     });
 
-    document.getElementById("compareToggle").addEventListener("change", e => {
-      showComparison = e.target.checked;
-      if (currentData) renderCharts();
-    });
-
     async function loadDashboard() {
       document.getElementById("content").innerHTML = '<div class="loading-text">Loading...</div>';
       try {
@@ -1010,10 +1338,9 @@
         currentData = energy;
         allTags = tags;
         currentElecRate = energy.elecRate;
-
         document.getElementById("rateChip").textContent = `${energy.elecRate.toFixed(2)}p/kWh`;
-        renderWeeklyChart();
 
+        renderWeeklyChart();
         document.getElementById("content").innerHTML = `
           ${renderCards(energy)}
           ${renderBenchmark(energy)}
@@ -1025,6 +1352,7 @@
       }
     }
 
+    loadMemory();
     loadDashboard();
     loadHalfHourly();
   </script>
