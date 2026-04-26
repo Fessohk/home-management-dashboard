@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Home Energy Dashboard</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #F2EDE4;
+      color: #2C2C2C;
+      margin: 0;
+      padding: 16px;
+    }
+    h1 {
+      font-size: 1.4rem;
+      margin-bottom: 4px;
+    }
+    .subtitle {
+      color: #888;
+      font-size: 0.85rem;
+      margin-bottom: 24px;
+    }
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+    .card {
+      background: white;
+      border-radius: 12px;
+      padding: 16px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+    }
+    .card-label {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #888;
+      margin-bottom: 6px;
+    }
+    .card-value {
+      font-size: 1.6rem;
+      font-weight: 600;
+      color: #2C2C2C;
+    }
+    .card-sub {
+      font-size: 0.8rem;
+      color: #aaa;
+      margin-top: 4px;
+    }
+    .chart-card {
+      background: white;
+      border-radius: 12px;
+      padding: 16px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+      margin-bottom: 16px;
+    }
+    .chart-title {
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 12px;
+      color: #2C2C2C;
+    }
+    .rate-row {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+    .rate-chip {
+      background: #6B6B3A;
+      color: white;
+      border-radius: 20px;
+      padding: 6px 14px;
+      font-size: 0.8rem;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Energy Dashboard</h1>
+  <div class="subtitle">49 Gertrude Road · Last 30 days · Generated 26 April 2026, 01:26</div>
+
+  <div class="rate-row">
+    <div class="rate-chip">⚡ 24.99p/kWh</div>
+    <div class="rate-chip">🔥 5.90p/kWh</div>
+  </div>
+
+  <div class="cards">
+    <div class="card">
+      <div class="card-label">Total spend</div>
+      <div class="card-value">£75.88</div>
+      <div class="card-sub">last 30 days</div>
+    </div>
+    <div class="card">
+      <div class="card-label">Electricity</div>
+      <div class="card-value">£62.98</div>
+      <div class="card-sub">252.0 kWh</div>
+    </div>
+    <div class="card">
+      <div class="card-label">Gas</div>
+      <div class="card-value">£12.90</div>
+      <div class="card-sub">218.8 kWh</div>
+    </div>
+  </div>
+
+  <div class="chart-card">
+    <div class="chart-title">⚡ Electricity — daily kWh</div>
+    <canvas id="elecKwh"></canvas>
+  </div>
+
+  <div class="chart-card">
+    <div class="chart-title">⚡ Electricity — daily £</div>
+    <canvas id="elecGbp"></canvas>
+  </div>
+
+  <div class="chart-card">
+    <div class="chart-title">🔥 Gas — daily kWh</div>
+    <canvas id="gasKwh"></canvas>
+  </div>
+
+  <div class="chart-card">
+    <div class="chart-title">🔥 Gas — daily £</div>
+    <canvas id="gasGbp"></canvas>
+  </div>
+
+  <script>
+    const chartDefaults = {
+      responsive: true,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { ticks: { font: { size: 10 }, maxRotation: 45 } },
+        y: { ticks: { font: { size: 10 } } }
+      }
+    };
+
+    new Chart(document.getElementById('elecKwh'), {
+      type: 'bar',
+      data: {
+        labels: ['2026-03-27', '2026-03-28', '2026-03-29', '2026-03-30', '2026-03-31', '2026-04-01', '2026-04-02', '2026-04-03', '2026-04-04', '2026-04-05', '2026-04-06', '2026-04-07', '2026-04-08', '2026-04-09', '2026-04-10', '2026-04-11', '2026-04-12', '2026-04-13', '2026-04-14', '2026-04-15', '2026-04-16', '2026-04-17', '2026-04-18', '2026-04-19', '2026-04-20', '2026-04-21', '2026-04-22', '2026-04-23', '2026-04-24', '2026-04-25'],
+        datasets: [{ data: [6.73, 2.75, 7.79, 14.72, 7.74, 10.47, 4.97, 11.22, 5.99, 6.88, 14.26, 7.28, 4.37, 5.36, 9.18, 10.68, 11.7, 8.48, 4.2, 8.96, 12.99, 14.92, 4.27, 9.16, 14.12, 8.54, 8.31, 8.05, 7.65, 0.28], backgroundColor: '#7B9E87' }]
+      },
+      options: chartDefaults
+    });
+
+    new Chart(document.getElementById('elecGbp'), {
+      type: 'bar',
+      data: {
+        labels: ['2026-03-27', '2026-03-28', '2026-03-29', '2026-03-30', '2026-03-31', '2026-04-01', '2026-04-02', '2026-04-03', '2026-04-04', '2026-04-05', '2026-04-06', '2026-04-07', '2026-04-08', '2026-04-09', '2026-04-10', '2026-04-11', '2026-04-12', '2026-04-13', '2026-04-14', '2026-04-15', '2026-04-16', '2026-04-17', '2026-04-18', '2026-04-19', '2026-04-20', '2026-04-21', '2026-04-22', '2026-04-23', '2026-04-24', '2026-04-25'],
+        datasets: [{ data: [1.68, 0.69, 1.95, 3.68, 1.93, 2.62, 1.24, 2.8, 1.5, 1.72, 3.56, 1.82, 1.09, 1.34, 2.29, 2.67, 2.92, 2.12, 1.05, 2.24, 3.25, 3.73, 1.07, 2.29, 3.53, 2.13, 2.08, 2.01, 1.91, 0.07], backgroundColor: '#7B9E87' }]
+      },
+      options: chartDefaults
+    });
+
+    new Chart(document.getElementById('gasKwh'), {
+      type: 'bar',
+      data: {
+        labels: ['2026-04-01', '2026-04-02', '2026-04-03', '2026-04-04', '2026-04-24', '2026-04-25'],
+        datasets: [{ data: [63.54, 60.06, 50.76, 0.0, 44.39, 0.0], backgroundColor: '#C17D5A' }]
+      },
+      options: chartDefaults
+    });
+
+    new Chart(document.getElementById('gasGbp'), {
+      type: 'bar',
+      data: {
+        labels: ['2026-04-01', '2026-04-02', '2026-04-03', '2026-04-04', '2026-04-24', '2026-04-25'],
+        datasets: [{ data: [3.75, 3.54, 2.99, 0.0, 2.62, 0.0], backgroundColor: '#C17D5A' }]
+      },
+      options: chartDefaults
+    });
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Home Energy Dashboard</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #F2EDE4;
+      color: #2C2C2C;
+      margin: 0;
+      padding: 16px;
+    }
+    h1 { font-size: 1.4rem; margin-bottom: 4px; }
+    .subtitle { color: #888; font-size: 0.85rem; margin-bottom: 24px; }
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+    .card {
+      background: white;
+      border-radius: 12px;
+      padding: 16px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+    }
+    .card-label {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #888;
+      margin-bottom: 6px;
+    }
+    .card-value { font-size: 1.6rem; font-weight: 600; }
+    .card-sub { font-size: 0.8rem; color: #aaa; margin-top: 4px; }
+    .chart-card {
+      background: white;
+      border-radius: 12px;
+      padding: 16px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+      margin-bottom: 16px;
+    }
+    .chart-title { font-size: 0.85rem; font-weight: 600; margin-bottom: 12px; }
+    .rate-row { display: flex; gap: 12px; margin-bottom: 24px; flex-wrap: wrap; }
+    .rate-chip {
+      background: #6B6B3A;
+      color: white;
+      border-radius: 20px;
+      padding: 6px 14px;
+      font-size: 0.8rem;
+    }
+    .loading { color: #888; font-style: italic; }
+    .error { color: #c0392b; }
+  </style>
+</head>
+<body>
+
+  <h1>Energy Dashboard</h1>
+  <div class="subtitle">49 Gertrude Road · Last 30 days</div>
+
+  <div id="content" class="loading">Loading data from Octopus...</div>
+
+  <script>
+    async function loadDashboard() {
+      const container = document.getElementById("content");
+
+      try {
+        const res = await fetch("/api/energy");
+        const data = await res.json();
+
+        if (data.error) throw new Error(data.error);
+
+        const totalElecGbp = data.electricity.reduce((s, d) => s + d.gbp, 0);
+        const totalGasGbp = data.gas.reduce((s, d) => s + d.gbp, 0);
+        const totalElecKwh = data.electricity.reduce((s, d) => s + d.kwh, 0);
+        const totalGasKwh = data.gas.reduce((s, d) => s + d.kwh, 0);
+
+        container.innerHTML = `
+          <div class="rate-row">
+            <div class="rate-chip">⚡ ${data.elecRate.toFixed(2)}p/kWh</div>
+            <div class="rate-chip">🔥 ${data.gasRate.toFixed(2)}p/kWh</div>
+          </div>
+
+          <div class="cards">
+            <div class="card">
+              <div class="card-label">Total spend</div>
+              <div class="card-value">£${(totalElecGbp + totalGasGbp).toFixed(2)}</div>
+              <div class="card-sub">last 30 days</div>
+            </div>
+            <div class="card">
+              <div class="card-label">Electricity</div>
+              <div class="card-value">£${totalElecGbp.toFixed(2)}</div>
+              <div class="card-sub">${totalElecKwh.toFixed(1)} kWh</div>
+            </div>
+            <div class="card">
+              <div class="card-label">Gas</div>
+              <div class="card-value">£${totalGasGbp.toFixed(2)}</div>
+              <div class="card-sub">${totalGasKwh.toFixed(1)} kWh</div>
+            </div>
+          </div>
+
+          <div class="chart-card">
+            <div class="chart-title">⚡ Electricity — daily kWh</div>
+            <canvas id="elecKwh"></canvas>
+          </div>
+          <div class="chart-card">
+            <div class="chart-title">⚡ Electricity — daily £</div>
+            <canvas id="elecGbp"></canvas>
+          </div>
+          <div class="chart-card">
+            <div class="chart-title">🔥 Gas — daily kWh</div>
+            <canvas id="gasKwh"></canvas>
+          </div>
+          <div class="chart-card">
+            <div class="chart-title">🔥 Gas — daily £</div>
+            <canvas id="gasGbp"></canvas>
+          </div>
+        `;
+
+        const chartOpts = {
+          responsive: true,
+          plugins: { legend: { display: false } },
+          scales: {
+            x: { ticks: { font: { size: 10 }, maxRotation: 45 } },
+            y: { ticks: { font: { size: 10 } } }
+          }
+        };
+
+        const elecDates = data.electricity.map(d => d.date);
+        const gasDates = data.gas.map(d => d.date);
+
+        new Chart(document.getElementById("elecKwh"), {
+          type: "bar",
+          data: { labels: elecDates, datasets: [{ data: data.electricity.map(d => d.kwh), backgroundColor: "#7B9E87" }] },
+          options: chartOpts
+        });
+        new Chart(document.getElementById("elecGbp"), {
+          type: "bar",
+          data: { labels: elecDates, datasets: [{ data: data.electricity.map(d => d.gbp), backgroundColor: "#7B9E87" }] },
+          options: chartOpts
+        });
+        new Chart(document.getElementById("gasKwh"), {
+          type: "bar",
+          data: { labels: gasDates, datasets: [{ data: data.gas.map(d => d.kwh), backgroundColor: "#C17D5A" }] },
+          options: chartOpts
+        });
+        new Chart(document.getElementById("gasGbp"), {
+          type: "bar",
+          data: { labels: gasDates, datasets: [{ data: data.gas.map(d => d.gbp), backgroundColor: "#C17D5A" }] },
+          options: chartOpts
+        });
+
+      } catch (err) {
+        container.innerHTML = `<div class="error">Error loading data: ${err.message}</div>`;
+      }
+    }
+
+    loadDashboard();
+  </script>
+
+</body>
+</html>
