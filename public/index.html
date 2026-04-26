@@ -600,8 +600,22 @@
     });
 
     // AI analysis
-    async function runAnalysis(question = null) {
-      if (!lastHalfHourlyData || !lastHalfHourlyData.target.slots.length) return;
+   async function runAnalysis(question = null) {
+      if (!lastHalfHourlyData) return;
+
+      // Use today's slots if available, otherwise fall back to yesterday
+      const slots = lastHalfHourlyData.target.slots.length > 0
+        ? lastHalfHourlyData.target.slots
+        : lastHalfHourlyData.prev.slots;
+
+      const analysisDate = lastHalfHourlyData.target.slots.length > 0
+        ? lastHalfHourlyData.date
+        : new Date(Date.now() - 86400000).toLocaleDateString("en-CA");
+
+      if (!slots || slots.length === 0) {
+        document.getElementById("aiText").textContent = "Not enough data to analyse yet.";
+        return;
+      }
 
       const aiText = document.getElementById("aiText");
       const aiCost = document.getElementById("aiCost");
@@ -613,11 +627,11 @@
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            date: lastHalfHourlyData.date,
-            slots: lastHalfHourlyData.target.slots,
+            date: analysisDate,
+            slots: slots,
             avgProfile: lastHalfHourlyData.avgProfile,
             dayOfWeekProfiles: lastHalfHourlyData.dayOfWeekProfiles,
-            tags: allTags[lastHalfHourlyData.date] || [],
+            tags: allTags[analysisDate] || [],
             memory: userMemory,
             question: question || null,
             elecRate: lastHalfHourlyData.elecRate,
