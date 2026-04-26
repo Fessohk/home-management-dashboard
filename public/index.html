@@ -297,8 +297,11 @@
       </div>
       <button class="context-toggle" id="contextToggle">+ Add context</button>
       <div class="context-area" id="contextArea">
-        <textarea class="memory-field" id="memoryInline" rows="2" placeholder="Add anything that might help — e.g. we had guests this weekend, tumble dryer ran twice today..."></textarea>
-        <div class="memory-hint">Saved automatically and used in every analysis.</div>
+     <textarea class="memory-field" id="memoryInline" rows="2" placeholder="Add anything that might help — e.g. we had guests this weekend, tumble dryer ran twice today..."></textarea>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-top:6px">
+          <div class="memory-hint">Saved and used in every analysis.</div>
+          <button class="analyse-btn" id="saveMemoryInline" style="padding:5px 12px;font-size:0.72rem">Save</button>
+        </div>
       </div>
     </div>
 
@@ -474,6 +477,47 @@
       });
     });
 
+function renderMemoryDisplay(text) {
+      const el = document.getElementById("memoryDisplay");
+      if (!text) {
+        el.innerHTML = '<span style="color:#bbb;font-style:italic">No context saved yet. Add some below or near the AI analysis.</span>';
+        return;
+      }
+
+      // Parse into rough categories by scanning for keywords
+      const lines = text.split(/[.\n]+/).map(s => s.trim()).filter(s => s.length > 3);
+      const categories = {
+        "Schedule and WFH": [],
+        "Household": [],
+        "Appliances and habits": [],
+        "Other": [],
+      };
+
+      lines.forEach(line => {
+        const l = line.toLowerCase();
+        if (l.includes("wfh") || l.includes("office") || l.includes("work") || l.includes("monday") || l.includes("friday") || l.includes("tuesday") || l.includes("wednesday") || l.includes("thursday") || l.includes("weekend")) {
+          categories["Schedule and WFH"].push(line);
+        } else if (l.includes("partner") || l.includes("household") || l.includes("people") || l.includes("person") || l.includes("cook") || l.includes("dinner") || l.includes("home at")) {
+          categories["Household"].push(line);
+        } else if (l.includes("dishwasher") || l.includes("washing") || l.includes("dryer") || l.includes("heater") || l.includes("radiator") || l.includes("overnight") || l.includes("appliance") || l.includes("boiler") || l.includes("ev") || l.includes("car")) {
+          categories["Appliances and habits"].push(line);
+        } else {
+          categories["Other"].push(line);
+        }
+      });
+
+      let html = "";
+      Object.entries(categories).forEach(([cat, items]) => {
+        if (items.length === 0) return;
+        html += `<div style="margin-bottom:10px">
+          <div style="font-size:0.68rem;text-transform:uppercase;letter-spacing:0.08em;color:#6B6B3A;margin-bottom:4px">${cat}</div>
+          ${items.map(i => `<div style="font-size:0.82rem;color:#555;line-height:1.6;padding-left:8px;border-left:2px solid #c8ddd0;margin-bottom:3px">${i}</div>`).join("")}
+        </div>`;
+      });
+
+      el.innerHTML = html || `<div style="font-size:0.82rem;color:#555">${text}</div>`;
+    }
+
     async function loadMemory() {
       try {
         const res = await fetch("/api/energy-settings");
@@ -481,9 +525,10 @@
         userMemory = s.memory || "";
         document.getElementById("memoryInput").value = userMemory;
         document.getElementById("memoryInline").value = userMemory;
-        document.getElementById("memoryDisplay").textContent = userMemory || "No context saved yet.";
+        renderMemoryDisplay(userMemory);
       } catch {}
     }
+
 
     async function saveMemory(text) {
       userMemory = text;
@@ -494,8 +539,7 @@
       });
       document.getElementById("memoryInput").value = text;
       document.getElementById("memoryInline").value = text;
-      document.getElementById("memoryDisplay").textContent = text || "No context saved yet.";
-    }
+renderMemoryDisplay(text);    }
 
     document.getElementById("saveSettings").addEventListener("click", async () => {
       await saveMemory(document.getElementById("memoryInput").value);
@@ -503,8 +547,15 @@
       setTimeout(() => document.getElementById("saveSettings").textContent = "Save memory", 2000);
     });
 
-    document.getElementById("memoryInline").addEventListener("blur", async function() {
+document.getElementById("memoryInline").addEventListener("blur", async function() {
       if (this.value !== userMemory) await saveMemory(this.value);
+    });
+
+    document.getElementById("saveMemoryInline").addEventListener("click", async function() {
+      const text = document.getElementById("memoryInline").value;
+      await saveMemory(text);
+      this.textContent = "Saved";
+      setTimeout(() => this.textContent = "Save", 2000);
     });
 
     // Context toggle
@@ -802,12 +853,42 @@
 
         // If today has <20 slots, show yesterday's data with a note
         const useDate = data.target.slots.length >= 20 ? halfHourlyDate : null;
-        const displayData = data.target.slots.length >= 20 ? data : {
-          ...data,
-          target: data.prev,
-          isHistorical: true,
-          _showingYesterday: true,
-        };
+   const isManualNavigation = halfHourlyDate !== todayStr;
+        let displayData;
+
+        if (data.target.slots.length >= 20) {
+          // Enough data — show normally
+          displayData = data;
+  } else if (!isManualNavigation) {
+          // Auto-load with incomplete data — step back until we find a day with 20+ slots
+          let attempts = 0;
+          let foundData = null;
+          let checkDate = new Date(Date.now() - 86400000);
+
+          while (attempts < 7) {
+            const checkStr = checkDate.toLocaleDateString("en-CA");
+            const res2 = await fetch(`/api/energy-today?date=${checkStr}`);
+            const data2 = await res2.json();
+            if (data2.target.slots.length >= 20) {
+              foundData = data2;
+              halfHourlyDate = checkStr;
+              document.getElementById("dateInput").value = checkStr;
+              updateNextBtn();
+              document.getElementById("dateNavLabel").textContent = fmtShort(checkStr);
+              lastHalfHourlyData = data2;
+              break;
+            }
+            checkDate.setDate(checkDate.getDate() - 1);
+            attempts++;
+          }
+
+          displayData = foundData || { ...data, target: data.prev, isHistorical: true };
+        }
+        else {
+          // Manual navigation to an incomplete day — show what we have with a note
+          displayData = { ...data, isHistorical: true };
+          document.getElementById("dateNavLabel").textContent = fmtShort(halfHourlyDate) + " (incomplete)";
+        }
 
         renderHalfHourly(displayData);
         if (isToday) renderTodayCards(data);
@@ -939,16 +1020,38 @@
         pointRadius: 0, tension: 0.3, fill: false, spanGaps: false,
       }];
 
+      // Cumulative prev day
+      const cumulativePrev = (() => {
+        let sum = 0;
+        return validTimes.map(t => {
+          const v = prevMap[t];
+          if (v === undefined) return null;
+          sum += v;
+          return Math.round(toVal(sum) * 1000) / 1000;
+        });
+      })();
+
+      // Cumulative avg
+      const cumulativeAvg = (() => {
+        let sum = 0;
+        return validTimes.map(t => {
+          const v = avgProfile[t];
+          if (v === undefined) return null;
+          sum += v;
+          return Math.round(toVal(sum) * 1000) / 1000;
+        });
+      })();
+
       if (hhShowPrev) datasets.push({
         label: "Prev day",
-        data: prevValues,
+        data: hhShowCumulative ? cumulativePrev : prevValues,
         borderColor: "#a8c4b0", borderDash: [5,5], borderWidth: 1.5,
         pointRadius: 0, tension: 0.3, fill: false,
       });
 
       if (hhShowAvg) datasets.push({
         label: "30-day avg",
-        data: avgValues,
+        data: hhShowCumulative ? cumulativeAvg : avgValues,
         borderColor: "#C17D5A", borderDash: [2,4], borderWidth: 1.5,
         pointRadius: 0, tension: 0.3, fill: false,
       });
@@ -960,10 +1063,19 @@
         pointRadius: 0, tension: 0.3, fill: false,
       });
 
-      // Y axis max — use global max for consistency
-      const allValues = [...targetValues, ...prevValues, ...avgValues].filter(v => v !== null);
-      const localMax = Math.max(...allValues, 0);
-      const yMax = Math.ceil(Math.max(localMax, hhUnit === "gbp" ? globalMaxGbp / 48 : globalMaxKwh / 48) * 1.1 * 10) / 10;
+      // Y axis max — use global daily max scaled to half-hourly slot
+      // Global max is per day, divide by ~10 to get a sensible per-slot ceiling
+      const globalSlotMax = hhUnit === "gbp"
+        ? Math.ceil((globalMaxGbp / 10) * 1.2 * 100) / 100
+        : Math.ceil((globalMaxKwh / 10) * 1.2 * 10) / 10;
+
+      const localValues = hhShowCumulative
+        ? [...cumulativeValues, ...cumulativePrev, ...cumulativeAvg].filter(v => v !== null)
+        : [...targetValues, ...prevValues, ...avgValues].filter(v => v !== null);
+      const localMax = Math.max(...localValues, 0);
+      const yMax = hhShowCumulative
+        ? Math.ceil(localMax * 1.1 * 10) / 10
+        : Math.max(localMax, globalSlotMax);
 
       halfHourlyChart = new Chart(document.getElementById("halfHourlyChart"), {
         type: "line",
@@ -994,22 +1106,27 @@
       const dow = today.getDay() === 0 ? 6 : today.getDay() - 1;
       const weekLabels = ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"];
 
-      const thisWeekDates = weekLabels.map((_, i) => {
+   const thisWeekDates = weekLabels.map((_, i) => {
         const d = new Date(today);
         d.setDate(today.getDate() - dow + i);
-        return d.toLocaleDateString("en-CA");
+        return d.toLocaleDateString("en-CA", { timeZone: "Europe/London" });
       });
       const lastWeekDates = thisWeekDates.map(d => {
         const ld = new Date(d + "T12:00:00");
         ld.setDate(ld.getDate() - 7);
-        return ld.toLocaleDateString("en-CA");
+        return ld.toLocaleDateString("en-CA", { timeZone: "Europe/London" });
       });
 
       const dayMap = {};
       [...currentData.current, ...currentData.previous].forEach(d => { dayMap[d.date] = d; });
 
-      const thisWeekValues = thisWeekDates.map(d => dayMap[d] ? (activeUnit === "kwh" ? dayMap[d].kwh : dayMap[d].gbp) : null);
-      const lastWeekValues = lastWeekDates.map(d => dayMap[d] ? (activeUnit === "kwh" ? dayMap[d].kwh : dayMap[d].gbp) : null);
+const thisWeekValues = thisWeekDates.map(d => {
+  const entry = dayMap[d];
+  if (!entry) return null;
+  // Hide today if no confirmed data yet
+  if (d === todayStr && lastHalfHourlyData && lastHalfHourlyData.target.slots.length < 20) return null;
+  return activeUnit === "kwh" ? entry.kwh : entry.gbp;
+});      const lastWeekValues = lastWeekDates.map(d => dayMap[d] ? (activeUnit === "kwh" ? dayMap[d].kwh : dayMap[d].gbp) : null);
 
       if (weeklyChart) weeklyChart.destroy();
 

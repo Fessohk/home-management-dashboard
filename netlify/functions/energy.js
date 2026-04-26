@@ -82,8 +82,21 @@ exports.handler = async function (event) {
       gbp: Math.round((r.consumption * elecRate / 100) * 100) / 100,
     }));
 
-    const current = mapData(currentData);
-    const previous = mapData(previousData);
+// Remove today and any day with suspiciously low consumption (incomplete upload)
+    const todayUK = new Date().toLocaleDateString("en-CA", { timeZone: "Europe/London" });
+    const avgKwh = currentData.length > 1
+      ? currentData.slice(0, -1).reduce((s, r) => s + r.consumption, 0) / (currentData.length - 1)
+      : 5;
+
+    const current = mapData(currentData).filter(d => {
+      if (d.date === todayUK) return false;
+      if (d.kwh < avgKwh * 0.1 && d.kwh < 1) return false;
+      return true;
+    });
+    const previous = mapData(previousData).filter(d => {
+      if (d.kwh < 1) return false;
+      return true;
+    });
 
     // Ofgem typical: 2700 kWh/year electricity
     const ofgemDailyKwh = 2700 / 365;
