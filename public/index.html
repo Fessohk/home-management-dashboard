@@ -8,62 +8,52 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
-
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      background: #F2EDE4;
-      color: #2C2C2C;
-      padding-bottom: 80px;
-    }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #F2EDE4; color: #2C2C2C; padding-bottom: 80px; }
 
     @media (prefers-color-scheme: dark) {
       body { background: #1A1A14; color: #E8E4DC; }
       .header { background: #242418; }
-      .card, .chart-card, .bench-card, .about-card, .error-card, .settings-panel, .bottom-sheet { background: #242418; }
+      .card, .chart-card, .bench-card, .about-card, .error-card, .settings-panel, .bottom-sheet, .ai-summary-card, .ai-thread-card { background: #242418; }
       .right-now-zone { background: #1E1E18; }
       .section-divider { background: #3A3A2E; }
       .card-label { color: #888; }
       .card-value { color: #E8E4DC; }
-      .card-value-sub, .card-sub, .card-tariff, .card-estimate, .about-text { color: #777; }
+      .card-value-sub, .card-sub, .card-tariff, .card-estimate { color: #777; }
       .tab { border-color: #3A3A2E; color: #888; }
       .toggle-group { border-color: #3A3A2E; }
       .toggle-btn { color: #888; }
       .date-nav-btn { border-color: #3A3A2E; color: #888; }
       .date-nav-input { border-color: #3A3A2E; background: #1A1A14; color: #E8E4DC; }
       .bench-bar-wrap { background: #2E2E22; }
-      .bench-label { color: #888; }
-      .bench-val { color: #E8E4DC; }
       .bottom-nav { background: #242418; border-color: #3A3A2E; }
-      .bottom-nav-btn { color: #666; }
       .bottom-sheet { background: #242418; }
       .sheet-handle { background: #3A3A2E; }
-      .sheet-section { color: #666; }
       .tag-btn { border-color: #3A3A2E; color: #888; }
       .legend { color: #777; }
-      .chart-title { color: #E8E4DC; }
-      .zone-heading, .section-heading { color: #E8E4DC; }
-      .ai-card { background: #1E2820; border-color: #2E3D30; }
-      .ai-text { color: #C8DDD0; }
-      .memory-field, .analyse-input { background: #1A1A14; border-color: #3A3A2E; color: #E8E4DC; }
+      .chart-title, .zone-heading, .section-heading { color: #E8E4DC; }
       .icon-btn { border-color: #3A3A2E; color: #888; }
       .icon-btn.on { background: #6B6B3A; border-color: #6B6B3A; color: white; }
-      .settings-field { background: #1A1A14; border-color: #3A3A2E; color: #E8E4DC; }
-      .settings-tab-btn { border-color: #3A3A2E; color: #888; }
       .hh-unit-toggle { border-color: #3A3A2E; }
       .hh-unit-btn { color: #888; }
+      .memory-field, .analyse-input, .settings-field { background: #1A1A14; border-color: #3A3A2E; color: #E8E4DC; }
+      .settings-tab-btn { border-color: #3A3A2E; color: #888; }
+      .ai-headline { color: #C8DDD0; }
+      .ai-bullet { color: #B0C8B8; }
+      .ai-thread-question { color: #888; }
+      .ai-thread-answer { color: #C8DDD0; }
+      .context-toggle { color: #777; }
     }
 
     body.dark { background: #1A1A14; color: #E8E4DC; }
     body.dark .header { background: #242418; }
     body.dark .card, body.dark .chart-card, body.dark .bench-card,
     body.dark .about-card, body.dark .error-card, body.dark .settings-panel,
-    body.dark .bottom-sheet { background: #242418; }
+    body.dark .bottom-sheet, body.dark .ai-summary-card, body.dark .ai-thread-card { background: #242418; }
     body.dark .right-now-zone { background: #1E1E18; }
     body.dark .section-divider { background: #3A3A2E; }
     body.dark .card-label { color: #888; }
     body.dark .card-value { color: #E8E4DC; }
-    body.dark .card-value-sub, body.dark .card-sub, body.dark .card-tariff,
-    body.dark .card-estimate, body.dark .about-text { color: #777; }
+    body.dark .card-value-sub, body.dark .card-sub, body.dark .card-tariff { color: #777; }
     body.dark .tab { border-color: #3A3A2E; color: #888; }
     body.dark .toggle-group { border-color: #3A3A2E; }
     body.dark .toggle-btn { color: #888; }
@@ -76,78 +66,76 @@
     body.dark .tag-btn { border-color: #3A3A2E; color: #888; }
     body.dark .legend { color: #777; }
     body.dark .chart-title, body.dark .zone-heading, body.dark .section-heading { color: #E8E4DC; }
-    body.dark .ai-card { background: #1E2820; border-color: #2E3D30; }
-    body.dark .ai-text { color: #C8DDD0; }
-    body.dark .memory-field, body.dark .analyse-input { background: #1A1A14; border-color: #3A3A2E; color: #E8E4DC; }
     body.dark .icon-btn { border-color: #3A3A2E; color: #888; }
-    body.dark .icon-btn.on { background: #6B6B3A; border-color: #6B6B3A; color: white; }
-    body.dark .settings-field { background: #1A1A14; border-color: #3A3A2E; color: #E8E4DC; }
-    body.dark .settings-tab-btn { border-color: #3A3A2E; color: #888; }
+    body.dark .icon-btn.on { background: #6B6B3A; }
     body.dark .hh-unit-toggle { border-color: #3A3A2E; }
     body.dark .hh-unit-btn { color: #888; }
-
+    body.dark .memory-field, body.dark .analyse-input, body.dark .settings-field { background: #1A1A14; border-color: #3A3A2E; color: #E8E4DC; }
+    body.dark .settings-tab-btn { border-color: #3A3A2E; color: #888; }
+    body.dark .ai-headline { color: #C8DDD0; }
+    body.dark .ai-bullet { color: #B0C8B8; }
+    body.dark .ai-thread-question { color: #888; }
+    body.dark .ai-thread-answer { color: #C8DDD0; }
+    body.dark .context-toggle { color: #777; }
     body.light { background: #F2EDE4; color: #2C2C2C; }
     body.light .header, body.light .card, body.light .chart-card { background: white; }
 
-    /* Header */
-    .header {
-      background: white; padding: 16px;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.08);
-      position: sticky; top: 0; z-index: 50;
-    }
-    .header-inner {
-      max-width: 900px; margin: 0 auto;
-      display: flex; align-items: center; justify-content: space-between;
-    }
+    .header { background: white; padding: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); position: sticky; top: 0; z-index: 50; }
+    .header-inner { max-width: 900px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; }
     .logo { font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 600; }
     .logo span { color: #6B6B3A; }
     .header-actions { display: flex; gap: 6px; align-items: center; }
-    .header-icon-btn {
-      background: transparent; border: 1.5px solid #c8c0b0;
-      border-radius: 20px; padding: 5px 10px; font-size: 0.85rem;
-      cursor: pointer; color: inherit; line-height: 1;
-    }
-    .header-nav-btn {
-      padding: 5px 14px; border-radius: 20px; border: none;
-      background: #6B6B3A; color: white; font-size: 0.78rem; cursor: pointer;
-    }
+    .header-icon-btn { background: transparent; border: 1.5px solid #c8c0b0; border-radius: 20px; padding: 5px 10px; font-size: 0.85rem; cursor: pointer; color: inherit; }
+    .header-nav-btn { padding: 5px 14px; border-radius: 20px; border: none; background: #6B6B3A; color: white; font-size: 0.78rem; cursor: pointer; }
 
     .main { max-width: 900px; margin: 0 auto; padding: 16px; }
 
-    /* Settings panel */
-    .settings-panel {
-      background: white; border-radius: 16px; padding: 16px;
-      margin-bottom: 16px; display: none;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.07);
-    }
+    /* Settings */
+    .settings-panel { background: white; border-radius: 16px; padding: 16px; margin-bottom: 16px; display: none; box-shadow: 0 1px 4px rgba(0,0,0,0.07); }
     .settings-panel.open { display: block; }
     .settings-tabs { display: flex; gap: 6px; margin-bottom: 16px; }
-    .settings-tab-btn {
-      padding: 5px 14px; border-radius: 20px;
-      border: 1.5px solid #c8c0b0; background: transparent;
-      font-size: 0.78rem; cursor: pointer; color: #555;
-    }
+    .settings-tab-btn { padding: 5px 14px; border-radius: 20px; border: 1.5px solid #c8c0b0; background: transparent; font-size: 0.78rem; cursor: pointer; color: #555; }
     .settings-tab-btn.active { background: #6B6B3A; border-color: #6B6B3A; color: white; }
     .settings-tab-content { display: none; }
     .settings-tab-content.active { display: block; }
     .settings-section-title { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em; color: #999; margin-bottom: 8px; margin-top: 14px; }
-    .settings-field {
-      width: 100%; border: 1.5px solid #c8c0b0; border-radius: 8px;
-      padding: 10px 12px; font-size: 0.82rem; font-family: inherit;
-      background: white; color: #2C2C2C; line-height: 1.5;
-    }
-    .settings-memory-display {
-      font-size: 0.82rem; color: #666; line-height: 1.6;
-      background: #f8f5f0; border-radius: 8px; padding: 12px;
-      white-space: pre-wrap;
-    }
-    .settings-save-btn {
-      margin-top: 14px; padding: 10px 20px; background: #6B6B3A;
-      color: white; border: none; border-radius: 20px; font-size: 0.82rem;
-      cursor: pointer; font-family: inherit;
-    }
+    .settings-field { width: 100%; border: 1.5px solid #c8c0b0; border-radius: 8px; padding: 10px 12px; font-size: 0.82rem; font-family: inherit; background: white; color: #2C2C2C; line-height: 1.5; }
+    .settings-memory-display { font-size: 0.82rem; color: #666; line-height: 1.6; background: #f8f5f0; border-radius: 8px; padding: 12px; white-space: pre-wrap; min-height: 40px; }
+    .settings-save-btn { margin-top: 14px; padding: 10px 20px; background: #6B6B3A; color: white; border: none; border-radius: 20px; font-size: 0.82rem; cursor: pointer; font-family: inherit; }
     .about-section { font-size: 0.82rem; color: #666; line-height: 1.7; }
     .about-section h3 { font-family: 'Playfair Display', serif; font-size: 0.9rem; margin-bottom: 6px; margin-top: 14px; color: #2C2C2C; }
+
+    /* AI Summary */
+    .ai-summary-card { background: white; border-radius: 16px; padding: 16px; margin-bottom: 14px; box-shadow: 0 1px 4px rgba(0,0,0,0.07); border-left: 3px solid #6B6B3A; }
+    .ai-summary-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+    .ai-summary-title { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.08em; color: #6B6B3A; }
+    .ai-summary-meta { font-size: 0.68rem; color: #bbb; }
+    .ai-headline { font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 600; margin-bottom: 8px; color: #2C2C2C; line-height: 1.4; }
+    .ai-bullets { list-style: none; padding: 0; margin: 0 0 10px; }
+    .ai-bullets li { font-size: 0.82rem; line-height: 1.6; color: #444; padding-left: 14px; position: relative; margin-bottom: 3px; }
+    .ai-bullets li::before { content: "•"; position: absolute; left: 0; color: #6B6B3A; }
+    .ai-loading-text { font-size: 0.82rem; color: #888; font-style: italic; }
+    .ai-refresh-btn { padding: 5px 12px; background: transparent; border: 1.5px solid #6B6B3A; border-radius: 20px; font-size: 0.72rem; color: #6B6B3A; cursor: pointer; font-family: inherit; }
+    .ai-refresh-btn:disabled { opacity: 0.5; cursor: default; }
+
+    /* AI Thread */
+    .ai-thread-card { background: white; border-radius: 16px; padding: 16px; margin-bottom: 14px; box-shadow: 0 1px 4px rgba(0,0,0,0.07); }
+    .ai-thread-title { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.08em; color: #999; margin-bottom: 12px; }
+    .ai-thread { display: flex; flex-direction: column; gap: 10px; margin-bottom: 12px; }
+    .ai-thread-item { padding: 10px 12px; border-radius: 10px; font-size: 0.82rem; line-height: 1.6; }
+    .ai-thread-question { background: #f0ebe3; color: #555; }
+    .ai-thread-answer { background: #f0f5f1; color: #2C2C2C; border-left: 2px solid #7B9E87; }
+    .ai-thread-cost { font-size: 0.68rem; color: #bbb; margin-top: 4px; }
+    .ai-ask-row { display: flex; gap: 8px; }
+    .analyse-input { flex: 1; min-width: 0; border: 1.5px solid #c8c0b0; border-radius: 8px; padding: 8px 10px; font-size: 0.78rem; font-family: inherit; background: white; color: #2C2C2C; }
+    .analyse-btn { padding: 8px 16px; background: #6B6B3A; color: white; border: none; border-radius: 8px; font-size: 0.78rem; cursor: pointer; font-family: inherit; white-space: nowrap; }
+
+    /* Context / memory toggle */
+    .context-toggle { font-size: 0.72rem; color: #999; cursor: pointer; display: inline-flex; align-items: center; gap: 4px; margin-top: 10px; background: none; border: none; font-family: inherit; padding: 0; }
+    .context-area { display: none; margin-top: 8px; }
+    .context-area.open { display: block; }
+    .memory-field { width: 100%; border: 1.5px solid #c8c0b0; border-radius: 8px; padding: 8px 10px; font-size: 0.78rem; font-family: inherit; background: white; color: #2C2C2C; resize: vertical; }
+    .memory-hint { font-size: 0.68rem; color: #bbb; margin-top: 4px; }
 
     /* Right now zone */
     .right-now-zone { background: #EDE8DF; border-radius: 16px; padding: 16px; margin-bottom: 14px; }
@@ -156,7 +144,6 @@
     .section-divider { height: 1px; background: #D4CDB8; margin: 20px 0; }
     .section-heading { font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 600; margin-bottom: 12px; }
 
-    /* Cards */
     .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; margin-bottom: 14px; }
     .card { background: white; border-radius: 12px; padding: 14px; box-shadow: 0 1px 4px rgba(0,0,0,0.07); }
     .card.clickable { cursor: pointer; }
@@ -171,102 +158,38 @@
     .up { color: #c0392b; }
     .down { color: #27ae60; }
 
-    /* Chart cards */
     .chart-card { background: white; border-radius: 12px; padding: 16px; box-shadow: 0 1px 4px rgba(0,0,0,0.07); margin-bottom: 14px; }
     .chart-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 8px; gap: 8px; }
     .chart-title { font-size: 0.82rem; font-weight: 600; }
     .chart-hint { font-size: 0.7rem; color: #bbb; font-weight: 400; display: block; margin-top: 2px; }
-
-    /* Icon buttons for chart toggles */
-    .icon-btn-group { display: flex; gap: 4px; flex-wrap: wrap; }
-    .icon-btn {
-      width: 32px; height: 32px;
-      border-radius: 8px; border: 1.5px solid #c8c0b0;
-      background: transparent; cursor: pointer; color: #888;
-      font-size: 0.9rem; display: flex; align-items: center; justify-content: center;
-      transition: all 0.15s;
-      position: relative;
-    }
-    .icon-btn.on { background: #6B6B3A; border-color: #6B6B3A; color: white; }
-    .icon-btn[title]:hover::after {
-      content: attr(title);
-      position: absolute; bottom: -24px; left: 50%; transform: translateX(-50%);
-      background: #2C2C2C; color: white; padding: 2px 6px; border-radius: 4px;
-      font-size: 0.65rem; white-space: nowrap; z-index: 10; pointer-events: none;
-    }
-
-    /* Half-hourly unit toggle */
-    .hh-unit-toggle {
-      display: flex; border: 1.5px solid #c8c0b0;
-      border-radius: 20px; overflow: hidden;
-    }
-    .hh-unit-btn {
-      padding: 3px 10px; font-size: 0.72rem; border: none;
-      background: transparent; cursor: pointer; color: #555;
-    }
-    .hh-unit-btn.active { background: #6B6B3A; color: white; }
-
     .legend { display: flex; gap: 10px; font-size: 0.7rem; color: #888; margin-bottom: 8px; flex-wrap: wrap; align-items: center; }
     .legend-dot { display: inline-block; width: 8px; height: 8px; border-radius: 2px; margin-right: 3px; }
 
-    /* Date nav */
+    .icon-btn-group { display: flex; gap: 4px; flex-wrap: wrap; }
+    .icon-btn { width: 32px; height: 32px; border-radius: 8px; border: 1.5px solid #c8c0b0; background: transparent; cursor: pointer; color: #888; font-size: 0.9rem; display: flex; align-items: center; justify-content: center; transition: all 0.15s; position: relative; }
+    .icon-btn.on { background: #6B6B3A; border-color: #6B6B3A; color: white; }
+    .icon-btn[title]:hover::after { content: attr(title); position: absolute; bottom: -24px; left: 50%; transform: translateX(-50%); background: #2C2C2C; color: white; padding: 2px 6px; border-radius: 4px; font-size: 0.65rem; white-space: nowrap; z-index: 10; pointer-events: none; }
+
+    .hh-unit-toggle { display: flex; border: 1.5px solid #c8c0b0; border-radius: 20px; overflow: hidden; }
+    .hh-unit-btn { padding: 3px 10px; font-size: 0.72rem; border: none; background: transparent; cursor: pointer; color: #555; }
+    .hh-unit-btn.active { background: #6B6B3A; color: white; }
+
     .date-nav { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
-    .date-nav-btn {
-      width: 28px; height: 28px; border-radius: 50%;
-      border: 1.5px solid #c8c0b0; background: transparent;
-      cursor: pointer; font-size: 0.9rem; color: inherit;
-      display: flex; align-items: center; justify-content: center;
-    }
+    .date-nav-btn { width: 28px; height: 28px; border-radius: 50%; border: 1.5px solid #c8c0b0; background: transparent; cursor: pointer; font-size: 0.9rem; color: inherit; display: flex; align-items: center; justify-content: center; }
     .date-nav-btn:disabled { opacity: 0.3; cursor: default; }
-    .date-nav-input {
-      border: 1.5px solid #c8c0b0; border-radius: 8px;
-      padding: 4px 8px; font-size: 0.78rem; color: inherit;
-      background: white; font-family: inherit;
-    }
+    .date-nav-input { border: 1.5px solid #c8c0b0; border-radius: 8px; padding: 4px 8px; font-size: 0.78rem; color: inherit; background: white; font-family: inherit; }
     .date-nav-label { font-size: 0.78rem; color: #888; flex: 1; }
 
-    /* Period tabs */
     .tabs { display: flex; gap: 6px; margin-bottom: 12px; flex-wrap: wrap; }
     .tab { padding: 6px 14px; border-radius: 20px; border: 1.5px solid #c8c0b0; background: transparent; font-size: 0.78rem; cursor: pointer; color: #555; }
     .tab.active { background: #6B6B3A; border-color: #6B6B3A; color: white; }
 
-    /* Controls */
     .controls { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; flex-wrap: wrap; }
     .toggle-group { display: flex; border: 1.5px solid #c8c0b0; border-radius: 20px; overflow: hidden; }
     .toggle-btn { padding: 5px 14px; font-size: 0.78rem; border: none; background: transparent; cursor: pointer; color: #555; }
     .toggle-btn.active { background: #6B6B3A; color: white; }
     .rate-chip { background: #6B6B3A; color: white; border-radius: 20px; padding: 5px 12px; font-size: 0.75rem; margin-left: auto; }
 
-    /* AI card */
-    .ai-card {
-      background: #F0F5F1; border: 1px solid #C8DDD0;
-      border-radius: 12px; padding: 14px; margin-bottom: 0;
-    }
-    .ai-card-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
-    .ai-card-title { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em; color: #5C7A6B; }
-    .ai-cost { font-size: 0.68rem; color: #888; }
-    .ai-text { font-size: 0.84rem; line-height: 1.6; color: #2C2C2C; min-height: 40px; }
-    .ai-loading { font-size: 0.82rem; color: #888; font-style: italic; }
-    .analyse-row { display: flex; gap: 8px; margin-top: 12px; }
-    .analyse-input {
-      flex: 1; min-width: 0; border: 1.5px solid #c8c0b0; border-radius: 8px;
-      padding: 7px 10px; font-size: 0.78rem; font-family: inherit;
-      background: white; color: #2C2C2C;
-    }
-    .analyse-btn {
-      padding: 7px 16px; background: #6B6B3A; color: white;
-      border: none; border-radius: 8px; font-size: 0.78rem;
-      cursor: pointer; font-family: inherit; white-space: nowrap;
-    }
-    .memory-field {
-      width: 100%; margin-top: 10px;
-      border: 1.5px solid #c8c0b0; border-radius: 8px;
-      padding: 8px 10px; font-size: 0.78rem; font-family: inherit;
-      background: white; color: #2C2C2C; resize: vertical;
-    }
-    .memory-hint { font-size: 0.68rem; color: #999; margin-top: 4px; }
-
-    /* Benchmarking */
     .bench-card { background: white; border-radius: 12px; padding: 14px 16px; box-shadow: 0 1px 4px rgba(0,0,0,0.07); margin-bottom: 16px; }
     .bench-title { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.08em; color: #999; margin-bottom: 10px; }
     .bench-row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
@@ -276,42 +199,24 @@
     .bench-label { width: 60px; color: #555; font-size: 0.75rem; }
     .bench-val { width: 70px; text-align: right; color: #333; font-weight: 500; font-size: 0.75rem; }
 
-    /* About */
     .about-card { background: white; border-radius: 12px; padding: 16px; box-shadow: 0 1px 4px rgba(0,0,0,0.07); margin-bottom: 14px; }
     .about-title { font-family: 'Playfair Display', serif; font-size: 0.95rem; font-weight: 600; margin-bottom: 8px; }
     .about-text { font-size: 0.82rem; color: #666; line-height: 1.6; }
 
-    /* Error */
     .error-card { background: white; border-radius: 12px; padding: 20px; box-shadow: 0 1px 4px rgba(0,0,0,0.07); text-align: center; }
     .error-title { font-family: 'Playfair Display', serif; font-size: 1rem; margin-bottom: 8px; }
     .error-sub { font-size: 0.82rem; color: #888; margin-bottom: 16px; }
     .retry-btn { padding: 8px 20px; background: #6B6B3A; color: white; border: none; border-radius: 20px; font-size: 0.82rem; cursor: pointer; }
 
-    /* Bottom nav */
-    .bottom-nav {
-      position: fixed; bottom: 0; left: 0; right: 0;
-      background: white; border-top: 1px solid #e8e0d4;
-      display: flex; z-index: 50;
-      padding-bottom: env(safe-area-inset-bottom);
-    }
-    .bottom-nav-btn {
-      flex: 1; padding: 10px 0 8px; border: none; background: transparent;
-      font-size: 0.65rem; color: #aaa; cursor: pointer;
-      display: flex; flex-direction: column; align-items: center; gap: 3px;
-    }
+    .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: white; border-top: 1px solid #e8e0d4; display: flex; z-index: 50; padding-bottom: env(safe-area-inset-bottom); }
+    .bottom-nav-btn { flex: 1; padding: 10px 0 8px; border: none; background: transparent; font-size: 0.65rem; color: #aaa; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 3px; }
     .bottom-nav-btn.active { color: #6B6B3A; }
     .bottom-nav-icon { font-size: 1.1rem; }
     @media (min-width: 600px) { .bottom-nav { display: none; } }
 
-    /* Bottom sheet */
     .backdrop { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 100; }
     .backdrop.open { display: block; }
-    .bottom-sheet {
-      position: fixed; bottom: -100%; left: 0; right: 0;
-      background: white; border-radius: 20px 20px 0 0;
-      padding: 20px 16px 40px; z-index: 101;
-      transition: bottom 0.3s ease; max-height: 85vh; overflow-y: auto;
-    }
+    .bottom-sheet { position: fixed; bottom: -100%; left: 0; right: 0; background: white; border-radius: 20px 20px 0 0; padding: 20px 16px 40px; z-index: 101; transition: bottom 0.3s ease; max-height: 85vh; overflow-y: auto; }
     .bottom-sheet.open { bottom: 0; }
     .sheet-handle { width: 40px; height: 4px; background: #e0d8ce; border-radius: 2px; margin: 0 auto 16px; }
     .sheet-date { font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 600; margin-bottom: 2px; }
@@ -332,8 +237,8 @@
     <div class="header-inner">
       <div class="logo">gertie<span>HQ</span></div>
       <div class="header-actions">
-        <button class="header-icon-btn" id="darkToggle" title="Toggle dark mode">☾</button>
-        <button class="header-icon-btn" id="settingsToggle" title="Settings">⚙</button>
+        <button class="header-icon-btn" id="darkToggle">☾</button>
+        <button class="header-icon-btn" id="settingsToggle">⚙</button>
         <button class="header-nav-btn">Energy</button>
       </div>
     </div>
@@ -341,47 +246,69 @@
 
   <div class="main">
 
-    <!-- Settings panel -->
+    <!-- Settings -->
     <div class="settings-panel" id="settingsPanel">
       <div class="settings-tabs">
         <button class="settings-tab-btn active" data-tab="memory">Memory</button>
         <button class="settings-tab-btn" data-tab="about">About</button>
       </div>
-
       <div class="settings-tab-content active" id="tab-memory">
         <div class="settings-section-title">What the AI currently knows</div>
         <div class="settings-memory-display" id="memoryDisplay">Loading...</div>
         <div class="settings-section-title" style="margin-top:16px">Update memory</div>
-        <textarea class="settings-field" id="memoryInput" rows="4" placeholder="Tell the AI anything about your household. e.g. I WFH on Mondays and Fridays. Partner works office hours Tuesday to Thursday. Dishwasher runs overnight. Electric radiator in home office. No EV. Boiler is gas."></textarea>
+        <textarea class="settings-field" id="memoryInput" rows="4" placeholder="Tell the AI anything about your household. e.g. I WFH on Mondays and Fridays. Partner works office hours. Dishwasher runs overnight. No EV."></textarea>
         <button class="settings-save-btn" id="saveSettings">Save memory</button>
       </div>
-
       <div class="settings-tab-content" id="tab-about">
         <div class="about-section">
           <h3>What is gertieHQ?</h3>
-          A home management dashboard tracking energy use, running costs, and everything in between. Built for an Edwardian house in West Bridgford, Nottingham.
+          A home management dashboard tracking energy use and running costs. Built for an Edwardian house in West Bridgford, Nottingham.
           <h3>Data sources</h3>
-          Electricity pulled live from the Octopus Energy API using your MPAN and smart meter serial. Half-hourly data throughout. Gas paused due to a smart meter communication issue. Weather integration planned.
+          Electricity pulled live from the Octopus Energy API using your MPAN and smart meter serial. Half-hourly data throughout. Gas paused due to a smart meter communication issue.
           <h3>How it works</h3>
-          A Netlify serverless function calls Octopus on each page load. Your API key never touches the browser. Tags and memory stored in Netlify Blob storage. AI analysis via Anthropic API.
+          Netlify serverless functions call Octopus on each page load. API keys never touch the browser. Tags and memory stored in Netlify Blob storage. AI analysis via Anthropic API (Claude Sonnet).
           <h3>Data lag</h3>
-          Octopus uploads half-hourly data with a 1-2 hour delay. Days with data only before 10:00 are treated as incomplete and the previous day is shown instead.
+          Octopus uploads half-hourly data with a 1-2 hour delay. Days with fewer than 20 slots are treated as incomplete.
           <h3>Tariff</h3>
           Octopus Flexible (VAR-22-11-01). Rate: 24.99p/kWh electricity.
         </div>
       </div>
     </div>
 
+    <!-- AI Summary -->
+    <div class="ai-summary-card">
+      <div class="ai-summary-header">
+        <div class="ai-summary-title">AI summary</div>
+        <div style="display:flex;align-items:center;gap:8px">
+          <div class="ai-summary-meta" id="aiSummaryMeta"></div>
+          <button class="ai-refresh-btn" id="aiRefreshBtn">↺ Refresh</button>
+        </div>
+      </div>
+      <div id="aiSummaryContent"><div class="ai-loading-text">Loading analysis...</div></div>
+    </div>
+
+    <!-- AI Thread -->
+    <div class="ai-thread-card">
+      <div class="ai-thread-title">Ask a question</div>
+      <div class="ai-thread" id="aiThread"></div>
+      <div class="ai-ask-row">
+        <input type="text" class="analyse-input" id="analyseInput" placeholder="Ask anything about your energy usage...">
+        <button class="analyse-btn" id="analyseBtn">Ask</button>
+      </div>
+      <button class="context-toggle" id="contextToggle">+ Add context</button>
+      <div class="context-area" id="contextArea">
+        <textarea class="memory-field" id="memoryInline" rows="2" placeholder="Add anything that might help — e.g. we had guests this weekend, tumble dryer ran twice today..."></textarea>
+        <div class="memory-hint">Saved automatically and used in every analysis.</div>
+      </div>
+    </div>
+
     <!-- Live view -->
     <div class="right-now-zone">
       <div class="zone-heading">Live view</div>
-
       <div id="todayCards" class="cards">
         <div class="card"><div class="card-label">Loading...</div></div>
       </div>
-
-      <!-- Half-hourly chart -->
-      <div class="chart-card" style="margin-bottom:12px">
+      <div class="chart-card" style="margin-bottom:0">
         <div class="chart-header">
           <div>
             <div class="chart-title">Half-hourly</div>
@@ -405,27 +332,12 @@
           <button class="date-nav-btn" id="nextDayBtn">&#8250;</button>
           <span class="date-nav-label" id="dateNavLabel"></span>
         </div>
-        <div class="legend" id="hhLegend">
+        <div class="legend">
           <span><span style="display:inline-block;width:16px;height:2px;background:#7B9E87;vertical-align:middle;margin-right:3px"></span>Selected</span>
           <span><span style="display:inline-block;width:16px;border-top:2px dashed #a8c4b0;vertical-align:middle;margin-right:3px"></span>Prev day</span>
           <span><span style="display:inline-block;width:16px;border-top:2px dotted #C17D5A;vertical-align:middle;margin-right:3px"></span>30-day avg</span>
         </div>
         <canvas id="halfHourlyChart" height="140"></canvas>
-      </div>
-
-      <!-- AI card -->
-      <div class="ai-card">
-        <div class="ai-card-header">
-          <div class="ai-card-title">AI analysis</div>
-          <div class="ai-cost" id="aiCost"></div>
-        </div>
-        <div class="ai-text" id="aiText"><span class="ai-loading">Analysing...</span></div>
-        <div class="analyse-row">
-          <input type="text" class="analyse-input" id="analyseInput" placeholder="Ask a specific question, or leave blank to re-analyse">
-          <button class="analyse-btn" id="analyseBtn">Analyse</button>
-        </div>
-        <textarea class="memory-field" id="memoryInline" rows="2" placeholder="Add context for the AI (e.g. I WFH on Mondays, dishwasher runs overnight)..."></textarea>
-        <div class="memory-hint">This is saved automatically and used in every analysis. Full memory in Settings.</div>
       </div>
     </div>
 
@@ -468,7 +380,6 @@
     <div id="content" class="loading-text">Loading...</div>
 
     <div class="section-divider"></div>
-
     <div class="about-card">
       <div class="about-title">About gertieHQ</div>
       <div class="about-text">gertieHQ is a home management dashboard tracking energy use, running costs, and everything in between. Live electricity data from Octopus Energy. Gas, water, and home costs coming soon.</div>
@@ -477,10 +388,7 @@
   </div>
 
   <div class="bottom-nav">
-    <button class="bottom-nav-btn active">
-      <span class="bottom-nav-icon">⚡</span>
-      Energy
-    </button>
+    <button class="bottom-nav-btn active"><span class="bottom-nav-icon">⚡</span>Energy</button>
   </div>
 
   <div class="backdrop" id="backdrop"></div>
@@ -525,11 +433,13 @@
     let currentElecRate = null;
     let lastHalfHourlyData = null;
     let hhUnit = "kwh";
-
     let hhShowPrev = true;
     let hhShowAvg = true;
     let hhShowCumulative = false;
     let weeklyShowLastWeek = true;
+    let conversationHistory = [];
+    let globalMaxKwh = 0;
+    let globalMaxGbp = 0;
 
     const todayStr = new Date().toLocaleDateString("en-CA");
     let halfHourlyDate = todayStr;
@@ -552,8 +462,9 @@
     darkToggle.addEventListener("click", () => applyDark(!document.body.classList.contains("dark")));
 
     // Settings
-    const settingsPanel = document.getElementById("settingsPanel");
-    document.getElementById("settingsToggle").addEventListener("click", () => settingsPanel.classList.toggle("open"));
+    document.getElementById("settingsToggle").addEventListener("click", () => {
+      document.getElementById("settingsPanel").classList.toggle("open");
+    });
     document.querySelectorAll(".settings-tab-btn").forEach(btn => {
       btn.addEventListener("click", () => {
         document.querySelectorAll(".settings-tab-btn").forEach(b => b.classList.remove("active"));
@@ -566,11 +477,11 @@
     async function loadMemory() {
       try {
         const res = await fetch("/api/energy-settings");
-        const settings = await res.json();
-        userMemory = settings.memory || "";
+        const s = await res.json();
+        userMemory = s.memory || "";
         document.getElementById("memoryInput").value = userMemory;
         document.getElementById("memoryInline").value = userMemory;
-        document.getElementById("memoryDisplay").textContent = userMemory || "No context saved yet. Add some below or in the inline memory box near the AI analysis.";
+        document.getElementById("memoryDisplay").textContent = userMemory || "No context saved yet.";
       } catch {}
     }
 
@@ -592,35 +503,71 @@
       setTimeout(() => document.getElementById("saveSettings").textContent = "Save memory", 2000);
     });
 
-    // Auto-save inline memory on blur
     document.getElementById("memoryInline").addEventListener("blur", async function() {
-      if (this.value !== userMemory) {
-        await saveMemory(this.value);
-      }
+      if (this.value !== userMemory) await saveMemory(this.value);
     });
 
-    // AI analysis
-   async function runAnalysis(question = null) {
+    // Context toggle
+    document.getElementById("contextToggle").addEventListener("click", function() {
+      const area = document.getElementById("contextArea");
+      area.classList.toggle("open");
+      this.textContent = area.classList.contains("open") ? "− Hide context" : "+ Add context";
+    });
+
+    // Parse AI response into headline + bullets
+    function parseAIResponse(text) {
+      const headlineMatch = text.match(/HEADLINE:\s*(.+)/);
+      const bulletsMatch = text.match(/BULLETS:\s*([\s\S]+)/);
+
+      if (headlineMatch && bulletsMatch) {
+        const headline = headlineMatch[1].trim();
+        const bullets = bulletsMatch[1].trim()
+          .split("\n")
+          .map(b => b.replace(/^[•\-\*]\s*/, "").trim())
+          .filter(b => b.length > 0);
+        return { headline, bullets };
+      }
+      // Fallback: treat as plain text
+      return { headline: null, bullets: null, plain: text };
+    }
+
+    function renderAISummary(text, cost) {
+      const parsed = parseAIResponse(text);
+      const content = document.getElementById("aiSummaryContent");
+      const meta = document.getElementById("aiSummaryMeta");
+      if (cost) meta.textContent = cost;
+
+      if (parsed.headline) {
+        content.innerHTML = `
+          <div class="ai-headline">${parsed.headline}</div>
+          <ul class="ai-bullets">
+            ${parsed.bullets.map(b => `<li>${b}</li>`).join("")}
+          </ul>
+        `;
+      } else {
+        content.innerHTML = `<div style="font-size:0.84rem;line-height:1.6">${parsed.plain}</div>`;
+      }
+    }
+
+    // AI Summary
+    async function runSummary() {
       if (!lastHalfHourlyData) return;
 
-      // Use today's slots if available, otherwise fall back to yesterday
-      const slots = lastHalfHourlyData.target.slots.length > 0
+      const slots = lastHalfHourlyData.target.slots.length >= 20
         ? lastHalfHourlyData.target.slots
         : lastHalfHourlyData.prev.slots;
 
-      const analysisDate = lastHalfHourlyData.target.slots.length > 0
+      const analysisDate = lastHalfHourlyData.target.slots.length >= 20
         ? lastHalfHourlyData.date
         : new Date(Date.now() - 86400000).toLocaleDateString("en-CA");
 
       if (!slots || slots.length === 0) {
-        document.getElementById("aiText").textContent = "Not enough data to analyse yet.";
+        document.getElementById("aiSummaryContent").innerHTML = '<div class="ai-loading-text">Not enough data to analyse yet.</div>';
         return;
       }
 
-      const aiText = document.getElementById("aiText");
-      const aiCost = document.getElementById("aiCost");
-      aiText.innerHTML = '<span class="ai-loading">Analysing...</span>';
-      aiCost.textContent = "";
+      document.getElementById("aiSummaryContent").innerHTML = '<div class="ai-loading-text">Analysing...</div>';
+      document.getElementById("aiRefreshBtn").disabled = true;
 
       try {
         const res = await fetch("/api/energy-ai", {
@@ -628,28 +575,98 @@
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             date: analysisDate,
-            slots: slots,
+            slots,
             avgProfile: lastHalfHourlyData.avgProfile,
             dayOfWeekProfiles: lastHalfHourlyData.dayOfWeekProfiles,
             tags: allTags[analysisDate] || [],
             memory: userMemory,
-            question: question || null,
+            question: null,
             elecRate: lastHalfHourlyData.elecRate,
+            conversationHistory: [],
           }),
         });
         const data = await res.json();
-        aiText.className = "ai-text";
-        aiText.textContent = data.analysis || "No analysis returned.";
-        if (data.cost) aiCost.textContent = data.cost;
+        renderAISummary(data.analysis || "No analysis returned.", data.cost);
       } catch {
-        aiText.className = "ai-text";
-        aiText.textContent = "Analysis failed. Try again.";
+        document.getElementById("aiSummaryContent").innerHTML = '<div class="ai-loading-text">Analysis failed. Try refreshing.</div>';
+      } finally {
+        document.getElementById("aiRefreshBtn").disabled = false;
       }
     }
 
-    document.getElementById("analyseBtn").addEventListener("click", () => {
-      const q = document.getElementById("analyseInput").value.trim();
-      runAnalysis(q || null);
+    document.getElementById("aiRefreshBtn").addEventListener("click", runSummary);
+
+    // AI Thread (questions)
+    async function askQuestion() {
+      const input = document.getElementById("analyseInput");
+      const question = input.value.trim();
+      if (!question || !lastHalfHourlyData) return;
+
+      const slots = lastHalfHourlyData.target.slots.length >= 20
+        ? lastHalfHourlyData.target.slots
+        : lastHalfHourlyData.prev.slots;
+
+      const analysisDate = lastHalfHourlyData.target.slots.length >= 20
+        ? lastHalfHourlyData.date
+        : new Date(Date.now() - 86400000).toLocaleDateString("en-CA");
+
+      const thread = document.getElementById("aiThread");
+
+      // Add question to thread
+      const qEl = document.createElement("div");
+      qEl.className = "ai-thread-item ai-thread-question";
+      qEl.textContent = question;
+      thread.appendChild(qEl);
+
+      // Add loading answer
+      const aEl = document.createElement("div");
+      aEl.className = "ai-thread-item ai-thread-answer";
+      aEl.textContent = "Thinking...";
+      thread.appendChild(aEl);
+
+      input.value = "";
+
+      // Add to conversation history
+      conversationHistory.push({ role: "user", content: question });
+
+      try {
+        const res = await fetch("/api/energy-ai", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            date: analysisDate,
+            slots,
+            avgProfile: lastHalfHourlyData.avgProfile,
+            dayOfWeekProfiles: lastHalfHourlyData.dayOfWeekProfiles,
+            tags: allTags[analysisDate] || [],
+            memory: userMemory,
+            question,
+            elecRate: lastHalfHourlyData.elecRate,
+            conversationHistory: conversationHistory.slice(-6), // last 3 exchanges
+          }),
+        });
+        const data = await res.json();
+        const answer = data.analysis || "No answer returned.";
+        aEl.textContent = answer;
+
+        if (data.cost) {
+          const costEl = document.createElement("div");
+          costEl.className = "ai-thread-cost";
+          costEl.textContent = data.cost;
+          aEl.appendChild(costEl);
+        }
+
+        conversationHistory.push({ role: "assistant", content: answer });
+      } catch {
+        aEl.textContent = "Failed to get answer. Try again.";
+      }
+
+      thread.scrollTop = thread.scrollHeight;
+    }
+
+    document.getElementById("analyseBtn").addEventListener("click", askQuestion);
+    document.getElementById("analyseInput").addEventListener("keydown", e => {
+      if (e.key === "Enter") askQuestion();
     });
 
     // HH unit toggle
@@ -662,7 +679,7 @@
       });
     });
 
-    // HH icon toggles
+    // HH toggles
     document.getElementById("hh-prev").addEventListener("click", function() {
       hhShowPrev = !hhShowPrev;
       this.classList.toggle("on", hhShowPrev);
@@ -715,23 +732,15 @@
     updateNextBtn();
 
     // Helpers
-    function fmtFull(d) {
-      return new Date(d + "T12:00:00").toLocaleDateString("en-GB", { weekday: "long", day: "numeric", month: "long" });
-    }
-    function fmtShort(d) {
-      return new Date(d + "T12:00:00").toLocaleDateString("en-GB", { weekday: "short", day: "numeric", month: "short" });
-    }
+    function fmtFull(d) { return new Date(d + "T12:00:00").toLocaleDateString("en-GB", { weekday: "long", day: "numeric", month: "long" }); }
+    function fmtShort(d) { return new Date(d + "T12:00:00").toLocaleDateString("en-GB", { weekday: "short", day: "numeric", month: "short" }); }
     function delta(current, previous) {
       if (!previous || previous === 0) return null;
       const pct = ((current - previous) / previous * 100);
       return { pct: Math.abs(pct).toFixed(1), cls: pct > 0 ? "up" : "down", sign: pct > 0 ? "+" : "-", label: pct > 0 ? "more" : "less" };
     }
-    function periodLabel(p) {
-      return { week: "prev week", month: "prev 30 days", "3months": "prev 90 days", year: "prev year" }[p];
-    }
-    function currentPeriodLabel(p) {
-      return { week: "This week", month: "Last 30 days", "3months": "Last 90 days", year: "This year" }[p];
-    }
+    function periodLabel(p) { return { week: "prev week", month: "prev 30 days", "3months": "prev 90 days", year: "prev year" }[p]; }
+    function currentPeriodLabel(p) { return { week: "This week", month: "Last 30 days", "3months": "Last 90 days", year: "This year" }[p]; }
 
     // Sheet
     function openSheet(date, kwhValue, gbpValue) {
@@ -750,12 +759,10 @@
       document.getElementById("backdrop").classList.add("open");
       document.getElementById("bottomSheet").classList.add("open");
     }
-
     function closeSheet() {
       document.getElementById("backdrop").classList.remove("open");
       document.getElementById("bottomSheet").classList.remove("open");
     }
-
     document.getElementById("backdrop").addEventListener("click", closeSheet);
     document.getElementById("bottomSheet").addEventListener("click", e => {
       if (e.target.classList.contains("tag-btn")) {
@@ -769,7 +776,6 @@
         }
       }
     });
-
     document.getElementById("sheetSave").addEventListener("click", async () => {
       await fetch("/api/energy-tags", {
         method: "POST",
@@ -787,32 +793,34 @@
       document.getElementById("dateNavLabel").textContent = isToday ? "Today" : fmtShort(halfHourlyDate);
       document.getElementById("nextDayBtn").disabled = halfHourlyDate >= todayStr;
 
-      // Reset AI
-      const aiText = document.getElementById("aiText");
-      aiText.innerHTML = '<span class="ai-loading">Analysing...</span>';
-      document.getElementById("aiCost").textContent = "";
-      document.getElementById("analyseInput").value = "";
-
       try {
         const res = await fetch(`/api/energy-today?date=${halfHourlyDate}`);
         const data = await res.json();
         if (data.error) throw new Error(data.error);
         lastHalfHourlyData = data;
         if (data.elecRate) currentElecRate = data.elecRate;
-        renderHalfHourly(data);
+
+        // If today has <20 slots, show yesterday's data with a note
+        const useDate = data.target.slots.length >= 20 ? halfHourlyDate : null;
+        const displayData = data.target.slots.length >= 20 ? data : {
+          ...data,
+          target: data.prev,
+          isHistorical: true,
+          _showingYesterday: true,
+        };
+
+        renderHalfHourly(displayData);
         if (isToday) renderTodayCards(data);
-        // Auto-run AI
-        runAnalysis();
       } catch (err) {
         console.error("Half-hourly error:", err);
-        document.getElementById("aiText").textContent = "Could not load data for analysis.";
       }
     }
 
     function renderTodayCards(data) {
       const rate = data.elecRate || currentElecRate;
+      if (data.elecRate) currentElecRate = data.elecRate;
       const { target, prev, avgDayTotal } = data;
-      const hasToday = target.slots.length > 0;
+      const hasToday = target.slots.length >= 20;
       const ydayStr = new Date(Date.now() - 86400000).toLocaleDateString("en-CA");
 
       const mostRecentGbp = hasToday ? target.totalGbp : prev.totalGbp;
@@ -853,7 +861,8 @@
 
     function renderHalfHourly(data) {
       const { target, prev, avgProfile } = data;
-      const isHistorical = !data.isToday;
+      const isHistorical = data.isHistorical || !data.isToday;
+      const showingYesterday = data._showingYesterday;
       const rate = data.elecRate || currentElecRate;
 
       const toVal = kwh => hhUnit === "gbp" && rate ? Math.round(kwh * rate / 100 * 1000) / 1000 : kwh;
@@ -863,7 +872,7 @@
         ...Object.keys(avgProfile),
         ...prev.slots.map(s => s.time),
         ...target.slots.map(s => s.time),
-      ])).sort().filter((t, i, arr) => !(t === "00:00" && i > 0));
+      ])).sort().filter((t, i) => !(t === "00:00" && i > 0));
 
       const targetMap = Object.fromEntries(target.slots.map(s => [s.time, s.kwh]));
       const prevMap = Object.fromEntries(prev.slots.filter((s, i) => i === 0 || s.time !== "00:00").map(s => [s.time, s.kwh]));
@@ -871,6 +880,7 @@
       const latestSlotTime = target.slots.length ? target.slots[target.slots.length - 1].time : null;
       const latestIdx = latestSlotTime ? validTimes.indexOf(latestSlotTime) : -1;
 
+      // For days with data, show full day. For today (in progress), cut off at latest slot.
       const targetValues = validTimes.map((t, i) => {
         const v = targetMap[t];
         if (v === undefined) return null;
@@ -888,37 +898,42 @@
         return v !== undefined ? toVal(v) : null;
       });
 
-      // Cumulative
-      let cumSum = 0;
-      const cumulativeValues = validTimes.map((t, i) => {
-        const v = targetMap[t] || 0;
-        if (isHistorical || i <= latestIdx) {
-          cumSum += v;
-          return Math.round(toVal(cumSum) * 1000) / 1000;
-        }
-        return null;
-      });
+      // Cumulative — fixed: build running total properly
+      const cumulativeValues = (() => {
+        let sum = 0;
+        return validTimes.map((t, i) => {
+          const v = targetMap[t];
+          if (v === undefined) return null;
+          if (!isHistorical && i > latestIdx) return null;
+          sum += v;
+          return Math.round(toVal(sum) * 1000) / 1000;
+        });
+      })();
 
-      // Estimate extension
-      const lastCum = cumulativeValues[latestIdx] ?? 0;
-      let avgCumAtLatest = 0;
-      validTimes.slice(0, latestIdx + 1).forEach(t => { avgCumAtLatest += avgProfile[t] || 0; });
-      const scale = avgCumAtLatest > 0 ? (cumSum / avgCumAtLatest) : 1;
+      // Estimate extension from last known cumulative point
+      const lastKnownIdx = isHistorical ? validTimes.length - 1 : latestIdx;
+      const lastKnownCum = cumulativeValues[lastKnownIdx] ?? 0;
 
-      let avgCumRunning = avgCumAtLatest;
+      // Build avg cumulative up to last known point
+      let avgSumAtLastKnown = 0;
+      validTimes.slice(0, lastKnownIdx + 1).forEach(t => { avgSumAtLastKnown += avgProfile[t] || 0; });
+      const scale = avgSumAtLastKnown > 0 ? ((lastKnownCum / toVal(1) || lastKnownCum) / avgSumAtLastKnown) : 1;
+
+      let avgRunning = avgSumAtLastKnown;
       const estimateExt = validTimes.map((t, i) => {
-        if (i <= latestIdx || isHistorical) return null;
-        avgCumRunning += avgProfile[t] || 0;
-        return Math.round(toVal(avgCumRunning * scale) * 1000) / 1000;
+        if (i < lastKnownIdx) return null;
+        if (i === lastKnownIdx) return lastKnownCum;
+        if (isHistorical) return null;
+        avgRunning += avgProfile[t] || 0;
+        return Math.round(toVal(avgRunning * scale) * 1000) / 1000;
       });
-      if (latestIdx >= 0 && !isHistorical) estimateExt[latestIdx] = lastCum;
 
       const timeLabels = validTimes.map((t, i) => i % 4 === 0 ? t : "");
 
       if (halfHourlyChart) halfHourlyChart.destroy();
 
       const datasets = [{
-        label: "Selected day",
+        label: showingYesterday ? "Yesterday (today incomplete)" : "Selected day",
         data: hhShowCumulative ? cumulativeValues : targetValues,
         borderColor: "#7B9E87", borderWidth: 2,
         pointRadius: 0, tension: 0.3, fill: false, spanGaps: false,
@@ -945,6 +960,11 @@
         pointRadius: 0, tension: 0.3, fill: false,
       });
 
+      // Y axis max — use global max for consistency
+      const allValues = [...targetValues, ...prevValues, ...avgValues].filter(v => v !== null);
+      const localMax = Math.max(...allValues, 0);
+      const yMax = Math.ceil(Math.max(localMax, hhUnit === "gbp" ? globalMaxGbp / 48 : globalMaxKwh / 48) * 1.1 * 10) / 10;
+
       halfHourlyChart = new Chart(document.getElementById("halfHourlyChart"), {
         type: "line",
         data: { labels: timeLabels, datasets },
@@ -953,19 +973,14 @@
           interaction: { mode: "index" },
           plugins: {
             legend: { display: false },
-            tooltip: {
-              callbacks: {
-                label: ctx => ctx.parsed.y === null ? null : `${ctx.dataset.label}: ${ctx.parsed.y} ${yLabel}`
-              }
-            }
+            tooltip: { callbacks: { label: ctx => ctx.parsed.y === null ? null : `${ctx.dataset.label}: ${ctx.parsed.y} ${yLabel}` } }
           },
           scales: {
             x: { ticks: { font: { size: 9 }, maxRotation: 0 } },
             y: {
-              ticks: {
-                font: { size: 9 },
-                callback: v => hhUnit === "gbp" ? `£${v}` : `${v}`
-              }
+              max: yMax,
+              title: { display: true, text: yLabel, font: { size: 10 }, color: "#888" },
+              ticks: { font: { size: 9 }, callback: v => hhUnit === "gbp" ? `£${v}` : `${v}` }
             }
           }
         }
@@ -1023,17 +1038,17 @@
                   const tags = allTags[thisWeekDates[items[0].dataIndex]];
                   return tags && tags.length ? `Tags: ${tags.join(", ")}` : "";
                 },
-                label: ctx => {
-                  const v = ctx.parsed.y;
-                  if (v === null) return "No data yet";
-                  return `${ctx.dataset.label}: ${activeUnit === "kwh" ? `${v} kWh` : `£${v}`}`;
-                }
+                label: ctx => ctx.parsed.y === null ? "No data yet" : `${ctx.dataset.label}: ${activeUnit === "kwh" ? `${ctx.parsed.y} kWh` : `£${ctx.parsed.y}`}`
               }
             }
           },
           scales: {
             x: { ticks: { font: { size: 11 } } },
-            y: { ticks: { font: { size: 10 }, callback: v => activeUnit === "kwh" ? `${v}` : `£${v}` } }
+            y: {
+              max: activeUnit === "kwh" ? Math.ceil(globalMaxKwh * 1.1) : Math.ceil(globalMaxGbp * 1.1 * 100) / 100,
+              title: { display: true, text: activeUnit === "kwh" ? "kWh" : "£", font: { size: 10 }, color: "#888" },
+              ticks: { font: { size: 10 }, callback: v => activeUnit === "kwh" ? `${v}` : `£${v}` }
+            }
           }
         }
       });
@@ -1047,24 +1062,20 @@
       const previousValues = data.previous.map(d => unit === "kwh" ? d.kwh : d.gbp);
       const currentDates = data.current.map(d => d.date);
 
-      // Pro-rated Ofgem: 2700 kWh/year
       const days = data.current.length || 1;
-      const ofgemPeriodKwh = Math.round((2700 / 365 * days) * 10) / 10;
-      const ofgemDaily = unit === "kwh"
-        ? Math.round((2700/365)*100)/100
-        : Math.round((2700/365*data.elecRate/100)*100)/100;
-      const ofgemTotal = unit === "kwh"
-        ? ofgemPeriodKwh
-        : Math.round(ofgemPeriodKwh * data.elecRate / 100 * 100) / 100;
-
+      const ofgemPeriodKwh = Math.round((2700/365*days)*10)/10;
+      const ofgemDaily = unit === "kwh" ? Math.round((2700/365)*100)/100 : Math.round((2700/365*data.elecRate/100)*100)/100;
+      const ofgemTotal = unit === "kwh" ? ofgemPeriodKwh : Math.round(ofgemPeriodKwh*data.elecRate/100*100)/100;
       const currentTotal = unit === "kwh" ? data.currentTotalKwh : data.currentTotalGbp;
       const previousTotal = unit === "kwh" ? data.previousTotalKwh : data.previousTotalGbp;
 
-      // 14-day rolling average
       const rollingAvg = currentValues.map((_, i) => {
-        const window = currentValues.slice(Math.max(0, i - 13), i + 1);
-        return Math.round((window.reduce((s, v) => s + v, 0) / window.length) * 100) / 100;
+        const w = currentValues.slice(Math.max(0, i-13), i+1);
+        return Math.round((w.reduce((s,v) => s+v, 0) / w.length) * 100) / 100;
       });
+
+      const yAxisMax = unit === "kwh" ? Math.ceil(globalMaxKwh * 1.1) : Math.ceil(globalMaxGbp * 1.1 * 100) / 100;
+      const yLabel = unit === "kwh" ? "kWh" : "£";
 
       const dayLabels = currentDates.map((d, i) => {
         const date = new Date(d + "T12:00:00");
@@ -1078,22 +1089,17 @@
       document.getElementById("chartContainer").innerHTML = `
         <div class="chart-card">
           <div class="chart-header">
-            <div><div class="chart-title">Period comparison</div></div>
+            <div><div class="chart-title">Period comparison (${yLabel})</div></div>
             <div class="icon-btn-group">
               <button class="icon-btn ${showComparison ? "on" : ""}" id="sum-compare" title="Previous period">⏮</button>
               <button class="icon-btn on" id="sum-ofgem" title="Ofgem typical">⚖</button>
             </div>
           </div>
-          <div class="legend">
-            <span><span class="legend-dot" style="background:#7B9E87"></span>${currentPeriodLabel(data.period)}</span>
-            ${showComparison ? `<span><span class="legend-dot" style="background:#c8ddd0"></span>${periodLabel(data.period)}</span>` : ""}
-            <span><span class="legend-dot" style="background:#e8c4a8"></span>Ofgem typical</span>
-          </div>
           <canvas id="summaryChart" height="80"></canvas>
         </div>
         <div class="chart-card">
           <div class="chart-header">
-            <div><div class="chart-title">Daily usage</div><span class="chart-hint">tap a point to tag</span></div>
+            <div><div class="chart-title">Daily usage (${yLabel})</div><span class="chart-hint">tap a point to tag</span></div>
             <div class="icon-btn-group">
               <button class="icon-btn ${showComparison ? "on" : ""}" id="daily-compare" title="Previous period">⏮</button>
               <button class="icon-btn on" id="daily-ofgem" title="Ofgem reference">⚖</button>
@@ -1124,7 +1130,6 @@
         const colors = ["#7B9E87"];
         if (showComparison) { labels.push(periodLabel(data.period)); values.push(previousTotal); colors.push("#c8ddd0"); }
         if (sumShowOfgem) { labels.push("Ofgem typical"); values.push(ofgemTotal); colors.push("#e8c4a8"); }
-
         barChart = new Chart(document.getElementById("summaryChart"), {
           type: "bar",
           data: { labels, datasets: [{ data: values, backgroundColor: colors, borderRadius: 4 }] },
@@ -1133,7 +1138,10 @@
             plugins: { legend: { display: false } },
             scales: {
               x: { ticks: { font: { size: 11 } } },
-              y: { ticks: { font: { size: 10 }, callback: v => unit === "kwh" ? `${v} kWh` : `£${v}` } }
+              y: {
+                title: { display: true, text: yLabel, font: { size: 10 }, color: "#888" },
+                ticks: { font: { size: 10 }, callback: v => unit === "kwh" ? `${v} kWh` : `£${v}` }
+              }
             }
           }
         });
@@ -1165,10 +1173,8 @@
         };
 
         const lineDatasets = [{
-          label: "Current",
-          data: currentValues,
-          borderColor: "#7B9E87",
-          backgroundColor: "rgba(123,158,135,0.07)",
+          label: "Current", data: currentValues,
+          borderColor: "#7B9E87", backgroundColor: "rgba(123,158,135,0.07)",
           borderWidth: 2, pointRadius: 0, tension: 0.3, fill: true,
         }];
 
@@ -1179,8 +1185,7 @@
         });
 
         if (dailyShowOfgem) lineDatasets.push({
-          label: "Ofgem avg",
-          data: currentDates.map(() => ofgemDaily),
+          label: "Ofgem avg", data: currentDates.map(() => ofgemDaily),
           borderColor: "#C17D5A", borderDash: [2,4],
           borderWidth: 1.5, pointRadius: 0, fill: false,
         });
@@ -1219,31 +1224,30 @@
             },
             scales: {
               x: { ticks: { font: { size: 9 }, maxRotation: 45, maxTicksLimit: 31 } },
-              y: { ticks: { font: { size: 10 }, callback: v => unit === "kwh" ? `${v} kWh` : `£${v}` } }
+              y: {
+                max: yAxisMax,
+                title: { display: true, text: yLabel, font: { size: 10 }, color: "#888" },
+                ticks: { font: { size: 10 }, callback: v => unit === "kwh" ? `${v} kWh` : `£${v}` }
+              }
             }
           }
         });
       }
 
-      // Summary toggles
       document.getElementById("sum-compare").addEventListener("click", function() {
         showComparison = !showComparison;
         this.classList.toggle("on", showComparison);
-        buildSummaryChart();
-        buildLineChart();
+        buildSummaryChart(); buildLineChart();
       });
       document.getElementById("sum-ofgem").addEventListener("click", function() {
         sumShowOfgem = !sumShowOfgem;
         this.classList.toggle("on", sumShowOfgem);
         buildSummaryChart();
       });
-
-      // Daily toggles
       document.getElementById("daily-compare").addEventListener("click", function() {
         showComparison = !showComparison;
         this.classList.toggle("on", showComparison);
-        buildLineChart();
-        buildSummaryChart();
+        buildLineChart(); buildSummaryChart();
       });
       document.getElementById("daily-ofgem").addEventListener("click", function() {
         dailyShowOfgem = !dailyShowOfgem;
@@ -1289,7 +1293,7 @@
       const diffPct = (Math.abs(yourKwh - ofgemKwh) / ofgemKwh * 100).toFixed(0);
       return `
         <div class="bench-card">
-          <div class="bench-title">vs Ofgem typical household (pro-rated)</div>
+          <div class="bench-title">vs Ofgem typical household (pro-rated to ${days} days)</div>
           <div class="bench-row">
             <div class="bench-label">You</div>
             <div class="bench-bar-wrap"><div class="bench-bar ${over ? "over" : ""}" style="width:${Math.min((yourKwh/max)*100,100)}%"></div></div>
@@ -1301,10 +1305,7 @@
             <div class="bench-val">${ofgemKwh} kWh</div>
           </div>
           <div style="font-size:0.72rem;color:#999;margin-top:8px;line-height:1.5;">
-            Ofgem typical: 2,700 kWh/year scaled to ${days} days (${ofgemKwh} kWh).
-            ${over
-              ? `<strong style="color:#C17D5A">You are using ${diffPct}% more than average.</strong>`
-              : `<strong style="color:#27ae60">You are using ${diffPct}% less than average.</strong>`}
+            ${over ? `<strong style="color:#C17D5A">You are using ${diffPct}% more than average.</strong>` : `<strong style="color:#27ae60">You are using ${diffPct}% less than average.</strong>`}
           </div>
         </div>
       `;
@@ -1352,9 +1353,16 @@
         currentData = energy;
         allTags = tags;
         currentElecRate = energy.elecRate;
-        document.getElementById("rateChip").textContent = `${energy.elecRate.toFixed(2)}p/kWh`;
 
+        // Update global max for consistent Y axis
+        const allKwh = [...energy.current, ...energy.previous].map(d => d.kwh);
+        const allGbp = [...energy.current, ...energy.previous].map(d => d.gbp);
+        globalMaxKwh = Math.max(globalMaxKwh, ...allKwh);
+        globalMaxGbp = Math.max(globalMaxGbp, ...allGbp);
+
+        document.getElementById("rateChip").textContent = `${energy.elecRate.toFixed(2)}p/kWh`;
         renderWeeklyChart();
+
         document.getElementById("content").innerHTML = `
           ${renderCards(energy)}
           ${renderBenchmark(energy)}
@@ -1366,9 +1374,13 @@
       }
     }
 
-    loadMemory();
-    loadDashboard();
-    loadHalfHourly();
+    async function init() {
+      await Promise.all([loadMemory(), loadDashboard(), loadHalfHourly()]);
+      // Run AI summary once after data is loaded
+      runSummary();
+    }
+
+    init();
   </script>
 
 </body>
